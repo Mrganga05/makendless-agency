@@ -1,37 +1,25 @@
-# Brand and theme status — Lab V3 / V14 update
+# Brand and theme status — V16
 
-**Current V14 direction:** the owner now requests Prism Atelier as the preferred testable website implementation, retaining Glass Prism as recoverable. See [V14 brief](CREATIVE_BRIEF_V14.md) and [implementation record](V14_IMPLEMENTATION.md). The lab-era status below is retained as history; it is not a prohibition on the newly authorized redesign.
+Current instructions are the owner's service update and [V16 architecture brief](CREATIVE_BRIEF_V16.md). They supersede the old thirteen-service catalog and ten-section homepage. Production now follows the seven-section structure; Work, Project Lab and About remain independent routes.
 
-Source of current intent: [Frontend Lab V3 brief](FRONTEND_LAB_BRIEF.md), especially sections 2, 10 and 20. Recorded 13 November 2026. **Implementation status and owner approval are different facts.**
+## Current identity and catalog
 
-## Preserve
+| Item         | Current requirement                                                                                      |
+| ------------ | -------------------------------------------------------------------------------------------------------- |
+| Brand        | MAKENDLESS — Creative & Technology Studio                                                                |
+| Philosophy   | CREATE • BUILD • GROW                                                                                    |
+| Typography   | Syne, retained throughout                                                                                |
+| CREATE       | Video Editing: short-form, long-form/podcasts, promotional/advertisement, repurposing, motion graphics   |
+| BUILD        | Website Development: business, e-commerce, landing pages, booking/web applications, redesign/maintenance |
+| GROW         | Digital Marketing: ads, social management, local business marketing, analytics/reporting                 |
+| Availability | Every GROW service remains Beta / Coming Soon; interest is not a booking                                 |
+| Catalog      | Fourteen services. T4 retired; T6 and M4 added. See [service contract](V16_SERVICE_NOTES.md).            |
 
-| Item                         | Status                                                                                                |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------- |
-| MAKENDLESS spelling          | Established brand; preserve exactly.                                                                  |
-| Creative & Technology Studio | Established category.                                                                                 |
-| CREATE • BUILD • GROW        | Established philosophy and service grouping.                                                          |
-| Syne typography              | Explicitly required by the latest brief.                                                              |
-| CREATE                       | Video Editing & Creative Production.                                                                  |
-| BUILD                        | Websites, IT Services & AI Solutions.                                                                 |
-| GROW                         | Digital Marketing; Beta / Coming Soon. Do not imply currently available delivery.                     |
-| Complete service catalog     | Retain all 13 services; a focused experiment may demonstrate a subset without redefining the catalog. |
-
-The production catalog in `src/data.ts` contains:
-
-| CREATE — 5                             | BUILD — 5                                 | GROW — 3, Beta / Coming Soon       |
-| -------------------------------------- | ----------------------------------------- | ---------------------------------- |
-| Short-Form Video Editing               | Business Website Design & Development     | Meta & Google Ads Management       |
-| Long-Form & Podcast Editing            | E-commerce Website Development            | Social Media Content Management    |
-| Promotional & Ad Video Editing         | Booking Systems & Custom Web Applications | Local Digital Presence & Analytics |
-| Content Repurposing & Creator Packages | Business Automation & AI Assistants       | —                                  |
-| Motion Graphics & AI-Assisted Editing  | Website Maintenance & Optimization        | —                                  |
+The public website no longer offers AI assistants or automation. Historical research and earlier version records may describe retired features; they are not the current service catalog.
 
 ## Palette status
 
-**Glass Prism:** legacy brand family, currently favored in the latest brief. **Prism Atelier:** richer direction under evaluation. Both may be compared in the isolated lab. Neither the most recently displayed lab theme nor an implementation default constitutes new production approval.
-
-The existing V12 `src/theme.ts` sets `HOME_THEME` to `atelier` and retains both palettes. That describes checked-in behavior, not a decision made during this practice phase. Leave production configuration unchanged. This table records core **production source tokens**, not the complete lab palette or measured contrast results:
+Prism Atelier is the preferred **testable** direction, retained from V14. Glass Prism remains recoverable through `?theme=glass`; use `?theme=atelier` to switch back. `HOME_THEME` in `src/theme.ts` supplies the default. A source default does not constitute final visual approval.
 
 | Token      | Glass Prism | Prism Atelier |
 | ---------- | ----------- | ------------- |
@@ -45,18 +33,14 @@ The existing V12 `src/theme.ts` sets `HOME_THEME` to `atelier` and retains both 
 | ink        | `#0A0B1B`   | `#13172B`     |
 | mutedLight | `#4B526C`   | `#52607B`     |
 
-The isolated `experiments/frontend-lab/src/theme.ts` compares experimental variants. Its Glass selection overrides three production values for the lab's light surfaces:
+This is a core token subset, not measured contrast for every rendered state. Central tokens also include readable accent/action variants, lines and washes.
 
-| Meaning                 | Production Glass token/value | Experimental lab Glass token/value |
-| ----------------------- | ---------------------------- | ---------------------------------- |
-| Light background        | `paper: #EAF2FF`             | `paper: #F2F5FC`                   |
-| Dark text               | `ink: #0A0B1B`               | `ink: #13172B`                     |
-| Secondary text on light | `mutedLight: #4B526C`        | `muted: #52607B`                   |
+The isolated lab compares experimental variants. Its Glass light-surface values differ from production: paper `#F2F5FC`, ink `#13172B`, muted `#52607B`. Read the lab token file when reproducing its contrast calculations. Lab terminology such as `accent` and `muted` does not match all production token names.
 
-The lab uses `accent` for production `violet`, `accentLight` for `violetLight`, and `muted` for `mutedLight`; these are lab token names. Its Atelier values match the corresponding production tokens. The lab is a smaller token set and does not reproduce every production state color. These overrides are experiments, not changes to the approved brand or production configuration. Read the lab token file when reproducing lab contrast calculations.
+Measure actual foreground/background pairs, including focus, disabled and selected states. WCAG normal text requires 4.5:1 and large text 3:1; do not round a failing value upward. Token calculations do not establish contrast over glass, moving imagery or all rendered layers ([W3C explanation](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)).
 
-Measure actual foreground/background pairs, including hover, selected, disabled and focus states. WCAG's normal-text threshold is 4.5:1 and large-text threshold 3:1; do not round a failing value upward. A token calculation does not verify translucent surfaces, moving backgrounds, every rendered state, or overall accessibility ([W3C contrast explanation](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)).
+## Evidence and history
 
-## Still proposals
+Meaningful 3D, media composition and motion remain requirements. No actual V16 browser screenshots or GPU inspection exist because the managed preview/browser failed. See [V16 QA](V16_QA.md); design quality remains unverified until observed.
 
-The ten-section future homepage outline, hero winner, new palette variants, 3D direction and motion style remain proposals pending observed comparison. Lab scenes and sample projects are original demonstrations, not evidence of client delivery. No fake clients, testimonials, metrics, prices, shipping AI integration or marketing availability. Keep technical research controls and review notes out of future customer-facing flows unless they help the customer make a meaningful choice.
+The lab's older preference for Glass, its proposals, and the V14 architecture are historical. Earlier versions remain in Git and their dated documents. Do not restore their old service descriptions into the current public website. Do not invent client work, testimonials, prices, service availability or submitted messages.

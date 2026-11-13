@@ -4,7 +4,7 @@ The current authorized task is V16, governed by [CREATIVE_BRIEF_V16.md](docs/CRE
 
 ## Persistent guidance
 
-Read only the guides relevant to the task. For current V14 decisions, start with [implementation record](docs/V14_IMPLEMENTATION.md) and [QA evidence](docs/V14_QA.md); older lab-only scope and palette preferences are historical:
+Read only the guides relevant to the task. For current V16 decisions, start with [implementation record](docs/V16_IMPLEMENTATION.md), [QA evidence](docs/V16_QA.md) and [service contract](docs/V16_SERVICE_NOTES.md); older lab-only scope, service lists and homepage structures are historical:
 
 - [Design principles](docs/FRONTEND_DESIGN_PRINCIPLES.md), [brand/theme status](docs/BRAND_AND_THEME_STATUS.md), [responsive rules](docs/RESPONSIVE_DESIGN_RULES.md).
 - [3D engineering](docs/THREED_ENGINEERING_GUIDE.md), [motion graphics](docs/MOTION_GRAPHICS_SYSTEM.md), [interactive patterns](docs/INTERACTIVE_COMPONENT_PATTERNS.md).

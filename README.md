@@ -1,21 +1,23 @@
-# MAKENDLESS — V14 Living Experience
+# MAKENDLESS — V16 Living Experience
 
-A React/TypeScript/Vite creative and technology studio website. V14 implements the ten-section customer journey, an interactive CREATE / BUILD / AI hero, three studio worlds, optional physical 3D, working service demonstrations and project-to-inquiry flows. Syne and MAKENDLESS branding are retained. Atelier is the current testable direction; Glass remains recoverable.
+A React/TypeScript/Vite creative and technology studio website, organized around **CREATE — Video Editing**, **BUILD — Website Development** and **GROW — Digital Marketing (Beta / Coming Soon)**.
 
-**The frontend is implemented and behavior-tested. Visual acceptance remains pending:** this environment's browser and preview relay failed. No desktop/mobile screenshots, GPU inspection, WCAG compliance or achieved Core Web Vitals are claimed. See [V14 QA](docs/V14_QA.md).
+V16 implements the approved seven-section homepage and revised fourteen-service catalog throughout navigation, studio/detail pages, recommendations, packages, Project Lab and inquiry drafts. Syne, purposeful 3D, finite motion and Prism Atelier remain; Glass Prism is recoverable.
+
+**Source and behavior checks pass. Visual acceptance remains pending:** the managed preview relay and browser failed to start. Desktop/mobile screenshots, real GPU rendering, device performance and accessibility acceptance are not claimed. See [V16 QA](docs/V16_QA.md).
 
 ## Run on your computer
 
-Use Node.js 24 (the helper tests use native TypeScript support). In your existing repository:
+Use Node.js 24. In your existing repository:
 
 ```bash
 git fetch origin
-git switch implementation/v14-living-experience
+git switch implementation/v16-service-architecture
 npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. Stop with Ctrl+C. For a source ZIP, extract it, open the extracted root folder, and start with `npm ci`.
+Open the localhost URL printed by Vite. Stop with Ctrl+C. For a source ZIP, extract it, open its root folder and start with `npm ci`.
 
 For a built preview:
 
@@ -24,50 +26,44 @@ npm run build
 npm run preview
 ```
 
-The compiled website is in `dist/`. The local source is `/workspace/startup/makendless`. The preserved research gallery is separate: `npm run dev --prefix experiments/frontend-lab`.
+The compiled website is in `dist/`. The workspace checkout is `/workspace/startup/makendless`. The preserved research gallery is separate: `npm run dev --prefix experiments/frontend-lab`.
 
 ## What to explore
 
-The homepage has ten sections, in this order:
+The homepage contains these seven main sections:
 
-1. **Living Hero:** switch CREATE / BUILD / AI; compare treatments, operate the sample site and step through a human-reviewed workflow.
-2. **Three Studios:** cinematic CREATE, responsive BUILD and editorial GROW. Every world opens a dedicated route.
-3. **Live Transformation:** a dominant service stage with meaningful comparison, layout and automation controls.
-4. **Client Solutions:** creator, local business, startup and online store concepts; edit the recommendations before using them.
-5. **Selected Work:** clearly labeled original concepts with working media/type treatments and real inquiry paths.
-6. **Packages:** Video Content, Websites & Digital Products, AI & Automation; deliverables, scope factors and optional additions, without invented prices.
-7. **Living Project Lab:** Salon, Café/Restaurant, Gym/Fitness and General Business previews; add/remove website, booking, promotional film and simulated assistant modules; generate, edit, copy and carry a brief into inquiry.
-8. **Behind MAKENDLESS:** a typography-led studio introduction using genuine positioning, without invented people or biographies.
-9. **Process & FAQ:** Discover, Design, Create, Deliver; practical answers without fabricated turnaround/revision policies.
-10. **Final Invitation:** a direct project CTA and complete footer navigation.
+1. **Cinematic Hero:** the approved headline, video comparison/captions, an actual sample website, and an illustrative Digital Marketing Beta campaign. Optional physical 3D follows the same controls.
+2. **Three Studios:** three large native destinations with a title-sequence treatment, responsive device composition and campaign direction. GROW displays Beta / Coming Soon.
+3. **Live Transformation:** video source/edit and finite playback; website wireframe/finished, desktop/mobile and menu navigation; campaign objective, creative and feed/story placement.
+4. **Solutions for You:** creator, local business, startup and online store previews with editable recommendations. Marketing is optional future interest.
+5. **Packages & Pricing:** Video Editing, Website Development and Digital Marketing Beta. Scope and deliverables replace invented prices; Beta uses Explore Beta.
+6. **How We Work + FAQ:** Discover, Design, Create, Deliver and practical expandable answers.
+7. **Final CTA + Footer:** the closing invitation and complete site navigation.
 
-All 13 service routes remain available, with distinct working demonstrations: video editing, podcast clips, ad treatments, repurposing, kinetic typography, website transformation, mock store/cart/checkout, mock booking, editable workflow, illustrative optimization, simulated campaigns, editable content calendar and local presence. GROW stays **Beta / Coming Soon**.
+Work, Project Lab and About remain independent pages. The standalone Project Lab combines optional website, booking, promotional video and clearly illustrative marketing modules; generate, edit, copy and carry a brief into inquiry. No configurator is mounted as a homepage section.
 
-The optional Three.js stage uses physical transmission, generated reflections and finite camera/material changes tied to service state. It is lazy loaded and has reduced-motion/mobile/data-saving handling, explicit cleanup and HTML fallback. The Project Lab uses CSS perspective around its actual HTML interface, not a second WebGL scene.
+Fourteen service demonstrations are available, including a new editable landing page with a validated local form, separate local business profile preview and fictional marketing report with channel/period filtering and editable observations.
 
-## Themes and review
+## Routes and services
 
-Append `?theme=glass` to the local URL to inspect Glass Prism or `?theme=atelier` for Atelier. The chosen palette survives in-app navigation for that session. Reloading a URL without a theme uses `HOME_THEME` in `src/theme.ts`. There is no persisted preference or customer-facing theme dashboard.
+| Destination                       | Route                                                |
+| --------------------------------- | ---------------------------------------------------- |
+| Homepage / studios                | `/`, `/studios`                                      |
+| CREATE / BUILD / GROW             | `/studios/create`, `/studios/build`, `/studios/grow` |
+| CREATE services                   | `/services/V1`–`V5`                                  |
+| BUILD services                    | `/services/T1`, `T2`, `T3`, `T5`, `T6`               |
+| GROW services — Beta              | `/services/M1`–`M4`                                  |
+| Project Lab / guided discovery    | `/project-lab`, `/find-solution`                     |
+| Concept work / About / FAQ        | `/work`, `/about`, `/faq`                            |
+| Inquiry draft / draft legal pages | `/contact`, `/privacy`, `/terms`                     |
 
-Review 360, 390, 768, 1024 and 1440px; keyboard, touch, 200% text zoom, reduced motion, disabled WebGL, loading/error states and all inquiry handoffs. Check actual visual rhythm across consecutive sections. Use [V14 QA](docs/V14_QA.md) for exact remaining checks and evidence limits.
+T4 is retired, not reused. Its old detail URL redirects to BUILD, and stale selections are discarded before generating a brief. T6 is Landing Page Development; M4 is Marketing Analytics & Reporting. See the [complete catalog](docs/V16_SERVICE_NOTES.md).
 
-## Routes
+`/create`, `/build` and `/grow` redirect to canonical studio paths. A static host must fall back to `index.html` for application routes. Sitemap generation requires a confirmed production origin.
 
-| Destination                | Route                                                         |
-| -------------------------- | ------------------------------------------------------------- |
-| Homepage                   | `/`                                                           |
-| Studios                    | `/studios`                                                    |
-| CREATE / BUILD / GROW      | `/studios/create`, `/studios/build`, `/studios/grow`          |
-| Service details            | `/services/V1`–`V5`, `/services/T1`–`T5`, `/services/M1`–`M3` |
-| Project Lab                | `/project-lab`                                                |
-| Guided discovery           | `/find-solution`                                              |
-| Concept work / About / FAQ | `/work`, `/about`, `/faq`                                     |
-| Inquiry draft              | `/contact`                                                    |
-| Draft legal pages          | `/privacy`, `/terms`                                          |
+## Themes and verification
 
-`/create`, `/build` and `/grow` redirect to canonical studio paths. A future static host must fall back to `index.html` for application routes.
-
-## Checks and project knowledge
+Append `?theme=glass` to inspect Glass Prism or `?theme=atelier` for Atelier. The palette survives in-app navigation for that session. Reloading without a theme uses `HOME_THEME` in `src/theme.ts`.
 
 ```bash
 npm run typecheck
@@ -76,17 +72,21 @@ npm test
 npm run build
 ```
 
-- [Implementation record and checkpoints](docs/V14_IMPLEMENTATION.md)
-- [Verification and remaining review](docs/V14_QA.md)
-- [Spatial implementation](docs/V14_SPATIAL_NOTES.md)
-- [All-service coverage](docs/V14_STUDIO_SERVICE_NOTES.md)
-- [Motion registry](docs/V14_MOTION.md)
-- [Original V14 brief](docs/CREATIVE_BRIEF_V14.md)
+Review 360, 390, 768, 1024 and 1440px, keyboard/touch, text zoom, reduced motion, disabled WebGL, loading/error states and inquiry handoffs in an actual browser. The [QA record](docs/V16_QA.md) distinguishes automated evidence from outstanding visual/device checks.
 
-New homepage composition lives in `src/components/v14/` and `src/v14-*.css`. Central business data remains in `src/data.ts`; `src/project.tsx` and `src/brief.ts` own shared selections and brief generation. Older homepage components and their regression coverage are retained as history but are no longer the homepage entry point. The lab remains isolated in `experiments/frontend-lab/`.
+- [V16 implementation and checkpoints](docs/V16_IMPLEMENTATION.md)
+- [V16 service catalog and demonstrations](docs/V16_SERVICE_NOTES.md)
+- [V16 spatial implementation](docs/V16_SPATIAL_NOTES.md)
+- [Current brand/theme status](docs/BRAND_AND_THEME_STATUS.md)
+- [Original V16 brief](docs/CREATIVE_BRIEF_V16.md)
+- [Earlier V14 record — historical](docs/V14_IMPLEMENTATION.md)
 
-## Honest demo boundaries
+Current composition reuses `src/components/v14/` and `src/v14-*.css` filenames. Central business data lives in `src/data.ts`; `src/project.tsx` and `src/brief.ts` own selections and brief generation. Older reusable components and their tests remain, but are not mounted as extra homepage sections. The lab stays isolated in `experiments/frontend-lab/`.
 
-Visitor state stays in React memory and resets on refresh. **No inquiry backend is connected: nothing is sent.** The form validates and offers a local preview/download. Booking, checkout, chat and workflows are simulations; no payments, AI calls, analytics or external messages occur. Concepts are not client work. Photography is used in labeled concept compositions; sources/licensing are recorded in [REDESIGN.md](docs/REDESIGN.md). Syne OFL, Lucide ISC and Three MIT notices ship in `public/licenses/`.
+## Demo boundaries
 
-A real launch still needs approved contact/delivery configuration, legal review, authorized real portfolio assets when available, and actual browser/device QA. No public website deployment occurred in this task. V12 and the research lab remain recoverable in Git.
+Visitor state stays in React memory and resets on refresh. **No inquiry backend is connected: nothing is sent.** The inquiry validates and offers a local preview/download. Booking, checkout and campaign/reporting demonstrations are simulations. No payments, ad accounts, external publishing, real analytics collection or messages are triggered.
+
+Concepts are not client work. Photography sources/licensing are in [REDESIGN.md](docs/REDESIGN.md); Syne OFL, Lucide ISC and Three MIT notices ship in `public/licenses/`.
+
+A real launch still needs approved delivery configuration and legal content, real portfolio material when available, and browser/device QA. This implementation does not publicly deploy the website. V12, lab and V14 checkpoints remain recoverable in Git.
