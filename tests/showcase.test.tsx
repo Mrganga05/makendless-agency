@@ -41,11 +41,11 @@ function SelectionReadout() {
     </output>
   );
 }
-function mount() {
+function mount(props: Parameters<typeof LiveShowcase>[0] = {}) {
   return render(
     <MemoryRouter>
       <ProjectProvider>
-        <LiveShowcase />
+        <LiveShowcase {...props} />
         <SelectionReadout />
         <Routes>
           <Route path="*" element={null} />
@@ -84,6 +84,28 @@ afterEach(() => {
   sceneSpy.crash = false;
 });
 describe("Living Showcase: service-led interactions and fallbacks", () => {
+  it("reuses an explicitly opened BUILD study with working controls and no hero navigation", async () => {
+    const user = userEvent.setup();
+    mount({ initialMode: "build", variant: "study", showModeSwitch: false });
+    expect(
+      screen.queryByRole("group", { name: "Choose a service showcase" }),
+    ).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: "Add to my project" }),
+    ).toBeNull();
+    expect(
+      screen.queryByRole("link", { name: "Explore this service" }),
+    ).toBeNull();
+    await user.click(
+      screen.getByRole("button", { name: "Mobile", exact: true }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Open the café menu" }),
+    );
+    expect(screen.getByText("Flat white")).toBeTruthy();
+    expect(screen.getByText("Mobile layout · Finished design")).toBeTruthy();
+  });
+
   it("keeps the flat view on a data-saving connection", async () => {
     webgl();
     Object.defineProperty(navigator, "connection", {

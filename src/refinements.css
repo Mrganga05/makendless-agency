@@ -5,7 +5,7 @@
 }
 .studio-header .page-heading {
   font-size: clamp(42px, 5.5vw, 74px);
-  font-weight: 600;
+  font-weight: 800;
 }
 .studio-service-selector {
   background: #151628;
@@ -53,13 +53,8 @@
   background: #c7a6ff10 !important;
   border-radius: 8px;
 }
-.service-demo {
-  border-radius: 10px !important;
-  box-shadow: none !important;
-}
 .demo-caption {
   font-size: 10px !important;
-  padding: 15px 20px !important;
 }
 .service-demo .demo-switcher button,
 .service-demo .demo-primary-button,

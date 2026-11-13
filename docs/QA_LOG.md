@@ -1,5 +1,55 @@
 # QA log
 
+## Current V11 checkpoint — 2026-11-13
+
+Baseline `f8d01c3`; baseline 74 tests passed before this redesign. V11 now changes the full seven-section homepage, open hero stage, 13 service demonstrations, Project Lab, discovery, inquiry, concept studies, About, FAQ, service details and footer. The approved Syne wordmark/headline and exact service data remain.
+
+| Executed check                            | Result                            |
+| ----------------------------------------- | --------------------------------- |
+| Typecheck and full ESLint                 | Pass                              |
+| Helper tests                              | 5 pass                            |
+| Navigation/routes/lazy anchors            | 35 pass                           |
+| Shared project/discovery/inquiry flows    | 9 pass                            |
+| CREATE/BUILD/GROW demonstrations          | 17 pass                           |
+| Hero capability/interaction/fallback      | 11 pass                           |
+| Supporting concept/FAQ/About interactions | 5 pass                            |
+| Homepage Workshop/Lab                     | 4 pass                            |
+| Motion lifecycle/focus/reduced-motion     | 7 pass                            |
+| Mocked spatial wrapper lifecycle          | 4 pass                            |
+| Total                                     | **97 pass** (92 jsdom + 5 helper) |
+| Production build and Git whitespace check | Pass                              |
+
+### Integration findings resolved
+
+- Deep links to concept anchors now wait for the lazy destination to mount, with a bounded observer and route-change cleanup. Both anchors have regression coverage.
+- Entrances cancel around focused controls and skip already-focused regions; keyboard use cannot trigger a clipped interactive ancestor.
+- Removed obsolete global forced card radius and caption padding that overrode the new service presentation.
+- M2 changes actual Reel/Carousel/Story composition and frame content while remembering each day's selected format.
+- V1 has explicit finite preview playback and reduced-motion discrete frames. Tests cover document hiding. Homepage promotional media is finite and pauses when hidden/offscreen.
+- Inquiry regression verifies editing any required field clears a ready preview/download and invalid resubmission focuses the relevant input. The existing invalidation logic was already correct; no unnecessary form rewrite was made.
+- Source review found no remaining concrete integration blockers. This is not a rendered visual approval.
+
+### Bundle evidence
+
+Production output: initial application JS **327.28 kB / 102.12 kB gzip**; separate optional Three.js scene **485.78 kB / 123.97 kB gzip**; deferred service demos **38.59 kB / 11.15 kB gzip**. Initial CSS approximately **94.35 kB / 18.70 kB gzip**. Route CSS/JS remain split. No additional dependencies were introduced. These file sizes do not measure browser speed or GPU cost.
+
+### Browser attempts in this V11 turn
+
+- Environment status: running, connected, observed configuration current; shared desktop enabled but state unknown.
+- `sites-preview start /workspace/startup/makendless`: **relay could not open browser port 4173: timed out waiting for relay readiness**.
+- `cua.getState()`: **the gaas-browser node_repl sandbox cannot be disabled**.
+- `sites-preview status`: **Sites preview stopped**.
+
+No successful preview URL, browser screenshots, actual GPU render, console inspection, viewport/overflow verification or performance measurements were obtained. Managed preview infrastructure was not bypassed. The supported Sites/runtime workflow was used for local source work; no hosted deployment occurred.
+
+### V11 acceptance and next review
+
+Visual composition, motion appearance, 3D appearance, five-second customer clarity, rendered consistency and mobile quality remain **unverified**. Functional behavior has automated evidence; full accessibility and performance remain **unverified**. No visual scores are assigned and the brief's final quality gate is still open.
+
+Run `npm ci` and `npm run dev` locally with Node 24. Review 1440, 1024, 768, 390 and 360px. Capture the open hero in all modes; complete seven-section homepage; every studio demo (especially V5 and M2); Project Lab with all four modules and each business; discovery; edited/invalid/valid inquiry; each expanded concept study; About; filtered FAQ; mobile menu; footer. Test keyboard, reduced motion, flat/WebGL modes, explicit internal spatial studies, hidden tabs, scene route unmount and anchor navigation. Refine observed issues before visual sign-off. Measure LCP/INP/CLS and GPU behavior on a mid-range phone; targets 2.5s/200ms/0.1 are still unmeasured.
+
+The historical V9 record below remains evidence for its checkpoint only.
+
 ## Baseline and evidence policy
 
 Baseline commit `fb56e76`. Previous redesign recorded 58 passing Node/jsdom tests, typecheck, lint and production build. These are historical results, not new execution results. No previous real-browser visual review was available. Browser evidence and current checks will be appended during this milestone.

@@ -88,6 +88,24 @@ export default function FindSolution() {
     (pair) => !dismissed.includes(pair.id),
   );
   const heading = questions[Math.min(step, 4)];
+  const answerMap = [
+    { label: "Your business", value: project.business },
+    { label: "Your ambition", value: goal },
+    {
+      label: "Your interests",
+      value: interests.length
+        ? `${interests.length} possibilities`
+        : "Open to ideas",
+    },
+    { label: "Your timing", value: project.timeline || "Let’s discuss" },
+    {
+      label: "Your budget",
+      value:
+        budgetChoice === "Custom range"
+          ? customBudget || "Your range"
+          : budgetChoice,
+    },
+  ];
   return (
     <div className="page-shell discovery-page">
       <header className="flow-intro">
@@ -120,14 +138,36 @@ export default function FindSolution() {
               <br />
               Just a clearer way forward.
             </span>
-            <div className="discovery-art" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-            </div>
+            <ol
+              className="discovery-answer-map"
+              aria-label="Your direction so far"
+            >
+              {answerMap.map((answer, index) => (
+                <li
+                  key={answer.label}
+                  className={
+                    index < step
+                      ? "is-complete"
+                      : index === step
+                        ? "is-current"
+                        : ""
+                  }
+                >
+                  <span className="answer-map-node" aria-hidden="true">
+                    {index < step ? <Check size={12} /> : `0${index + 1}`}
+                  </span>
+                  <div>
+                    <span>{answer.label}</span>
+                    <p>{index <= step ? answer.value : "Still to explore"}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </aside>
           <section
             className="discovery-question"
+            key={step}
+            data-motion="editorial"
             aria-labelledby="discovery-title"
           >
             <p className="eyebrow">{heading.eyebrow}</p>
@@ -284,8 +324,8 @@ export default function FindSolution() {
           </section>
         </div>
       ) : (
-        <section className="recommendation-result">
-          <div className="result-heading">
+        <section className="recommendation-result" data-motion="transform">
+          <div className="result-heading" data-motion="typography">
             <p className="eyebrow">
               <Sparkles size={16} /> YOUR STARTING POINT
             </p>

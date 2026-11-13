@@ -1,10 +1,30 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import App from "../src/App";
 import { services } from "../src/data";
 
 describe("navigation and routing", () => {
+  it.each(["outside", "still"])(
+    "scrolls to the %s concept after its lazy route mounts",
+    async (anchor) => {
+      const visited: string[] = [];
+      const scroll = vi
+        .spyOn(Element.prototype, "scrollIntoView")
+        .mockImplementation(function (this: Element) {
+          visited.push(this.id);
+        });
+      try {
+        window.history.replaceState({}, "", `/work#${anchor}`);
+        render(<App />);
+        await screen.findByRole("heading", { level: 1 });
+        await waitFor(() => expect(visited).toContain(anchor));
+        expect(document.activeElement).toBe(screen.getByRole("main"));
+      } finally {
+        scroll.mockRestore();
+      }
+    },
+  );
   for (const path of [
     "/",
     "/studios",

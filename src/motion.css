@@ -1,0 +1,55 @@
+/* Resting content is always visible. Entrances are owned by MotionSystem. */
+[data-motion="prism"] {
+  position: relative;
+  isolation: isolate;
+}
+[data-motion="prism"][data-motion-active]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 41%,
+    #22d3ee0c 48%,
+    #c7a6ff20 51%,
+    transparent 59%
+  );
+  background-size: 300% 100%;
+  animation: motion-prism-pass 800ms ease-out both;
+}
+@keyframes motion-prism-pass {
+  from {
+    background-position: 100% 0;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  to {
+    background-position: 0% 0;
+    opacity: 0;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .button > svg,
+  .text-link > svg,
+  .portal-action > svg {
+    transition: translate 180ms ease-out;
+  }
+  .button:hover > svg,
+  .text-link:hover > svg,
+  .portal-action:hover > svg {
+    translate: 2px -1px;
+  }
+}
+@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+  [data-motion="prism"][data-motion-active]::after {
+    display: none;
+  }
+}

@@ -105,24 +105,16 @@ export function createLivingScene(
         ),
       );
     }
-    const floor = box(7.4, 0.04, 3.2, C.slate, 0.75, false);
-    floor.position.set(0, -1.95, -0.2);
+    const floor = box(6.5, 0.025, 2.7, C.slate, 0.24, false);
+    floor.position.set(0, -1.98, -0.2);
     world.add(floor);
-    for (const x of [-3.1, 3.1]) {
-      const rail = box(
-        0.025,
-        4.1,
-        0.03,
-        x < 0 ? C.aqua : C.violet,
-        0.55,
-        false,
-      );
-      rail.position.set(x, 0.05, -0.8);
-      world.add(rail);
-    }
-    const upper = box(6.25, 0.025, 0.03, C.violet, 0.45, false);
-    upper.position.set(0, 2.1, -0.8);
-    world.add(upper);
+    // A quiet lit horizon grounds the work; no surrounding architectural box.
+    const horizon = box(6.2, 0.012, 0.025, C.violet, 0.38, false);
+    horizon.position.set(0, -1.96, -1.25);
+    world.add(horizon);
+    const edge = box(1.5, 0.012, 0.025, C.aqua, 0.45, false);
+    edge.position.set(-2.2, -1.95, 0.9);
+    world.add(edge);
     const textures: {
       canvas: HTMLCanvasElement;
       ctx: CanvasRenderingContext2D;
@@ -174,9 +166,10 @@ export function createLivingScene(
       y: number,
       w: number,
       h: number,
+      zoom = 1,
     ) {
       if (img.complete && img.naturalWidth) {
-        const r = Math.max(w / img.naturalWidth, h / img.naturalHeight),
+        const r = Math.max(w / img.naturalWidth, h / img.naturalHeight) * zoom,
           sw = w / r,
           sh = h / r;
         ctx.drawImage(
@@ -225,7 +218,10 @@ export function createLivingScene(
       ctx.fillRect(0, 0, 1024, canvas.height / scale);
       return { ...t, w: 1024, h: canvas.height / scale };
     }
+    let introduction = 0;
+    let baseDistance = 10.5;
     function rebuild() {
+      introduction = performance.now();
       for (const child of [...content.children]) content.remove(child);
       modeResources.forEach((r) => r.dispose());
       modeResources.clear();
@@ -234,9 +230,9 @@ export function createLivingScene(
       deviceScreens = [];
       playhead = undefined;
       if (state.mode === "create") {
-        panel(1.7, 3, 0.7, 0.15, 0.45, -0.06);
-        panel(1.3, 1.75, -1.6, 0.35, -0.15, 0.16);
-        panel(1.25, 0.9, 2.28, -0.55, -0.2, -0.25);
+        panel(1.85, 3.25, 0.48, 0.19, 0.55, -0.09);
+        panel(1.3, 1.75, -1.65, 0.22, -0.12, 0.19);
+        panel(1.22, 0.88, 2.16, -0.42, -0.2, -0.23);
         const timeline = box(4.9, 0.24, 0.5, C.slate);
         timeline.position.set(0, -1.6, 0.4);
         content.add(timeline);
@@ -288,7 +284,7 @@ export function createLivingScene(
       const signature = [
         state.mode,
         state.edited,
-        Math.floor(state.progress / 34),
+        Math.floor(state.progress / 2),
         state.finished,
         state.mobile,
         state.step,
@@ -298,7 +294,15 @@ export function createLivingScene(
       lastPaint = signature;
       if (state.mode === "create") {
         const a = start(0);
-        photo(a.ctx, mountain, 0, 0, a.w, a.h);
+        photo(
+          a.ctx,
+          mountain,
+          0,
+          0,
+          a.w,
+          a.h,
+          state.edited ? 1.06 + state.progress * 0.0012 : 1,
+        );
         if (state.edited) {
           const grad = a.ctx.createLinearGradient(0, 0, 0, a.h);
           grad.addColorStop(0, "#0A0B1B11");
@@ -307,13 +311,13 @@ export function createLivingScene(
           a.ctx.fillRect(0, 0, a.w, a.h);
           text(a.ctx, "OUTSIDE THE ORDINARY", 70, 100, 26, "#EAF2FF", 500);
           const titles =
-            state.progress < 34
-              ? ["Go beyond.", "Find your story."]
-              : state.progress < 68
-                ? ["A new view.", "A different feeling."]
+            state.progress < 35
+              ? ["Go", "somewhere."]
+              : state.progress < 70
+                ? ["Feel", "something."]
                 : ["Make it", "matter."];
           text(a.ctx, titles[0], 65, a.h * 0.64, 110);
-          text(a.ctx, titles[1], 65, a.h * 0.64 + 125, 82, "#C7A6FF");
+          text(a.ctx, titles[1], 65, a.h * 0.64 + 125, 105, "#C7A6FF");
           a.ctx.fillStyle = "#22D3EE";
           a.ctx.fillRect(70, a.h - 135, 130, 5);
           text(
@@ -489,7 +493,9 @@ export function createLivingScene(
     }
     let readySent = false;
     let targetY = -0.1,
-      targetX = -0.04;
+      targetX = -0.04,
+      lightTargetX = 4,
+      lightTargetY = 2;
     function render() {
       frame = 0;
       if (dead || !visible || document.hidden) return;
@@ -513,11 +519,25 @@ export function createLivingScene(
         const reducedMotion = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         ).matches;
+        // A bounded entrance is the only automatic camera motion. The renderer
+        // settles completely after it and after user-driven pointer transitions.
+        const progress = reducedMotion
+          ? 1
+          : Math.min(1, (performance.now() - introduction) / 680);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        content.position.y = (1 - eased) * -0.12;
+        content.position.z = (1 - eased) * -0.28;
+        content.scale.setScalar(0.96 + eased * 0.04);
+        camera.position.z = baseDistance * (1 + (1 - eased) * 0.025);
+        camera.lookAt(0, -0.05, 0);
         if (reducedMotion) {
           world.rotation.set(targetX, targetY, 0);
+          fill.position.set(4, 2, 3);
         } else {
           world.rotation.y += (targetY - world.rotation.y) * 0.18;
           world.rotation.x += (targetX - world.rotation.x) * 0.18;
+          fill.position.x += (lightTargetX - fill.position.x) * 0.15;
+          fill.position.y += (lightTargetY - fill.position.y) * 0.15;
         }
         renderer.render(scene, camera);
         if (!readySent) {
@@ -526,9 +546,13 @@ export function createLivingScene(
         }
         if (
           !reducedMotion &&
-          Math.abs(targetY - world.rotation.y) +
-            Math.abs(targetX - world.rotation.x) >
-            0.002
+          (progress < 1 ||
+            Math.abs(targetY - world.rotation.y) +
+              Math.abs(targetX - world.rotation.x) >
+              0.002 ||
+            Math.abs(lightTargetX - fill.position.x) +
+              Math.abs(lightTargetY - fill.position.y) >
+              0.01)
         )
           requestRender();
       } catch {
@@ -552,9 +576,10 @@ export function createLivingScene(
       );
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
-      camera.position.z =
-        Math.max(4.7, 6.9 / camera.aspect) /
+      baseDistance =
+        Math.max(4.7, 6.5 / camera.aspect) /
         (2 * Math.tan(THREE.MathUtils.degToRad(17)));
+      camera.position.z = baseDistance;
       camera.updateProjectionMatrix();
       requestRender();
     }
@@ -565,15 +590,22 @@ export function createLivingScene(
       )
         return;
       const rect = host.getBoundingClientRect();
+      const restingYaw =
+        state.mode === "build" ? 0.06 : state.mode === "ai" ? 0 : -0.1;
       targetY =
-        -0.1 + ((e.clientX - rect.left - rect.width / 2) / rect.width) * 0.13;
+        restingYaw +
+        ((e.clientX - rect.left - rect.width / 2) / rect.width) * 0.13;
       targetX =
         -0.04 + ((e.clientY - rect.top - rect.height / 2) / rect.height) * 0.07;
+      lightTargetX = 4 + ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      lightTargetY = 2 - ((e.clientY - rect.top) / rect.height - 0.5);
       requestRender();
     }
     function leave() {
-      targetY = -0.1;
+      targetY = state.mode === "build" ? 0.06 : state.mode === "ai" ? 0 : -0.1;
       targetX = -0.04;
+      lightTargetX = 4;
+      lightTargetY = 2;
       requestRender();
     }
     function lost(e: Event) {

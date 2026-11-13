@@ -109,7 +109,11 @@ export default function Navigation() {
                 Studios <ChevronDown size={14} />
               </button>
               {studiosOpen && (
-                <div id="desktop-studios" className="studio-disclosure-panel">
+                <div
+                  id="desktop-studios"
+                  className="studio-disclosure-panel"
+                  data-motion="editorial"
+                >
                   {STUDIO_LINKS.map((studio) => (
                     <Link key={studio.to} to={studio.to}>
                       <span className="studio-menu-name">{studio.name}</span>
@@ -152,6 +156,7 @@ export default function Navigation() {
       {open && (
         <div
           className="mobile-menu studio-mobile-menu"
+          data-motion="mask"
           id="mobile-navigation"
           role="dialog"
           aria-modal="true"

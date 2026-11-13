@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ServiceDemo from "../src/components/ServiceDemo";
 
@@ -8,6 +8,47 @@ const isPressed = (name: string | RegExp) =>
   expect(button(name).getAttribute("aria-pressed")).toBe("true");
 
 describe("CREATE studio demonstrations", () => {
+  it("plays actual illustration frames and stops when the document becomes hidden", () => {
+    vi.useFakeTimers();
+    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(false);
+    try {
+      render(<ServiceDemo id="V1" />);
+      fireEvent.click(button("Preview edit"));
+      expect(button("Pause edit")).toBeTruthy();
+      act(() => vi.advanceTimersByTime(1800));
+      expect(screen.getByText("FIND YOUR OWN RHYTHM.")).toBeTruthy();
+      hidden.mockReturnValue(true);
+      act(() => document.dispatchEvent(new Event("visibilitychange")));
+      expect(button("Preview edit")).toBeTruthy();
+      act(() => vi.advanceTimersByTime(5000));
+      expect(screen.getByText("FIND YOUR OWN RHYTHM.")).toBeTruthy();
+      expect(screen.queryByText("MAKE YOUR NEXT MOVE.")).toBeNull();
+    } finally {
+      hidden.mockRestore();
+      vi.useRealTimers();
+    }
+  });
+
+  it("uses discrete edit frames instead of timed playback with reduced motion", () => {
+    const matchMedia = window.matchMedia;
+    const preference = vi
+      .spyOn(window, "matchMedia")
+      .mockImplementation((query) => ({
+        ...matchMedia(query),
+        matches: query.includes("prefers-reduced-motion"),
+      }));
+    try {
+      render(<ServiceDemo id="V1" />);
+      fireEvent.click(button("Preview edit"));
+      expect(screen.getByText("FIND YOUR OWN RHYTHM.")).toBeTruthy();
+      expect(screen.queryByRole("button", { name: "Pause edit" })).toBeNull();
+      fireEvent.click(button("Preview edit"));
+      expect(screen.getByText("MAKE YOUR NEXT MOVE.")).toBeTruthy();
+    } finally {
+      preference.mockRestore();
+    }
+  });
+
   it("lets visitors compare the raw and edited scene, captions and framing", async () => {
     const user = userEvent.setup();
     render(<ServiceDemo id="V1" />);
@@ -104,10 +145,43 @@ describe("CREATE studio demonstrations", () => {
     expect(
       screen.getByText(/no AI generation is being performed/),
     ).toBeTruthy();
+    await user.clear(
+      screen.getByRole("textbox", { name: "Your motion headline" }),
+    );
+    await user.type(
+      screen.getByRole("textbox", { name: "Your motion headline" }),
+      "IDEAS IN MOTION.",
+    );
+    expect(
+      screen.getByRole("heading", { name: "IDEAS IN MOTION." }),
+    ).toBeTruthy();
+    await user.click(button("Snappy"));
+    isPressed("Snappy");
+    expect(screen.getByText("SHORT & PRECISE")).toBeTruthy();
   });
 });
 
 describe("BUILD studio demonstrations", () => {
+  it("lets visitors navigate a finished sample website and return to its homepage", async () => {
+    const user = userEvent.setup();
+    render(<ServiceDemo id="T1" />);
+    await user.click(button("Open sample collection"));
+    expect(
+      screen.getByRole("heading", { name: "A little less. A little better." }),
+    ).toBeTruthy();
+    expect(screen.getByText("The daily vessel")).toBeTruthy();
+    await user.click(button("Back to sample homepage"));
+    expect(button("Open sample collection")).toBeTruthy();
+    await user.click(button("Collection"));
+    await user.click(button("Wireframe"));
+    expect(
+      screen.queryByRole("heading", {
+        name: "A little less. A little better.",
+      }),
+    ).toBeNull();
+    await user.click(button("Finished"));
+    expect(button("Open sample collection")).toBeTruthy();
+  });
   it("shows wireframe and finished website states on both device sizes", async () => {
     const user = userEvent.setup();
     const { container } = render(<ServiceDemo id="T1" />);
@@ -289,6 +363,40 @@ describe("GROW beta concepts", () => {
     );
     expect(button("TUE Plan a moment")).toBeTruthy();
     expect(screen.getByRole("status").textContent).toContain("Tuesday is open");
+  });
+
+  it("builds actual format previews, changes slides and remembers each day’s format", async () => {
+    const user = userEvent.setup();
+    render(<ServiceDemo id="M2" />);
+    await user.click(button("Carousel"));
+    const monday = within(
+      screen.getByRole("region", { name: "Monday post preview" }),
+    );
+    expect(monday.getByText("Slide 1 of 3")).toBeTruthy();
+    expect(
+      monday.getByRole("heading", { name: "THE WORK BEFORE THE WORK." }),
+    ).toBeTruthy();
+    await user.click(button("Next carousel slide"));
+    expect(monday.getByText("Slide 2 of 3")).toBeTruthy();
+    expect(
+      monday.getByRole("heading", {
+        name: "A LITTLE DETAIL. A BIG DIFFERENCE.",
+      }),
+    ).toBeTruthy();
+    await user.click(button("WED Product story"));
+    isPressed("Reel");
+    await user.click(button("Story"));
+    expect(screen.getByText("Story frame 1 of 3")).toBeTruthy();
+    await user.click(button("Next story frame"));
+    expect(
+      screen.getByRole("heading", { name: "CONSIDERED FROM EVERY ANGLE." }),
+    ).toBeTruthy();
+    await user.click(button("MON Behind the scenes"));
+    isPressed("Carousel");
+    expect(screen.getByText("Slide 1 of 3")).toBeTruthy();
+    await user.click(button("WED Product story"));
+    isPressed("Story");
+    expect(screen.getByText("Story frame 1 of 3")).toBeTruthy();
   });
 
   it("tracks profile completeness and labels analytics as fictional", async () => {

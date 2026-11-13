@@ -4,6 +4,7 @@ import "@fontsource-variable/syne";
 import "./styles.css";
 import App from "./App";
 import "./refinements.css";
+import "./universe.css";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />

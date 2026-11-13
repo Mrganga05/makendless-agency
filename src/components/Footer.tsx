@@ -1,10 +1,16 @@
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import "../footer.css";
 export default function Footer() {
   return (
-    <footer className="site-footer">
+    <footer className="site-footer universe-footer">
+      <div className="footer-thread" aria-hidden="true" data-motion="prism">
+        <span>FROM AN IDEA</span>
+        <i />
+        <span>TO WHAT COMES NEXT</span>
+      </div>
       <div className="footer-top">
-        <div>
+        <div className="footer-identity">
           <Link to="/" className="wordmark">
             MAKENDLESS<span>✳</span>
           </Link>
@@ -13,13 +19,16 @@ export default function Footer() {
             <br />
             Good ideas, brought to life.
           </p>
+          <Link className="footer-project-link" to="/contact">
+            Let’s make something <ArrowUpRight size={18} />
+          </Link>
         </div>
-        <div className="footer-links">
+        <nav className="footer-links" aria-label="Footer">
           <div>
-            <span>WHAT WE DO</span>
-            <Link to="/studios/create">Video editing</Link>
-            <Link to="/studios/build">Websites & AI</Link>
-            <Link to="/studios/grow">Marketing · Coming soon</Link>
+            <span>THE STUDIOS</span>
+            <Link to="/studios/create">CREATE / Video editing</Link>
+            <Link to="/studios/build">BUILD / Websites & AI</Link>
+            <Link to="/studios/grow">GROW / Beta · Coming soon</Link>
           </div>
           <div>
             <span>GET TO KNOW US</span>
@@ -35,7 +44,7 @@ export default function Footer() {
             <Link to="/project-lab">Project planner</Link>
             <Link to="/find-solution">Help me choose</Link>
           </div>
-        </div>
+        </nav>
       </div>
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} MAKENDLESS</span>

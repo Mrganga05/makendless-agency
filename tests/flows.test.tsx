@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { ProjectProvider } from "../src/project";
@@ -30,6 +30,97 @@ async function finishDefaultDiscovery(
   );
 }
 describe("project exploration and inquiry", () => {
+  it("rebuilds business-specific modules without retaining an old business conversation", async () => {
+    const user = userEvent.setup();
+    renderFlows();
+    await user.click(
+      screen.getByRole("button", { name: /^AI assistant A little help/ }),
+    );
+    await user.click(screen.getByRole("button", { name: "Opening hours?" }));
+    expect(screen.getByText(/In this example, FORME STUDIO/)).toBeTruthy();
+    await user.click(
+      screen.getByRole("button", {
+        name: /^Promotional video Give your story motion/,
+      }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Play illustrative animation" }),
+    );
+    await user.selectOptions(
+      screen.getByLabelText("Your business"),
+      "Gym / Fitness",
+    );
+    expect(screen.queryByText(/In this example, FORME STUDIO/)).toBeNull();
+    expect(
+      screen.getByText("Hello! Explore a sample customer conversation."),
+    ).toBeTruthy();
+    expect(screen.getByText("Find your pace.")).toBeTruthy();
+    expect(
+      screen.getByRole("button", { name: "Play illustrative animation" }),
+    ).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Can I book?" }));
+    expect(screen.getByText(/I can help with intro session/)).toBeTruthy();
+    const map = screen.getByLabelText("Preview components");
+    expect(within(map).getAllByText("Added")).toHaveLength(2);
+  });
+
+  it("suspends the film while out of view or in a hidden tab and disconnects its observer", async () => {
+    let onVisibility: IntersectionObserverCallback = () => {};
+    const disconnect = vi.fn();
+    vi.stubGlobal(
+      "IntersectionObserver",
+      class {
+        constructor(callback: IntersectionObserverCallback) {
+          onVisibility = callback;
+        }
+        observe() {}
+        disconnect = disconnect;
+      },
+    );
+    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(false);
+    try {
+      const user = userEvent.setup();
+      const { unmount } = renderFlows();
+      await user.click(
+        screen.getByRole("button", {
+          name: /^Promotional video Give your story motion/,
+        }),
+      );
+      await user.click(
+        screen.getByRole("button", { name: "Play illustrative animation" }),
+      );
+      const film = screen
+        .getByRole("button", { name: "Pause illustrative animation" })
+        .closest("section")!;
+      expect(film.classList.contains("is-playing")).toBe(true);
+      act(() =>
+        onVisibility(
+          [{ isIntersecting: false } as IntersectionObserverEntry],
+          {} as IntersectionObserver,
+        ),
+      );
+      expect(film.classList.contains("is-playing")).toBe(false);
+      act(() =>
+        onVisibility(
+          [{ isIntersecting: true } as IntersectionObserverEntry],
+          {} as IntersectionObserver,
+        ),
+      );
+      expect(film.classList.contains("is-playing")).toBe(true);
+      hidden.mockReturnValue(true);
+      act(() => document.dispatchEvent(new Event("visibilitychange")));
+      expect(film.classList.contains("is-playing")).toBe(false);
+      hidden.mockReturnValue(false);
+      act(() => document.dispatchEvent(new Event("visibilitychange")));
+      expect(film.classList.contains("is-playing")).toBe(true);
+      unmount();
+      expect(disconnect).toHaveBeenCalledOnce();
+    } finally {
+      hidden.mockRestore();
+      vi.unstubAllGlobals();
+    }
+  });
+
   it("adds and removes working preview modules, then resets choices and context", async () => {
     const user = userEvent.setup();
     renderFlows();
@@ -132,6 +223,61 @@ describe("project exploration and inquiry", () => {
       screen.getByRole("button", { name: "Download inquiry draft" }),
     ).toBeTruthy();
     expect(screen.queryByText("Enter a valid email address.")).toBeNull();
+    expect(
+      within(screen.getByRole("status")).getByText(
+        "A new website for my small business.",
+      ),
+    ).toBeTruthy();
+    expect(screen.getByText("Preview, then download · Ready")).toBeTruthy();
+  });
+
+  it("invalidates the ready draft and download when any required field is edited", async () => {
+    const user = userEvent.setup();
+    renderFlows("/contact");
+    const fields = [
+      {
+        element: screen.getByLabelText(/Your name/),
+        value: "Demo Visitor",
+        error: "Please tell us your name.",
+      },
+      {
+        element: screen.getByLabelText(/Email address/),
+        value: "demo@example.com",
+        error: "Enter a valid email address.",
+      },
+      {
+        element: screen.getByLabelText(/Tell us about your project/),
+        value: "A salon website",
+        error: "Tell us a little about your project.",
+      },
+    ];
+    for (const field of fields) await user.type(field.element, field.value);
+    for (const field of fields) {
+      await user.click(
+        screen.getByRole("button", { name: "Preview my inquiry" }),
+      );
+      expect(screen.getByText("Preview, then download · Ready")).toBeTruthy();
+      await user.clear(field.element);
+      expect(
+        screen.queryByRole("heading", { name: "Your draft is ready." }),
+      ).toBeNull();
+      expect(
+        screen.queryByRole("button", { name: "Download inquiry draft" }),
+      ).toBeNull();
+      expect(screen.queryByText("Preview, then download · Ready")).toBeNull();
+      await user.click(
+        screen.getByRole("button", { name: "Preview my inquiry" }),
+      );
+      expect(screen.getByText(field.error)).toBeTruthy();
+      expect(document.activeElement).toBe(field.element);
+      await user.type(field.element, field.value);
+    }
+    await user.click(
+      screen.getByRole("button", { name: "Preview my inquiry" }),
+    );
+    expect(
+      screen.getByRole("button", { name: "Download inquiry draft" }),
+    ).toBeTruthy();
   });
 
   it("keeps an automatically generated inquiry brief in sync without overwriting manual edits", async () => {

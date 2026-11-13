@@ -1,4 +1,10 @@
-import { useState, type ReactNode, type CSSProperties } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type CSSProperties,
+} from "react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -9,6 +15,7 @@ import {
   Plus,
   CalendarDays,
   Play,
+  Pause,
   RotateCcw,
   Monitor,
   Smartphone,
@@ -54,12 +61,14 @@ function Switcher({
 function Shell({
   children,
   label = "Interactive concept · simulated content",
+  identity,
 }: {
   children: ReactNode;
   label?: string;
+  identity: string;
 }) {
   return (
-    <div className="service-demo">
+    <div className={`service-demo study-${identity.toLowerCase()}`}>
       <div className="demo-caption">
         <span className="demo-status-dot" />
         {label}
@@ -76,15 +85,18 @@ function CityScene({
   caption = "MAKE EVERY MOMENT MATTER.",
   style = "Bold",
   framing = "Full frame",
+  beat = 0,
 }: {
   edited?: boolean;
   caption?: string;
   style?: string;
   framing?: string;
+  beat?: number;
 }) {
   return (
     <div
       className={`city-scene ${edited ? "scene-edited" : "scene-raw"} framing-${framing === "Close-up" ? "close" : "full"}`}
+      data-beat={beat}
     >
       <div className="scene-orbit" />
       <div className="scene-architecture">
@@ -100,7 +112,10 @@ function CityScene({
         {edited ? "01 / THE CITY IS YOURS" : "CAM A — 00:14:28"}
       </span>
       {edited && (
-        <strong className={`scene-caption caption-${style.toLowerCase()}`}>
+        <strong
+          key={`${caption}-${style}`}
+          className={`scene-caption caption-${style.toLowerCase()}`}
+        >
           {caption}
         </strong>
       )}
@@ -116,16 +131,64 @@ function ShortForm() {
   const [split, setSplit] = useState(55);
   const [caption, setCaption] = useState("Bold");
   const [framing, setFraming] = useState("Full frame");
+  const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const stage = useRef<HTMLDivElement>(null);
+  const beat = progress < 34 ? 0 : progress < 67 ? 1 : 2;
+  const captions = [
+    "MAKE EVERY MOMENT MATTER.",
+    "FIND YOUR OWN RHYTHM.",
+    "MAKE YOUR NEXT MOVE.",
+  ];
+  useEffect(() => {
+    if (!playing) return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const stop = () => setPlaying(false);
+    const visibility = () => {
+      if (document.hidden) stop();
+    };
+    const motionChange = () => {
+      if (media.matches) stop();
+    };
+    let timer: ReturnType<typeof setInterval> | undefined;
+    if (!media.matches && !document.hidden) {
+      timer = setInterval(() => setProgress((p) => Math.min(100, p + 2)), 100);
+    }
+    const observer =
+      typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(([entry]) => {
+            if (!entry.isIntersecting) stop();
+          })
+        : null;
+    if (stage.current) observer?.observe(stage.current);
+    document.addEventListener("visibilitychange", visibility);
+    media.addEventListener("change", motionChange);
+    return () => {
+      clearInterval(timer);
+      observer?.disconnect();
+      document.removeEventListener("visibilitychange", visibility);
+      media.removeEventListener("change", motionChange);
+    };
+  }, [playing]);
+  useEffect(() => {
+    if (progress === 100) setPlaying(false);
+  }, [progress]);
   return (
-    <Shell>
-      <div className="demo-visual shortform-stage">
+    <Shell identity="V1">
+      <div className="demo-visual shortform-stage" ref={stage}>
         <div className="comparison-scene">
-          <CityScene framing={framing} />
+          <CityScene framing={framing} beat={beat} />
           <div
             className="comparison-overlay"
             style={{ clipPath: `inset(0 ${100 - split}% 0 0)` }}
           >
-            <CityScene edited style={caption} framing={framing} />
+            <CityScene
+              edited
+              style={caption}
+              framing={framing}
+              beat={beat}
+              caption={captions[beat]}
+            />
           </div>
           <div className="comparison-line" style={{ left: `${split}%` }}>
             <span>↔</span>
@@ -153,6 +216,48 @@ function ShortForm() {
             <Scissors size={16} />
             <span>9:16 social edit</span>
           </div>
+          <div
+            className="edit-beat-track"
+            aria-label="Illustrative edit frames"
+          >
+            {["Opening", "Rhythm", "Close"].map((name, i) => (
+              <button
+                key={name}
+                aria-pressed={beat === i}
+                onClick={() => {
+                  setPlaying(false);
+                  setProgress(i * 34);
+                }}
+              >
+                <span>0{i + 1}</span>
+                {name}
+              </button>
+            ))}
+          </div>
+          <div className="edit-progress" aria-hidden="true">
+            <i style={{ transform: `scaleX(${progress / 100})` }} />
+          </div>
+          <button
+            className="demo-small-button edit-preview-button"
+            onClick={() => {
+              if (
+                window.matchMedia("(prefers-reduced-motion: reduce)").matches
+              ) {
+                setPlaying(false);
+                setProgress(((beat + 1) % 3) * 34);
+              } else {
+                if (progress === 100) setProgress(0);
+                setPlaying((p) => !p);
+              }
+            }}
+          >
+            {playing ? <Pause size={14} /> : <Play size={14} />}
+            {playing ? "Pause edit" : "Preview edit"}
+          </button>
+          <small className="edit-preview-note">
+            Original animated illustration. Reduced motion steps through still
+            frames.
+          </small>
         </div>
       </div>
       <div className="demo-controls">
@@ -221,10 +326,10 @@ function Podcast() {
   const [active, setActive] = useState(0);
   const [selected, setSelected] = useState<number[]>([0, 2]);
   return (
-    <Shell>
+    <Shell identity="V2">
       <div className="demo-visual podcast-stage">
         <span className="demo-kicker">THE STUDIO CONVERSATIONS</span>
-        <div className="podcast-portrait">
+        <div className="podcast-portrait" key={active} data-motion="mask">
           <div className="portrait-disc">m.</div>
           <div>
             <span>SELECTED HIGHLIGHT {active + 1}</span>
@@ -233,6 +338,10 @@ function Podcast() {
           </div>
         </div>
         <div className="waveform" aria-hidden="true">
+          <span
+            className="podcast-playhead"
+            style={{ left: `${((active * 21 + 10) / 65) * 100}%` }}
+          />
           {Array.from({ length: 65 }, (_, i) => (
             <i
               key={i}
@@ -241,6 +350,14 @@ function Podcast() {
                 opacity: i >= active * 21 && i < (active + 1) * 21 ? 1 : 0.25,
               }}
             />
+          ))}
+        </div>
+        <div className="podcast-package" aria-label="Selected output clips">
+          {selected.map((i) => (
+            <span key={i}>
+              {highlights[i].length}
+              <small>{highlights[i].title}</small>
+            </span>
           ))}
         </div>
         <div className="timeline-labels">
@@ -309,13 +426,13 @@ function ProductArt({ variant = "clear" }: { variant?: string }) {
 function Promo() {
   const [style, setStyle] = useState("Cinematic");
   return (
-    <Shell>
+    <Shell identity="V3">
       <div
         className={`demo-visual promo-stage promo-${style.toLowerCase().replaceAll(" ", "-")}`}
       >
         <div className="promo-wordmark">FORM / 01</div>
         <ProductArt />
-        <div className="promo-copy" key={style}>
+        <div className="promo-copy" key={style} data-motion="typography">
           <span className="demo-kicker">
             {style === "Cinematic"
               ? "LESS, BUT BETTER."
@@ -395,7 +512,7 @@ function Repurpose() {
     },
   };
   return (
-    <Shell>
+    <Shell identity="V4">
       <div className="demo-visual repurpose-stage">
         <div className="source-recording">
           <Film size={28} />
@@ -409,11 +526,24 @@ function Repurpose() {
             <i />
           </div>
         </div>
-        <div className="repurpose-arrow">
-          <ArrowRight />
+        <div className="repurpose-branch" aria-hidden="true">
+          <span>RESHAPE THE STORY</span>
+          <svg viewBox="0 0 100 160" preserveAspectRatio="none">
+            <path d="M0 80H35 M35 80V20H100 M35 80V60H100 M35 80V100H100 M35 80V140H100" />
+          </svg>
+          <div className="format-family">
+            {Object.keys(formats).map((name, i) => (
+              <i key={name} className={name === format ? "active" : ""}>
+                <b>{String(i + 1).padStart(2, "0")}</b>
+                {name}
+              </i>
+            ))}
+          </div>
         </div>
         <div
           className="repurpose-output"
+          key={format}
+          data-format={format}
           style={{ aspectRatio: formats[format].ratio }}
         >
           <CityScene edited caption={formats[format].copy} />
@@ -444,31 +574,74 @@ function Repurpose() {
 function Motion() {
   const [type, setType] = useState("Rise");
   const [graphic, setGraphic] = useState("Lines");
+  const [headline, setHeadline] = useState("MAKE IT MOVE.");
+  const [tempo, setTempo] = useState("Deliberate");
   const [play, setPlay] = useState(0);
+  const words = (headline.trim() || "MAKE IT MOVE.").split(/\s+/);
+  const compositionKey = `${type}-${graphic}-${tempo}-${play}`;
   return (
-    <Shell>
+    <Shell identity="V5">
       <div
         className={`demo-visual motion-stage graphic-${graphic.toLowerCase()}`}
+        style={
+          {
+            "--type-duration": tempo === "Deliberate" ? "950ms" : "480ms",
+          } as CSSProperties
+        }
       >
-        <div className="motion-graphic" aria-hidden="true">
+        <div
+          className="motion-graphic"
+          aria-hidden="true"
+          key={`graphic-${compositionKey}`}
+        >
           {Array.from({ length: 6 }, (_, i) => (
             <i key={i} style={{ "--i": i } as CSSProperties} />
           ))}
         </div>
-        <span className="demo-kicker">
-          A LITTLE MOTION. A LOT OF CHARACTER.
-        </span>
+        <span className="demo-kicker">THE TYPE LAB / MAKE SOMETHING MOVE</span>
+        <div className="motion-registration" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <i />
+        </div>
         <h3
-          key={`${type}-${play}`}
+          key={`type-${compositionKey}`}
           className={`motion-type type-${type.toLowerCase()}`}
+          aria-label={headline.trim() || "MAKE IT MOVE."}
         >
-          MAKE
-          <br />
-          <span>IT MOVE.</span>
+          {words.map((word, i) => (
+            <span
+              className="motion-word-mask"
+              key={`${i}-${word}`}
+              aria-hidden="true"
+            >
+              <span
+                className="motion-word"
+                style={{ "--word-index": i } as CSSProperties}
+              >
+                {word}
+              </span>
+              {i < words.length - 1 ? " " : ""}
+            </span>
+          ))}
         </h3>
-        <span className="motion-footnote">ORIGINAL TYPE STUDY / 01</span>
+        <div className="motion-footnote">
+          <span>ORIGINAL TYPE STUDY / {type.toUpperCase()}</span>
+          <span>
+            {tempo === "Deliberate" ? "SLOW & CONSIDERED" : "SHORT & PRECISE"}
+          </span>
+        </div>
       </div>
       <div className="demo-controls">
+        <label className="motion-headline-input">
+          Your motion headline
+          <input
+            value={headline}
+            maxLength={42}
+            onChange={(e) => setHeadline(e.target.value)}
+          />
+        </label>
         <div className="demo-control-row">
           <span>Type treatment</span>
           <Switcher
@@ -485,6 +658,15 @@ function Motion() {
             items={["Lines", "Orbits", "Tiles"]}
             value={graphic}
             onChange={setGraphic}
+          />
+        </div>
+        <div className="demo-control-row">
+          <span>Timing</span>
+          <Switcher
+            label="Motion timing"
+            items={["Deliberate", "Snappy"]}
+            value={tempo}
+            onChange={setTempo}
           />
           <button
             className="demo-small-button"
@@ -505,11 +687,14 @@ function MiniWebsite({
   wireframe = false,
   mobile = false,
   optimized = true,
+  interactive = false,
 }: {
   wireframe?: boolean;
   mobile?: boolean;
   optimized?: boolean;
+  interactive?: boolean;
 }) {
+  const [collection, setCollection] = useState(false);
   return (
     <div
       className={`mini-site ${wireframe ? "is-wireframe" : ""} ${mobile ? "is-mobile" : ""} ${optimized ? "is-optimized" : "is-unoptimized"}`}
@@ -522,27 +707,81 @@ function MiniWebsite({
       </div>
       <div className="mini-nav">
         <strong>STILL / STUDIO</strong>
-        <span>About &nbsp; Collection</span>
+        {interactive && !wireframe ? (
+          <div role="group" aria-label="Sample website pages">
+            <button
+              aria-pressed={!collection}
+              onClick={() => setCollection(false)}
+            >
+              Home
+            </button>
+            <button
+              aria-pressed={collection}
+              onClick={() => setCollection(true)}
+            >
+              Collection
+            </button>
+          </div>
+        ) : (
+          <span>About &nbsp; Collection</span>
+        )}
       </div>
-      <div className="mini-site-hero">
-        <div>
-          <small>SPACE TO FEEL GOOD.</small>
-          <h3>
-            Find your
-            <br />
-            <em>quiet moment.</em>
-          </h3>
-          <p>Considered objects. Everyday rituals. A little room for you.</p>
-          <span className="mini-site-cta">
-            Explore the collection <ArrowRight size={12} />
-          </span>
+      {collection && !wireframe ? (
+        <div className="mini-collection">
+          <small>OBJECTS FOR EVERY DAY / FICTIONAL COLLECTION</small>
+          <h3>A little less. A little better.</h3>
+          <div className="mini-collection-objects">
+            {["The daily vessel", "The quiet hour", "The Sunday ritual"].map(
+              (name, i) => (
+                <div key={name}>
+                  <div
+                    className={`collection-object object-${i}`}
+                    aria-hidden="true"
+                  />
+                  <strong>{name}</strong>
+                  <span>Concept object / 0{i + 1}</span>
+                </div>
+              ),
+            )}
+          </div>
+          <button
+            className="mini-site-cta"
+            onClick={() => setCollection(false)}
+          >
+            <ArrowLeft size={12} /> Back to sample homepage
+          </button>
         </div>
-        <div className="mini-site-art">
-          <div className="art-arch" />
-          <div className="art-vase" />
-          <div className="art-floor" />
+      ) : (
+        <div className="mini-site-hero">
+          <div>
+            <small>SPACE TO FEEL GOOD.</small>
+            <h3>
+              Find your
+              <br />
+              <em>quiet moment.</em>
+            </h3>
+            <p>Considered objects. Everyday rituals. A little room for you.</p>
+            {interactive && !wireframe ? (
+              <button
+                className="mini-site-cta"
+                onClick={() => setCollection(true)}
+                aria-label="Open sample collection"
+              >
+                Explore the collection <ArrowRight size={12} />
+              </button>
+            ) : (
+              <span className="mini-site-cta">
+                Explore the collection <ArrowRight size={12} />
+              </span>
+            )}
+          </div>
+          <div className="mini-site-art">
+            <div className="art-arch" />
+            <div className="art-vase" />
+            <div className="art-floor" />
+          </div>
         </div>
-      </div>
+      )}
       <div className="mini-site-footer">
         <span>THOUGHTFULLY MADE</span>
         <span>DESIGNED FOR EVERY DAY</span>
@@ -555,11 +794,22 @@ function Website() {
   const [state, setState] = useState("Finished");
   const [device, setDevice] = useState("Desktop");
   return (
-    <Shell>
+    <Shell identity="T1">
       <div className="demo-visual website-stage">
+        <div className="website-construction-note" aria-hidden="true">
+          <span>
+            {state === "Wireframe"
+              ? "01 / THE STRUCTURE"
+              : "02 / THE EXPERIENCE"}
+          </span>
+          <i />
+          <span>{device.toUpperCase()}</span>
+        </div>
         <MiniWebsite
+          key={state}
           wireframe={state === "Wireframe"}
           mobile={device === "Mobile"}
+          interactive
         />
       </div>
       <div className="demo-controls">
@@ -620,16 +870,19 @@ function Store() {
     setCheckout(false);
   }
   return (
-    <Shell label="Interactive storefront · fictional products · no real payments">
+    <Shell
+      identity="T2"
+      label="Interactive storefront · fictional products · no real payments"
+    >
       <div className="store-head">
         <strong>FORM / OBJECTS</strong>
-        <span>
+        <span key={count} className="cart-count">
           <ShoppingBag size={17} /> {count}
         </span>
       </div>
       <div className="demo-visual store-stage">
         <div className="store-product">
-          <ProductArt variant={products[selected].variant} />
+          <ProductArt key={selected} variant={products[selected].variant} />
           <div>
             <span className="demo-kicker">THE EVERYDAY COLLECTION</span>
             <h3>{products[selected].name}</h3>
@@ -759,7 +1012,10 @@ function Booking() {
   const slots = ["09:00", "10:30", "13:00", "14:30", "16:00"];
   const dateIndex = dates.findIndex((d) => d.value === date);
   return (
-    <Shell label="Booking demonstration · no real appointment is created">
+    <Shell
+      identity="T3"
+      label="Booking demonstration · no real appointment is created"
+    >
       <div className="demo-visual booking-stage">
         <div className="booking-intro">
           <CalendarDays size={27} />
@@ -775,6 +1031,19 @@ function Booking() {
           </p>
         </div>
         <div className="booking-widget">
+          <ol className="booking-progress" aria-label="Booking progress">
+            {["Choose", "Select time", "Preview"].map((label, i) => (
+              <li
+                key={label}
+                aria-current={
+                  i === (confirmed ? 2 : time ? 1 : 0) ? "step" : undefined
+                }
+              >
+                <span>0{i + 1}</span>
+                {label}
+              </li>
+            ))}
+          </ol>
           <label>
             Sample service
             <select
@@ -811,7 +1080,7 @@ function Booking() {
           <span className="booking-label">
             Available sample times · your local time
           </span>
-          <div className="booking-times">
+          <div className="booking-times" key={date}>
             {slots.map((s, i) => (
               <button
                 key={s}
@@ -875,9 +1144,15 @@ function Automation() {
     "A team member reviews the draft, checks the details and chooses whether to send. Nothing is sent by this demo.",
   ];
   return (
-    <Shell label="Rule-based workflow demonstration · simulated customer inquiry">
+    <Shell
+      identity="T4"
+      label="Rule-based workflow demonstration · simulated customer inquiry"
+    >
       <div className="demo-visual automation-stage">
-        <div className="automation-path">
+        <div
+          className="automation-path"
+          style={{ "--workflow-progress": `${step * 25}%` } as CSSProperties}
+        >
           {workflowSteps.map((name, i) => (
             <button
               key={name}
@@ -953,7 +1228,10 @@ function Maintenance() {
     "Visual consistency",
   ];
   return (
-    <Shell label="Illustrative optimization · no measured performance claims">
+    <Shell
+      identity="T5"
+      label="Illustrative optimization · no measured performance claims"
+    >
       <div
         className={`demo-visual maintenance-stage ${fixes.includes("Content hierarchy") ? "fix-hierarchy" : ""} ${fixes.includes("Visual consistency") ? "fix-consistency" : ""}`}
       >
@@ -1011,7 +1289,10 @@ function Campaign() {
   const [goal, setGoal] = useState("Awareness");
   const [audience, setAudience] = useState("Local community");
   return (
-    <Shell label="BETA / COMING SOON · simulated campaign planning">
+    <Shell
+      identity="M1"
+      label="BETA / COMING SOON · simulated campaign planning"
+    >
       <div className="demo-visual campaign-stage">
         <div className="campaign-brief">
           <span className="demo-kicker">A CLEARER STARTING POINT.</span>
@@ -1039,7 +1320,10 @@ function Campaign() {
             </select>
           </label>
         </div>
-        <div className={`campaign-ad platform-${platform.toLowerCase()}`}>
+        <div
+          key={platform}
+          className={`campaign-ad platform-${platform.toLowerCase()}`}
+        >
           <span>
             {platform === "Meta"
               ? "Sponsored · Example business"
@@ -1107,9 +1391,45 @@ function Planner() {
     Wednesday: "Product story",
     Friday: "Community moment",
   });
-  const [format, setFormat] = useState("Reel");
+  const [formats, setFormats] = useState<Record<string, string>>({});
+  const [frame, setFrame] = useState(0);
+  const format = formats[day] || "Reel";
+  const setFormat = (value: string) => {
+    setFormats((p) => ({ ...p, [day]: value }));
+    setFrame(0);
+  };
+  const postCopy: Record<string, string[]> = {
+    "Behind the scenes": [
+      "THE WORK BEFORE THE WORK.",
+      "A LITTLE DETAIL. A BIG DIFFERENCE.",
+      "COME INSIDE THE PROCESS.",
+    ],
+    "Product story": [
+      "MADE FOR THE EVERYDAY.",
+      "CONSIDERED FROM EVERY ANGLE.",
+      "FIND YOUR NEW FAVOURITE.",
+    ],
+    "Community moment": [
+      "GOOD THINGS START WITH PEOPLE.",
+      "YOUR MOMENTS. OUR INSPIRATION.",
+      "BE PART OF THE CONVERSATION.",
+    ],
+    "Helpful tip": [
+      "ONE SMALL IDEA TO TRY.",
+      "MAKE SPACE FOR WHAT MATTERS.",
+      "SAVE IT FOR YOUR NEXT PROJECT.",
+    ],
+    "Studio update": [
+      "SOMETHING NEW IS TAKING SHAPE.",
+      "A GLIMPSE OF WHAT COMES NEXT.",
+      "FOLLOW THE NEXT CHAPTER.",
+    ],
+  };
   return (
-    <Shell label="BETA / COMING SOON · interactive concept content planner">
+    <Shell
+      identity="M2"
+      label="BETA / COMING SOON · interactive concept content planner"
+    >
       <div className="demo-visual planner-stage">
         <div className="planner-heading">
           <span className="demo-kicker">A WEEK WITH INTENTION.</span>
@@ -1118,32 +1438,110 @@ function Planner() {
             <br />A conversation.
           </h3>
         </div>
-        <div className="planner-week">
-          {days.map((d) => (
-            <button
-              key={d}
-              onClick={() => setDay(d)}
-              aria-pressed={d === day}
-              className={d === day ? "selected" : ""}
-            >
-              <span>{d.slice(0, 3).toUpperCase()}</span>
-              <div>
-                {plan[d] ? (
-                  <>
-                    <div className="planner-art">
-                      <Layers size={22} />
+        <div className="planner-composition">
+          <div className="planner-week">
+            {days.map((d) => (
+              <button
+                key={d}
+                onClick={() => {
+                  setDay(d);
+                  setFrame(0);
+                }}
+                aria-pressed={d === day}
+                className={d === day ? "selected" : ""}
+              >
+                <span>{d.slice(0, 3).toUpperCase()}</span>
+                <div>
+                  {plan[d] ? (
+                    <>
+                      <div
+                        className={`planner-art planner-art-${d.toLowerCase()}`}
+                      >
+                        <span aria-hidden="true">
+                          {(formats[d] || "Reel") === "Carousel"
+                            ? "▤"
+                            : (formats[d] || "Reel") === "Story"
+                              ? "◔"
+                              : "▶"}
+                        </span>
+                      </div>
+                      <strong>{plan[d]}</strong>
+                    </>
+                  ) : (
+                    <>
+                      <Plus size={23} />
+                      <small>Plan a moment</small>
+                    </>
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
+          <section
+            className={`planner-post-preview preview-${format.toLowerCase()} ${!plan[day] ? "preview-empty" : ""}`}
+            aria-label={`${day} post preview`}
+          >
+            {plan[day] ? (
+              <>
+                <div className="planner-preview-top">
+                  <span>
+                    {format.toUpperCase()} /{" "}
+                    {format === "Carousel" ? "1:1" : "9:16"}
+                  </span>
+                  <span>{day.toUpperCase()}</span>
+                </div>
+                <div
+                  className="planner-post-frame"
+                  key={`${day}-${format}-${frame}-${plan[day]}`}
+                >
+                  <div className="planner-post-shape" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                  {format === "Story" && (
+                    <div className="story-frame-progress" aria-hidden="true">
+                      {[0, 1, 2].map((i) => (
+                        <i key={i} className={i <= frame ? "complete" : ""} />
+                      ))}
                     </div>
-                    <strong>{plan[d]}</strong>
-                  </>
-                ) : (
-                  <>
-                    <Plus size={23} />
-                    <small>Plan a moment</small>
-                  </>
-                )}
+                  )}
+                  <span className="planner-post-label">{plan[day]}</span>
+                  <h4>{postCopy[plan[day]][frame]}</h4>
+                  <small>
+                    {format === "Carousel"
+                      ? `Slide ${frame + 1} of 3`
+                      : format === "Story"
+                        ? `Story frame ${frame + 1} of 3`
+                        : `Shot ${frame + 1} of 3 · illustrative storyboard`}
+                  </small>
+                </div>
+                <div className="planner-frame-controls">
+                  <button
+                    aria-label={`Previous ${format.toLowerCase()} ${format === "Carousel" ? "slide" : "frame"}`}
+                    disabled={frame === 0}
+                    onClick={() => setFrame((p) => p - 1)}
+                  >
+                    <ArrowLeft size={14} />
+                  </button>
+                  <span>{frame + 1} / 3</span>
+                  <button
+                    aria-label={`Next ${format.toLowerCase()} ${format === "Carousel" ? "slide" : "frame"}`}
+                    disabled={frame === 2}
+                    onClick={() => setFrame((p) => p + 1)}
+                  >
+                    <ArrowRight size={14} />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="planner-empty-copy">
+                <Plus size={26} />
+                <h4>A little room for a new idea.</h4>
+                <p>Choose a content idea below to build this day’s preview.</p>
               </div>
-            </button>
-          ))}
+            )}
+          </section>
         </div>
       </div>
       <div className="demo-controls">
@@ -1152,9 +1550,10 @@ function Planner() {
             {day}'s content
             <select
               value={plan[day] || ""}
-              onChange={(e) =>
-                setPlan((p) => ({ ...p, [day]: e.target.value }))
-              }
+              onChange={(e) => {
+                setPlan((p) => ({ ...p, [day]: e.target.value }));
+                setFrame(0);
+              }}
             >
               <option value="">No post planned</option>
               <option>Behind the scenes</option>
@@ -1191,9 +1590,23 @@ function Presence() {
     "Profile imagery",
   ];
   return (
-    <Shell label="BETA / COMING SOON · fictional local business · simulated overview">
+    <Shell
+      identity="M3"
+      label="BETA / COMING SOON · fictional local business · simulated overview"
+    >
       <div className="demo-visual presence-stage">
-        <div className="presence-map">
+        <div className="presence-map" data-view={tab}>
+          <div className="presence-completion" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+              <circle
+                cx="50"
+                cy="50"
+                r="43"
+                pathLength="100"
+                style={{ strokeDasharray: `${checks.length * 25} 100` }}
+              />
+            </svg>
+          </div>
           <div className="map-street one" />
           <div className="map-street two" />
           <div className="map-street three" />

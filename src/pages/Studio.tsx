@@ -4,11 +4,13 @@ import { ArrowUpRight, ArrowRight, Plus, Check, Sparkles } from "lucide-react";
 import { services, worldInfo, type World } from "../data";
 import { useProject } from "../project";
 import ServiceDemo from "../components/ServiceDemo";
+import LiveShowcase from "../components/LiveShowcase";
 import "../studios.css";
 import "../studio-worlds.css";
 function StudioWorld({ world }: { world: World }) {
   const list = services.filter((s) => s.world === world);
   const [selected, setSelected] = useState(list[0].id);
+  const [spatialOpen, setSpatialOpen] = useState(false);
   const service = list.find((s) => s.id === selected)!;
   const info = worldInfo[world];
   const { project, toggleService } = useProject();
@@ -20,7 +22,7 @@ function StudioWorld({ world }: { world: World }) {
         <span>/</span>
         <span>{info.label}</span>
       </div>
-      <header className="studio-header">
+      <header className="studio-header" data-motion="editorial">
         <div>
           <span className="eyebrow">
             <span className="studio-world-dot" />
@@ -29,14 +31,34 @@ function StudioWorld({ world }: { world: World }) {
               <span className="beta-tag">BETA / COMING SOON</span>
             )}
           </span>
-          <h1 className="page-heading">{info.title}</h1>
+          <h1 className="page-heading" data-motion="typography">
+            {info.title}
+          </h1>
           <p className="studio-subtitle">{info.subtitle}</p>
         </div>
-        <p className="studio-intro">
-          {info.intro}
-          <br />
-          <span>Choose a service below and try its interactive example.</span>
-        </p>
+        <div className="studio-header-aside">
+          <div className={`world-motif motif-${world}`} aria-hidden="true">
+            <span>
+              {world === "create"
+                ? "THE SHAPE OF A STORY"
+                : world === "build"
+                  ? "FROM IDEA TO INTERFACE"
+                  : "THE NEXT CHAPTER"}
+            </span>
+            <div>
+              {Array.from({ length: world === "grow" ? 7 : 5 }, (_, i) => (
+                <i key={i}>
+                  <b>{String(i + 1).padStart(2, "0")}</b>
+                </i>
+              ))}
+            </div>
+          </div>
+          <p className="studio-intro">
+            {info.intro}
+            <br />
+            <span>Choose a service below and try its interactive example.</span>
+          </p>
+        </div>
       </header>
       {world === "grow" && (
         <div className="studio-beta-note">
@@ -76,7 +98,9 @@ function StudioWorld({ world }: { world: World }) {
               <span className="eyebrow">
                 {service.id} / EXPLORE THE POSSIBILITIES
               </span>
-              <h2>{service.short}</h2>
+              <h2 key={selected} data-motion="typography">
+                {service.short}
+              </h2>
             </div>
             <Link to={`/services/${selected}`} className="studio-detail-link">
               Service details <ArrowUpRight size={16} />
@@ -107,6 +131,36 @@ function StudioWorld({ world }: { world: World }) {
           </div>
         </div>
       </section>
+      {world !== "grow" && (
+        <details
+          className="world-spatial-study"
+          onToggle={(e) => setSpatialOpen(e.currentTarget.open)}
+        >
+          <summary>
+            <span className="eyebrow">ANOTHER PERSPECTIVE</span>
+            <strong>
+              Explore {world === "create" ? "the edit" : "the website"} in space
+            </strong>
+            <Plus size={18} />
+          </summary>
+          {spatialOpen && (
+            <div className="world-spatial-content">
+              <p>
+                A closer look at the{" "}
+                {world === "create"
+                  ? "source, edit and timeline"
+                  : "desktop and mobile composition"}
+                . The same controls work in the flat preview.
+              </p>
+              <LiveShowcase
+                initialMode={world}
+                variant="study"
+                showModeSwitch={false}
+              />
+            </div>
+          )}
+        </details>
+      )}
       <div className="world-direct-inquiry">
         <span>
           {world === "grow"
@@ -128,7 +182,7 @@ function StudioWorld({ world }: { world: World }) {
           <ArrowUpRight size={17} />
         </Link>
       </div>
-      <section className="studio-next">
+      <section className="studio-next" data-motion="editorial">
         <div>
           <span className="eyebrow">GOOD IDEAS WORK BETTER TOGETHER</span>
           <h2>

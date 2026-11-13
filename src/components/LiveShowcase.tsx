@@ -83,9 +83,20 @@ const modes: {
   { id: "build", label: "BUILD", description: "Websites", Icon: Monitor },
   { id: "ai", label: "AI", description: "Automation", Icon: Sparkles },
 ];
-export default function LiveShowcase() {
+export default function LiveShowcase({
+  initialMode = "create",
+  variant = "hero",
+  showModeSwitch = true,
+}: {
+  initialMode?: ShowcaseMode;
+  variant?: "hero" | "study";
+  showModeSwitch?: boolean;
+} = {}) {
   const { project, toggleService } = useProject();
-  const [state, setState] = useState(initialShowcaseState);
+  const [state, setState] = useState(() => ({
+    ...initialShowcaseState,
+    mode: initialMode,
+  }));
   const [view, setView] = useState<"auto" | "flat" | "spatial">("auto");
   const [supported, setSupported] = useState<boolean | null>(null);
   const [failed, setFailed] = useState(false);
@@ -167,34 +178,39 @@ export default function LiveShowcase() {
   const added = project.services.includes(serviceId);
   return (
     <section
-      className="living-showcase"
+      className={`living-showcase living-showcase--${variant}`}
+      data-showcase-mode={state.mode}
       aria-label="Living service showcase"
       ref={host}
     >
-      <div
-        className="living-mode-tabs"
-        role="group"
-        aria-label="Choose a service showcase"
-      >
-        {modes.map(({ id, label, description, Icon }) => (
-          <button
-            key={id}
-            aria-pressed={state.mode === id}
-            onClick={() => chooseMode(id)}
-          >
-            <Icon size={16} />
-            <span>
-              <strong>{label}</strong>
-              <small>{description}</small>
-            </span>
-          </button>
-        ))}
-      </div>
+      {showModeSwitch && (
+        <div
+          className="living-mode-tabs"
+          role="group"
+          aria-label="Choose a service showcase"
+        >
+          {modes.map(({ id, label, description, Icon }) => (
+            <button
+              key={id}
+              aria-pressed={state.mode === id}
+              onClick={() => chooseMode(id)}
+            >
+              <Icon size={16} />
+              <span>
+                <strong>{label}</strong>
+                <small>{description}</small>
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
       <div
         className={`living-stage mode-${state.mode} ${spatialActive ? "spatial-active" : ""}`}
       >
         <div
           className="living-flat-preview"
+          key={state.mode}
+          data-motion="spatial"
           aria-label={`${modes.find((mode) => mode.id === state.mode)?.description} preview`}
         >
           {state.mode === "create" ? (
@@ -217,7 +233,12 @@ export default function LiveShowcase() {
                   alt="Mountain valley used in an illustrative motion edit"
                   width="1400"
                   height="933"
-                  fetchPriority="high"
+                  fetchPriority={variant === "hero" ? "high" : "auto"}
+                  style={{
+                    transform: state.edited
+                      ? `scale(${1.06 + state.progress * 0.0012}) translateY(${-state.progress * 0.025}%)`
+                      : "none",
+                  }}
                 />
                 <span className="living-frame-label">
                   {state.edited ? "THE EDIT" : "SOURCE VIEW"}
@@ -344,7 +365,11 @@ export default function LiveShowcase() {
                   </li>
                 ))}
               </ol>
-              <div className="living-ai-message">
+              <div
+                className="living-ai-message"
+                key={state.step}
+                data-motion="transform"
+              >
                 <span>STEP {state.step + 1} / 5</span>
                 <h2>{workflowSteps[state.step]}</h2>
                 <p>{workflowMessages[state.step]}</p>
@@ -561,22 +586,27 @@ export default function LiveShowcase() {
             ? " Flat preview active; all controls still work."
             : ""}
         </p>
-        <div className="living-service-actions">
-          <Link to={`/services/${serviceId}`}>
-            Explore this service <ArrowRight size={14} />
-          </Link>
-          <button aria-pressed={added} onClick={() => toggleService(serviceId)}>
-            {added ? (
-              <>
-                <Check size={14} /> Added · remove
-              </>
-            ) : (
-              <>
-                Add to my project <ArrowRight size={14} />
-              </>
-            )}
-          </button>
-        </div>
+        {variant === "hero" && (
+          <div className="living-service-actions">
+            <Link to={`/services/${serviceId}`}>
+              Explore this service <ArrowRight size={14} />
+            </Link>
+            <button
+              aria-pressed={added}
+              onClick={() => toggleService(serviceId)}
+            >
+              {added ? (
+                <>
+                  <Check size={14} /> Added · remove
+                </>
+              ) : (
+                <>
+                  Add to my project <ArrowRight size={14} />
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

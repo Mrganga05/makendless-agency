@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
+import MotionSystem from "./components/MotionSystem";
 import Home, { Studios } from "./pages/Home";
 const Studio = lazy(() => import("./pages/Studio"));
 const ProjectLab = lazy(() => import("./pages/ProjectLab"));
@@ -71,14 +72,43 @@ function RouteEffects() {
     document
       .querySelector('meta[property="og:description"]')
       ?.setAttribute("content", description);
-    if (hash) {
-      requestAnimationFrame(() =>
-        document.getElementById(hash.slice(1))?.scrollIntoView(),
-      );
-    } else {
+    if (!hash) {
       window.scrollTo(0, 0);
     }
     document.getElementById("main")?.focus({ preventScroll: true });
+    if (!hash) return;
+    // A lazy destination can mount after RouteEffects. Observe only until its
+    // anchor exists, then release the observer; never poll the whole page.
+    let targetId = hash.slice(1);
+    try {
+      targetId = decodeURIComponent(targetId);
+    } catch {
+      /* Use the literal malformed fragment. */
+    }
+    let frame = 0;
+    let timeout = 0;
+    const observer = new MutationObserver(() => seek());
+    const seek = () => {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      observer.disconnect();
+      window.clearTimeout(timeout);
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() =>
+        target.scrollIntoView({ block: "start" }),
+      );
+    };
+    observer.observe(document.getElementById("main")!, {
+      childList: true,
+      subtree: true,
+    });
+    timeout = window.setTimeout(() => observer.disconnect(), 5000);
+    seek();
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timeout);
+      cancelAnimationFrame(frame);
+    };
   }, [pathname, hash]);
   return null;
 }
@@ -87,6 +117,7 @@ export default function App() {
     <BrowserRouter>
       <ProjectProvider>
         <RouteEffects />
+        <MotionSystem />
         <Navigation />
         <main id="main" tabIndex={-1}>
           <Suspense

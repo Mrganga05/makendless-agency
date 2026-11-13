@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
@@ -110,5 +110,35 @@ describe("homepage workshop and project introduction", () => {
     expect(
       screen.getByRole("status", { name: "Project handoff" }).textContent,
     ).toBe("Salon / V2");
+  });
+  it("finishes the seven-second photo study and lets the visitor replay it", () => {
+    vi.useFakeTimers();
+    try {
+      render(
+        <MemoryRouter>
+          <ProjectProvider>
+            <LabIntro />
+          </ProjectProvider>
+        </MemoryRouter>,
+      );
+      fireEvent.click(
+        screen.getByRole("button", { name: /03 Promotional Video/ }),
+      );
+      fireEvent.click(
+        screen.getByRole("button", { name: "Play promotional concept" }),
+      );
+      act(() => vi.advanceTimersByTime(7_000));
+      expect(screen.getByText("7 / 7s · PHOTO-MOTION STUDY")).toBeTruthy();
+      expect(screen.getByText("Make it yours.")).toBeTruthy();
+      fireEvent.click(
+        screen.getByRole("button", { name: "Play promotional concept" }),
+      );
+      expect(screen.getByText("0 / 7s · PHOTO-MOTION STUDY")).toBeTruthy();
+      expect(
+        screen.getByRole("button", { name: "Pause promotional concept" }),
+      ).toBeTruthy();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

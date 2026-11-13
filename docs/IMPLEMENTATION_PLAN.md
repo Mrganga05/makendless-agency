@@ -33,14 +33,14 @@ The V11 brief is active verbatim in CREATIVE_BRIEF.md. V9 and the older operatin
 | 1     | Motion/spatial/lighting system                                | Implemented; timing and appearance await browser review          |
 | 2     | Open cinematic Living Stage                                   | Implemented; functional checks passed; actual GPU review pending |
 | 3     | Seven distinct homepage sections                              | Implemented; responsive visual review pending                    |
-| 4–6   | CREATE 5 / BUILD 5 / GROW 3                                   | Implemented; functional tests pending final integration          |
-| 7     | Project Lab, business construction and handoff                | Implemented; 8 bounded flow tests passed                         |
-| 8     | Work, About, discovery, FAQ, contact, service details, footer | Implemented; final route/interaction checks pending              |
-| 9     | Motion consistency and lifecycle                              | Implemented; source review and integration in progress           |
-| 10    | Performance/accessibility engineering                         | Source/DOM checks in progress; device measurements unverified    |
+| 4–6   | CREATE 5 / BUILD 5 / GROW 3                                   | Implemented; all 17 service integration tests pass               |
+| 7     | Project Lab, business construction and handoff                | Implemented; 9 bounded flow tests passed                         |
+| 8     | Work, About, discovery, FAQ, contact, service details, footer | Implemented; route and supporting interaction checks pass        |
+| 9     | Motion consistency and lifecycle                              | Implemented; source review and 7 lifecycle tests pass            |
+| 10    | Performance/accessibility engineering                         | Source/DOM checks pass; device measurements unverified           |
 | 11    | Actual desktop/mobile visual review                           | Blocked by managed preview/browser infrastructure                |
-| 12    | Functional QA                                                 | Final integrated checks pending                                  |
-| 13    | Save/source delivery                                          | Pending final integrated checks                                  |
+| 12    | Functional QA                                                 | 97 tests, typecheck, lint, build and whitespace checks pass      |
+| 13    | Save/source delivery                                          | Validated source checkpoint; GitHub sync and archive included in delivery                        |
 
 ## Visual acceptance remains open
 

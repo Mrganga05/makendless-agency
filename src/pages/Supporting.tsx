@@ -1,3 +1,4 @@
+import { lazy, Suspense, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
@@ -9,16 +10,19 @@ import {
   GitBranch,
   Layers,
   Plus,
+  RotateCcw,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { services, worldInfo } from "../data";
 import { useProject } from "../project";
 import ServiceDemo from "../components/ServiceDemo";
 import "../supporting.css";
+const SpatialStudy = lazy(() => import("../components/LiveShowcase"));
 
 const concepts = [
   {
     number: "01",
+    anchor: "outside",
     name: "A moment, reimagined.",
     type: "Motion & visual storytelling",
     className: "film",
@@ -33,6 +37,7 @@ const concepts = [
   },
   {
     number: "02",
+    anchor: "still",
     name: "Small business. Big presence.",
     type: "Website & booking experience",
     className: "website",
@@ -43,6 +48,7 @@ const concepts = [
   },
   {
     number: "03",
+    anchor: "workflow",
     name: "A little less busywork.",
     type: "Automation & human oversight",
     className: "automation",
@@ -53,35 +59,71 @@ const concepts = [
   },
 ];
 
-function ConceptArt({ kind }: { kind: string }) {
+type ConceptKind = "film" | "website" | "automation";
+const workflowNotes = [
+  "A sample website inquiry arrives with a business name and project goal.",
+  "The request is sorted into website planning. A suggested next step is prepared.",
+  "A person checks the details and edits the draft. Nothing is sent automatically.",
+];
+
+function ConceptArt({
+  kind,
+  directed = true,
+  mobile = false,
+  step = 0,
+}: {
+  kind: ConceptKind;
+  directed?: boolean;
+  mobile?: boolean;
+  step?: number;
+}) {
   if (kind === "film")
     return (
-      <div className="concept-art concept-art-film" aria-hidden="true">
+      <div
+        className={`concept-art concept-art-film ${directed ? "is-directed" : "is-source"}`}
+        aria-hidden="true"
+      >
+        <img
+          className="concept-film-image"
+          src="/images/mountain.jpg"
+          alt=""
+          width="1400"
+          height="933"
+          loading="lazy"
+        />
         <div className="concept-film-meta">
           <span>MAKENDLESS / MOTION STUDY</span>
-          <span>01:24</span>
+          <span>
+            {directed ? "THE VISUAL DIRECTION" : "THE SOURCE PHOTOGRAPH"}
+          </span>
         </div>
-        <div className="concept-orbit orbit-one" />
-        <div className="concept-orbit orbit-two" />
-        <div className="concept-orbit orbit-three" />
-        <div className="concept-film-title">
-          Make
-          <br />
-          <em>a little</em>
-          <br />
-          noise.
-        </div>
+        {directed && (
+          <div className="concept-film-title" key="direction">
+            A moment.
+            <br />
+            <em>A feeling.</em>
+            <br />A story.
+          </div>
+        )}
         <div className="concept-film-track">
-          {Array.from({ length: 20 }, (_, i) => (
-            <i key={i} style={{ height: `${10 + ((i * 17) % 27)}px` }} />
+          {Array.from({ length: 32 }, (_, i) => (
+            <i key={i} style={{ height: `${8 + ((i * 17) % 27)}px` }} />
           ))}
         </div>
-        <div className="concept-art-caption">FORM / FEELING / FORWARD</div>
+        <div className="concept-art-caption">
+          {directed ? "CROP / COLOUR / TYPOGRAPHY" : "UNTREATED SOURCE"}
+        </div>
       </div>
     );
   if (kind === "website")
     return (
-      <div className="concept-art concept-art-website" aria-hidden="true">
+      <div
+        className={`concept-art concept-art-website ${mobile ? "shows-mobile" : "shows-desktop"}`}
+        aria-hidden="true"
+      >
+        <span className="concept-canvas-note">
+          STILL. / A CAFÉ WEBSITE CONCEPT
+        </span>
         <div className="concept-browser">
           <div className="concept-browser-bar">
             <i />
@@ -91,14 +133,22 @@ function ConceptArt({ kind }: { kind: string }) {
           </div>
           <div className="concept-mini-site">
             <div className="concept-mini-nav">
-              <b>The everyday studio.</b>
-              <span>Explore ↗</span>
+              <b>still.</b>
+              <span>Good things, every day.</span>
             </div>
             <div className="concept-mini-hero">
-              <span>ROOM FOR SOMETHING NEW</span>
+              <img
+                src="/images/coffee.jpg"
+                alt=""
+                width="1200"
+                height="800"
+                loading="lazy"
+              />
+              <span>A LITTLE SLOWER. A LITTLE BETTER.</span>
               <strong>
-                A little space.
-                <br />A fresh start.
+                A place for
+                <br />
+                good things.
               </strong>
               <div className="concept-mini-button">Find your moment ↗</div>
             </div>
@@ -130,45 +180,273 @@ function ConceptArt({ kind }: { kind: string }) {
     );
   return (
     <div className="concept-art concept-art-automation" aria-hidden="true">
-      <div className="concept-automation-kicker">THOUGHTFUL CONNECTIONS</div>
-      <div className="concept-flow-node">
-        <span className="concept-node-icon">
-          <CircleHelp size={19} />
-        </span>
-        <div>
-          <small>01 / CUSTOMER INQUIRY</small>
-          <b>A new possibility.</b>
-        </div>
+      <div className="concept-automation-kicker">
+        LESS BUSYWORK. MORE HUMAN.
       </div>
-      <div className="concept-flow-line" />
-      <div className="concept-flow-node">
-        <span className="concept-node-icon">
-          <GitBranch size={19} />
-        </span>
-        <div>
-          <small>02 / ORGANIZE & PREPARE</small>
-          <b>A clearer next step.</b>
+      {[
+        {
+          label: "CUSTOMER INQUIRY",
+          title: "A new possibility.",
+          Icon: CircleHelp,
+        },
+        {
+          label: "ORGANIZE & PREPARE",
+          title: "A clearer next step.",
+          Icon: GitBranch,
+        },
+        {
+          label: "HUMAN REVIEW",
+          title: "People stay in the loop.",
+          Icon: Check,
+        },
+      ].map(({ label, title, Icon }, i) => (
+        <div className="concept-flow-step" key={label}>
+          {i > 0 && (
+            <div
+              className={`concept-flow-line ${step >= i ? "is-connected" : ""}`}
+            />
+          )}
+          <div
+            className={`concept-flow-node ${step === i ? "is-current" : ""} ${step > i ? "is-complete" : ""}`}
+          >
+            <span className="concept-node-icon">
+              <Icon size={19} />
+            </span>
+            <div>
+              <small>
+                0{i + 1} / {label}
+              </small>
+              <b>{title}</b>
+            </div>
+            {step > i && <Check className="concept-node-check" size={15} />}
+          </div>
         </div>
+      ))}
+      <div className="concept-art-caption">
+        SIMULATED WORKFLOW / STEP {step + 1} OF 3
       </div>
-      <div className="concept-flow-line" />
-      <div className="concept-flow-node concept-human-node">
-        <span className="concept-node-icon">
-          <Check size={19} />
-        </span>
-        <div>
-          <small>03 / HUMAN REVIEW</small>
-          <b>People stay in the loop.</b>
-        </div>
-      </div>
-      <div className="concept-art-caption">SIMULATED WORKFLOW</div>
     </div>
   );
 }
 
-export function Work() {
+const caseNotes = [
+  {
+    question: "How can one photograph become a story?",
+    approach:
+      "Start with the feeling. A close crop gives the landscape a point of view; a restrained colour treatment and three short lines create a visual rhythm.",
+    result:
+      "A direction for a short promotional edit, with space for captions and a clear sequence of opening, build and close. The preview is a photo-motion study, not finished video footage.",
+  },
+  {
+    question: "How does a first visit become a next visit?",
+    approach:
+      "Give the business a distinct digital home, then bring the useful actions close: discover the place, find the details and choose a visit. The layout adapts around the task on mobile.",
+    result:
+      "A responsive website and booking concept that can be scoped together. The illustrated time selection is a design example; the BUILD studio includes the working mock booking flow.",
+  },
+  {
+    question: "What should happen after a new inquiry?",
+    approach:
+      "Make the handoff visible. Capture the request, organize it by need, and prepare a suggested next step. Keep the person who understands the business in control.",
+    result:
+      "A three-stage workflow prototype with an explicit human review point. No external service runs and no message is sent by this simulation.",
+  },
+];
+
+function ConceptProject({
+  concept,
+  index,
+  activeStudy,
+  onStudyChange,
+}: {
+  concept: (typeof concepts)[number];
+  index: number;
+  activeStudy: string | null;
+  onStudyChange: (study: string | null) => void;
+}) {
+  const [directed, setDirected] = useState(true);
+  const [mobile, setMobile] = useState(false);
+  const [step, setStep] = useState(0);
+  const [expanded, setExpanded] = useState(false);
+  const note = caseNotes[index];
+  const kind = concept.className as ConceptKind;
   return (
-    <div className="page-shell supporting-page">
-      <header className="page-heading supporting-heading">
+    <article
+      className={`concept-project concept-project-${kind}`}
+      id={concept.anchor}
+    >
+      <div
+        className="concept-project-visual"
+        data-motion={
+          kind === "film"
+            ? "mask"
+            : kind === "website"
+              ? "spatial"
+              : "transform"
+        }
+      >
+        <ConceptArt
+          kind={kind}
+          directed={directed}
+          mobile={mobile}
+          step={step}
+        />
+        <span className="concept-label">CONCEPT PROJECT</span>
+      </div>
+      <div className="concept-project-info" data-motion="editorial">
+        <div className="concept-project-category">
+          <span>
+            {concept.number} / {concept.type}
+          </span>
+          <ArrowUpRight size={22} />
+        </div>
+        <h2>{concept.name}</h2>
+        <p>{concept.description}</p>
+        <div
+          className="concept-preview-controls"
+          role="group"
+          aria-label={`${concept.type} preview`}
+        >
+          {kind === "film" ? (
+            <>
+              <button
+                aria-pressed={!directed}
+                onClick={() => setDirected(false)}
+              >
+                Source
+              </button>
+              <button aria-pressed={directed} onClick={() => setDirected(true)}>
+                Art direction
+              </button>
+            </>
+          ) : kind === "website" ? (
+            <>
+              <button aria-pressed={!mobile} onClick={() => setMobile(false)}>
+                Desktop composition
+              </button>
+              <button aria-pressed={mobile} onClick={() => setMobile(true)}>
+                Mobile composition
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                disabled={step === 2}
+                onClick={() => setStep((s) => Math.min(s + 1, 2))}
+              >
+                {step === 2 ? "Ready for human review" : "Follow the inquiry"}
+                <ArrowRight size={15} />
+              </button>
+              <button
+                aria-label="Reset concept workflow"
+                onClick={() => setStep(0)}
+              >
+                <RotateCcw size={15} />
+              </button>
+            </>
+          )}
+        </div>
+        <p className="concept-preview-note" role="status">
+          {kind === "film"
+            ? directed
+              ? "Directed treatment: crop, colour and typography."
+              : "Source view: the original landscape photograph."
+            : kind === "website"
+              ? mobile
+                ? "Mobile composition: a focused view of the visit and booking concept."
+                : "Desktop composition: the website and booking experience together."
+              : workflowNotes[step]}
+        </p>
+        <button
+          className="concept-study-toggle supporting-text-link"
+          aria-expanded={expanded}
+          aria-controls={expanded ? `case-study-${kind}` : undefined}
+          onClick={() => {
+            setExpanded(!expanded);
+            if (expanded && activeStudy === kind) onStudyChange(null);
+          }}
+        >
+          {expanded ? "Close the project notes" : "Inside the concept"}
+          <Plus size={17} />
+        </button>
+      </div>
+      {expanded && (
+        <div className="concept-case-study" id={`case-study-${kind}`}>
+          <div className="case-study-question">
+            <span className="eyebrow">THE STARTING QUESTION</span>
+            <h3>{note.question}</h3>
+          </div>
+          <div>
+            <span className="eyebrow">THE CREATIVE DECISION</span>
+            <p>{note.approach}</p>
+            <span className="eyebrow">WHAT TAKES SHAPE</span>
+            <p>{note.result}</p>
+            <ul className="concept-deliverables">
+              {concept.deliverables.map((d) => (
+                <li key={d}>{d}</li>
+              ))}
+            </ul>
+            <div className="case-study-actions">
+              <Link
+                className="supporting-text-link"
+                to={`/services/${concept.service}`}
+              >
+                Try the capability <ArrowRight size={17} />
+              </Link>
+              <button
+                className="supporting-text-link"
+                aria-expanded={activeStudy === kind}
+                onClick={() =>
+                  onStudyChange(activeStudy === kind ? null : kind)
+                }
+              >
+                {activeStudy === kind
+                  ? "Close spatial study"
+                  : "Open spatial study"}
+                <Layers size={17} />
+              </button>
+            </div>
+          </div>
+          {activeStudy === kind && (
+            <section
+              className="case-spatial-study"
+              aria-label={`${concept.type} spatial study`}
+            >
+              <p className="eyebrow">EXPLORE THE SERVICE IN SPACE</p>
+              <p>
+                A related interactive study of the capability behind this
+                concept.
+              </p>
+              <Suspense fallback={<p role="status">Opening the study…</p>}>
+                <SpatialStudy
+                  key={kind}
+                  initialMode={
+                    kind === "film"
+                      ? "create"
+                      : kind === "website"
+                        ? "build"
+                        : "ai"
+                  }
+                  variant="study"
+                  showModeSwitch={false}
+                />
+              </Suspense>
+            </section>
+          )}
+        </div>
+      )}
+    </article>
+  );
+}
+
+export function Work() {
+  const [activeStudy, setActiveStudy] = useState<string | null>(null);
+  return (
+    <div className="page-shell supporting-page work-page">
+      <header
+        className="page-heading supporting-heading"
+        data-motion="typography"
+      >
         <p className="eyebrow">OUR WORK / STUDIO EXPLORATIONS</p>
         <h1>
           Possibilities,
@@ -176,49 +454,35 @@ export function Work() {
           <span className="supporting-soft">made visible.</span>
         </h1>
         <p>
-          Explore the thinking behind what we create. These original concept
-          projects demonstrate our approach to design and technology.
+          Three starting points. Three different ways to make an idea tangible.
+          Explore the creative decisions, then try the possibilities yourself.
         </p>
         <div className="concept-disclaimer">
           <Layers size={17} />
           <span>Concept projects — not commissioned client work.</span>
         </div>
       </header>
-      <section className="concept-projects" aria-label="Concept projects">
+      <nav className="work-index" aria-label="Explore concept projects">
         {concepts.map((c) => (
-          <article
-            className={`concept-project concept-project-${c.className}`}
-            key={c.number}
-          >
-            <div className="concept-project-visual">
-              <ConceptArt kind={c.className} />
-              <span className="concept-label">CONCEPT PROJECT</span>
-            </div>
-            <div className="concept-project-info">
-              <div className="concept-project-category">
-                <span>
-                  {c.number} / {c.type}
-                </span>
-                <ArrowUpRight size={22} />
-              </div>
-              <h2>{c.name}</h2>
-              <p>{c.description}</p>
-              <ul className="concept-deliverables">
-                {c.deliverables.map((d) => (
-                  <li key={d}>{d}</li>
-                ))}
-              </ul>
-              <Link
-                className="supporting-text-link"
-                to={`/services/${c.service}`}
-              >
-                Explore the capability <ArrowRight size={17} />
-              </Link>
-            </div>
-          </article>
+          <a key={c.number} href={`#${c.anchor}`}>
+            <span>{c.number}</span>
+            {c.type}
+            <ArrowDown size={15} />
+          </a>
+        ))}
+      </nav>
+      <section className="concept-projects" aria-label="Concept projects">
+        {concepts.map((concept, index) => (
+          <ConceptProject
+            key={concept.number}
+            concept={concept}
+            index={index}
+            activeStudy={activeStudy}
+            onStudyChange={setActiveStudy}
+          />
         ))}
       </section>
-      <aside className="supporting-end-cta">
+      <aside className="supporting-end-cta" data-motion="prism">
         <p className="eyebrow">YOUR IDEA COULD BE NEXT</p>
         <h2>
           Let’s make something
@@ -293,10 +557,68 @@ export function Process({ compact = false }: { compact?: boolean }) {
   );
 }
 
+const principles = [
+  {
+    name: "Find the focus",
+    title: "A good idea needs a clear point of view.",
+    text: "Before we edit a frame or build a page, we agree on what the work should communicate and who it should help.",
+    mark: "01 / INTENTION",
+  },
+  {
+    name: "Make it useful",
+    title: "The experience should earn its place.",
+    text: "A beautiful transition, a booking flow or an automation should make the next step easier. We connect the creative idea to a practical purpose.",
+    mark: "02 / PURPOSE",
+  },
+  {
+    name: "Care for the details",
+    title: "Small decisions make the whole feel right.",
+    text: "We refine the rhythm, the wording and the way things respond. Then we check the result together and prepare a thoughtful handover.",
+    mark: "03 / CRAFT",
+  },
+];
+function StudioPrinciples() {
+  const [active, setActive] = useState(0);
+  const principle = principles[active];
+  return (
+    <section className="studio-principles" aria-labelledby="principles-title">
+      <div className="principles-heading">
+        <p className="eyebrow">OUR WORKING BELIEFS</p>
+        <h2 id="principles-title">Thoughtful by intention.</h2>
+      </div>
+      <div
+        className="principle-selector"
+        role="group"
+        aria-label="Explore our working beliefs"
+      >
+        {principles.map((p, i) => (
+          <button
+            key={p.name}
+            aria-pressed={active === i}
+            onClick={() => setActive(i)}
+          >
+            <span>0{i + 1}</span>
+            {p.name}
+            <ArrowRight size={17} />
+          </button>
+        ))}
+      </div>
+      <div className="principle-story" aria-live="polite" key={active}>
+        <span>{principle.mark}</span>
+        <h3>{principle.title}</h3>
+        <p>{principle.text}</p>
+      </div>
+    </section>
+  );
+}
+
 export function About() {
   return (
-    <div className="page-shell supporting-page">
-      <header className="page-heading supporting-heading">
+    <div className="page-shell supporting-page about-page">
+      <header
+        className="page-heading supporting-heading"
+        data-motion="typography"
+      >
         <p className="eyebrow">ABOUT MAKENDLESS</p>
         <h1>
           Made of curiosity.
@@ -308,8 +630,16 @@ export function About() {
           something to make, a story to tell, or a business to move forward.
         </p>
       </header>
-      <section className="about-manifesto" aria-label="Our philosophy">
-        <div className="about-word-art" aria-hidden="true">
+      <section
+        className="about-manifesto"
+        aria-label="Our philosophy"
+        data-motion="editorial"
+      >
+        <div
+          className="about-word-art"
+          aria-hidden="true"
+          data-motion="transform"
+        >
           <span>MAKE</span>
           <div className="about-word-line" />
           <span>
@@ -336,7 +666,11 @@ export function About() {
           </p>
         </div>
       </section>
-      <section className="about-divisions" aria-label="Our three divisions">
+      <section
+        className="about-divisions"
+        aria-label="Our three divisions"
+        data-motion="editorial"
+      >
         <Link to="/studios/create">
           <Clapperboard size={24} />
           <span>01 / CREATE</span>
@@ -367,8 +701,9 @@ export function About() {
           <ArrowUpRight size={23} />
         </Link>
       </section>
+      <StudioPrinciples />
       <Process />
-      <aside className="supporting-end-cta">
+      <aside className="supporting-end-cta" data-motion="prism">
         <p className="eyebrow">LET’S FIND THE RIGHT START</p>
         <h2>
           You bring the idea.
@@ -423,9 +758,18 @@ const faqs = [
 ];
 
 export function FAQ() {
+  const [query, setQuery] = useState("");
+  const matching = faqs
+    .map(([q, a], index) => ({ q, a, index }))
+    .filter(({ q, a }) =>
+      `${q} ${a}`.toLowerCase().includes(query.trim().toLowerCase()),
+    );
   return (
     <div className="page-shell supporting-page faq-page">
-      <header className="page-heading supporting-heading">
+      <header
+        className="page-heading supporting-heading"
+        data-motion="typography"
+      >
         <p className="eyebrow">A LITTLE CLARITY</p>
         <h1>
           Good questions.
@@ -438,6 +782,20 @@ export function FAQ() {
       </header>
       <div className="faq-layout">
         <aside>
+          <label className="faq-search">
+            <span>Find an answer</span>
+            <input
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Try “booking” or “cost”…"
+            />
+          </label>
+          <p className="faq-search-count" role="status">
+            {query
+              ? `${matching.length} matching ${matching.length === 1 ? "answer" : "answers"}`
+              : "A guide to getting started"}
+          </p>
           <CircleHelp size={34} />
           <h2>
             Still finding
@@ -452,11 +810,26 @@ export function FAQ() {
           </Link>
         </aside>
         <div className="faq-list">
-          {faqs.map(([q, a], i) => (
+          {matching.length === 0 && (
+            <div className="faq-empty">
+              <h2>No answer found yet.</h2>
+              <p>
+                Try a shorter phrase, or explore Find My Solution to choose a
+                starting point.
+              </p>
+              <button
+                className="supporting-text-link"
+                onClick={() => setQuery("")}
+              >
+                Show all answers <ArrowRight size={17} />
+              </button>
+            </div>
+          )}
+          {matching.map(({ q, a, index }) => (
             <details key={q}>
               <summary>
                 <span className="faq-index">
-                  {String(i + 1).padStart(2, "0")}
+                  {String(index + 1).padStart(2, "0")}
                 </span>
                 <span>{q}</span>
                 <Plus size={20} />
@@ -602,8 +975,14 @@ export function ServiceDetail() {
   if (!service) return <NotFound />;
   const selected = project.services.includes(service.id);
   return (
-    <div className="page-shell supporting-page service-detail">
-      <header className="page-heading supporting-heading">
+    <div
+      className={`page-shell supporting-page service-detail service-world-${service.world}`}
+      data-service={service.id}
+    >
+      <header
+        className="page-heading supporting-heading"
+        data-motion="typography"
+      >
         <Link className="service-back" to={`/studios/${service.world}`}>
           {worldInfo[service.world].label} STUDIO <ArrowUpRight size={15} />
         </Link>
@@ -638,8 +1017,23 @@ export function ServiceDetail() {
           </p>
         )}
       </header>
+      <div className="service-intention">
+        <span>THE IDEA</span>
+        <p>
+          {service.world === "create"
+            ? "Give your story a form people can feel."
+            : service.world === "build"
+              ? "Turn a business need into a useful digital experience."
+              : "Explore a considered direction for future growth."}
+        </p>
+        <a href="#service-experience">
+          Experience it below <ArrowDown size={15} />
+        </a>
+      </div>
       <section
+        id="service-experience"
         className="service-detail-demo"
+        data-motion="spatial"
         aria-label={`${service.short} interactive demo`}
       >
         <div className="service-demo-heading">
@@ -650,7 +1044,7 @@ export function ServiceDetail() {
         </div>
         <ServiceDemo id={service.id} />
       </section>
-      <section className="service-deliverables">
+      <section className="service-deliverables" data-motion="editorial">
         <div>
           <p className="eyebrow">WHAT WE CAN EXPLORE</p>
           <h2>

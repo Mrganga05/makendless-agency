@@ -30,6 +30,25 @@ export default function Contact() {
   const [details, setDetails] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [preview, setPreview] = useState(false);
+  const draftSteps = [
+    {
+      label: "Introduce yourself",
+      detail: "Your name & email",
+      ready: Boolean(
+        name.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()),
+      ),
+    },
+    {
+      label: "Put your idea into words",
+      detail: "A starting point is enough",
+      ready: Boolean(description.trim()),
+    },
+    {
+      label: "Keep your draft",
+      detail: "Preview, then download",
+      ready: preview,
+    },
+  ];
   function submit(event: FormEvent) {
     event.preventDefault();
     const next: Record<string, string> = {};
@@ -83,7 +102,7 @@ export default function Contact() {
       <div className="contact-layout">
         <aside className="contact-story">
           <p className="eyebrow">START A PROJECT</p>
-          <h1>
+          <h1 data-motion="typography">
             Something great
             <br />
             starts with
@@ -95,19 +114,24 @@ export default function Contact() {
             <br />
             An idea, a challenge, a next chapter.
           </p>
-          <div className="contact-process">
-            <div>
-              <span>01</span>
-              <p>Share your idea</p>
-            </div>
-            <div>
-              <span>02</span>
-              <p>Shape the possibilities</p>
-            </div>
-            <div>
-              <span>03</span>
-              <p>Create something meaningful</p>
-            </div>
+          <div
+            className="contact-process"
+            aria-label="Your inquiry draft progress"
+          >
+            {draftSteps.map(({ label, detail, ready }, index) => (
+              <div key={label} className={ready ? "is-complete" : ""}>
+                <span aria-hidden="true">
+                  {ready ? <Check size={13} /> : `0${index + 1}`}
+                </span>
+                <div>
+                  <p>{label}</p>
+                  <small>
+                    {detail}
+                    {ready ? " · Ready" : ""}
+                  </small>
+                </div>
+              </div>
+            ))}
           </div>
           <div className="contact-help">
             <FileText size={23} />
@@ -121,7 +145,14 @@ export default function Contact() {
             </Link>
           </div>
         </aside>
-        <section className="contact-form-panel">
+        <section
+          className="contact-form-panel"
+          aria-label="Compose your inquiry"
+        >
+          <div className="contact-sheet-title">
+            <span>MAKENDLESS / A NEW BEGINNING</span>
+            <FileText size={18} aria-hidden="true" />
+          </div>
           <div className="demo-notice">
             <span>DEMO INQUIRY</span>
             <p>
@@ -298,7 +329,11 @@ export default function Contact() {
             </button>
           </form>
           {preview && (
-            <div className="inquiry-preview" role="status">
+            <div
+              className="inquiry-preview"
+              role="status"
+              data-motion="transform"
+            >
               <div className="inquiry-preview-title">
                 <Check size={21} />
                 <h2>Your draft is ready.</h2>
@@ -320,9 +355,20 @@ export default function Contact() {
                 </div>
                 <div>
                   <dt>Selected services</dt>
-                  <dd>{project.services.length || "To be discussed"}</dd>
+                  <dd>
+                    {project.services
+                      .map(
+                        (id) =>
+                          services.find((service) => service.id === id)?.short,
+                      )
+                      .join(", ") || "To be discussed"}
+                  </dd>
                 </div>
               </dl>
+              <details className="inquiry-draft-content" open>
+                <summary>Your project description</summary>
+                <p>{description}</p>
+              </details>
               <button className="button button-secondary" onClick={download}>
                 <Download size={16} /> Download inquiry draft
               </button>

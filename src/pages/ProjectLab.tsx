@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowUpRight,
@@ -91,6 +91,28 @@ export default function ProjectLab() {
   const [copied, setCopied] = useState("");
   const [dismissed, setDismissed] = useState<string[]>([]);
   const [playing, setPlaying] = useState(false);
+  const [filmVisible, setFilmVisible] = useState(true);
+  const [pageVisible, setPageVisible] = useState(true);
+  const filmRef = useRef<HTMLElement>(null);
+  const hasFilm = project.services.includes("V3");
+  useEffect(() => {
+    const visibility = () => setPageVisible(!document.hidden);
+    visibility();
+    document.addEventListener("visibilitychange", visibility);
+    return () => document.removeEventListener("visibilitychange", visibility);
+  }, []);
+  useEffect(() => {
+    const film = filmRef.current;
+    if (!film || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setFilmVisible(entry.isIntersecting);
+      },
+      { threshold: 0.05 },
+    );
+    observer.observe(film);
+    return () => observer.disconnect();
+  }, [hasFilm]);
   const [slot, setSlot] = useState("10:00 AM");
   const [booked, setBooked] = useState(false);
   const [chat, setChat] = useState(
@@ -136,7 +158,7 @@ export default function ProjectLab() {
   }
   return (
     <div className="page-shell lab-page">
-      <header className="page-heading flow-heading">
+      <header className="page-heading flow-heading" data-motion="typography">
         <p className="eyebrow">
           <span className="live-dot" /> YOUR PROJECT PLANNER
         </p>
@@ -147,6 +169,19 @@ export default function ProjectLab() {
         </h1>
         <p>Choose a business. Add a possibility. Watch it become something.</p>
       </header>
+      <div className="lab-journey" aria-label="Project Lab process">
+        <span>
+          <b>01</b> Choose your business
+        </span>
+        <i aria-hidden="true" />
+        <span>
+          <b>02</b> Build the experience
+        </span>
+        <i aria-hidden="true" />
+        <a href="#project-brief">
+          <b>03</b> Make it a brief <ArrowUpRight size={14} />
+        </a>
+      </div>
       <div className="lab-layout">
         <aside className="lab-controls">
           <div className="lab-step">
@@ -166,6 +201,8 @@ export default function ProjectLab() {
                 brief: "",
               }));
               setBooked(false);
+              setPlaying(false);
+              setChat("Hello! Explore a sample customer conversation.");
             }}
           >
             {businesses.map((b) => (
@@ -186,6 +223,8 @@ export default function ProjectLab() {
                 onClick={() => {
                   toggleService(id);
                   setBriefOpen(false);
+                  if (id === "V3") setPlaying(false);
+                  if (id === "T3") setBooked(false);
                 }}
               >
                 <Icon size={21} />
@@ -206,11 +245,21 @@ export default function ProjectLab() {
           </p>
         </aside>
         <section className="lab-canvas" aria-label="Live project preview">
+          <div className="lab-stage-light" aria-hidden="true" />
           <div className="canvas-caption">
             <span>
               <span className="live-dot" /> YOUR LIVE PREVIEW
             </span>
             <span>Illustrative concept</span>
+          </div>
+          <div className="lab-composition-map" aria-label="Preview components">
+            {solutions.map(({ id, name, Icon }) => (
+              <span key={id} className={active(id) ? "is-built" : ""}>
+                <Icon size={13} aria-hidden="true" />
+                <span>{name}</span>
+                <small>{active(id) ? "Added" : "Not added"}</small>
+              </span>
+            ))}
           </div>
           <div
             className={`business-preview preview-${project.business.split(" ")[0].toLowerCase()}`}
@@ -225,7 +274,11 @@ export default function ProjectLab() {
               <Monitor size={13} />
             </div>
             {active("T1") ? (
-              <div className="mock-website">
+              <div
+                className="mock-website"
+                key={project.business}
+                data-motion="transform"
+              >
                 <div className="mock-site-nav">
                   <b>{info.name}</b>
                   <span>Thoughtfully made.</span>
@@ -266,10 +319,62 @@ export default function ProjectLab() {
                       <ArrowUpRight size={14} />
                     </button>
                   </div>
-                  <div className="mock-sculpture" aria-hidden="true">
-                    <span>{info.monogram}</span>
-                    <i />
-                    <i />
+                  <div className="lab-business-art" aria-hidden="true">
+                    {project.business === "Café / Restaurant" ? (
+                      <>
+                        <img
+                          src="/images/coffee.jpg"
+                          width="600"
+                          height="400"
+                          alt=""
+                          loading="lazy"
+                        />
+                        <span className="business-art-stamp">
+                          SLOW
+                          <br />
+                          MORNINGS.
+                        </span>
+                      </>
+                    ) : project.business === "Salon" ? (
+                      <>
+                        <div className="salon-mirror">
+                          <span>f</span>
+                        </div>
+                        <span className="business-art-caption">
+                          A MOMENT, JUST FOR YOU
+                        </span>
+                      </>
+                    ) : project.business === "Gym / Fitness" ? (
+                      <>
+                        <div className="pace-track">
+                          <i />
+                          <i />
+                          <i />
+                          <i />
+                        </div>
+                        <strong>
+                          MOVE.
+                          <br />
+                          FEEL.
+                          <br />
+                          REPEAT.
+                        </strong>
+                      </>
+                    ) : (
+                      <>
+                        <div className="business-blueprint">
+                          <i />
+                          <i />
+                          <i />
+                          <i />
+                        </div>
+                        <strong>
+                          Ideas into
+                          <br />
+                          every day.
+                        </strong>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -291,7 +396,11 @@ export default function ProjectLab() {
             {(active("T3") || active("V3") || active("T4")) && (
               <div className="preview-modules">
                 {active("T3") && (
-                  <section className="preview-booking" id="lab-booking">
+                  <section
+                    className="preview-booking"
+                    id="lab-booking"
+                    data-motion="transform"
+                  >
                     <span className="module-label">
                       <CalendarDays size={15} /> BOOKING · SIMULATED
                     </span>
@@ -327,15 +436,21 @@ export default function ProjectLab() {
                 )}
                 {active("V3") && (
                   <section
-                    className={`preview-film ${playing ? "is-playing" : ""}`}
+                    ref={filmRef}
+                    className={`preview-film ${playing && filmVisible && pageVisible ? "is-playing" : ""}`}
+                    data-motion="mask"
                   >
                     <span className="module-label">
                       PROMOTIONAL FILM · ILLUSTRATION
                     </span>
                     <div className="film-type">
-                      A moment
-                      <br />
-                      to remember.
+                      {project.business === "Gym / Fitness"
+                        ? "Find your pace."
+                        : project.business === "Café / Restaurant"
+                          ? "Stay a little longer."
+                          : project.business === "Salon"
+                            ? "A little time. All for you."
+                            : "Make your next move."}
                     </div>
                     <button
                       className="film-play"
@@ -359,12 +474,12 @@ export default function ProjectLab() {
                   </section>
                 )}
                 {active("T4") && (
-                  <section className="preview-chat">
+                  <section className="preview-chat" data-motion="transform">
                     <span className="module-label">
                       <MessageCircle size={15} /> AI ASSISTANT · SIMULATED
                     </span>
                     <p className="mock-chat-bubble" aria-live="polite">
-                      {chat}
+                      <span key={chat}>{chat}</span>
                     </p>
                     <div className="chat-questions">
                       <button
@@ -403,7 +518,11 @@ export default function ProjectLab() {
           </div>
         </section>
       </div>
-      <section className="lab-brief-section">
+      <section
+        className="lab-brief-section"
+        id="project-brief"
+        data-motion="editorial"
+      >
         <div>
           <p className="eyebrow">03 / MAKE IT A PLAN</p>
           <h2>
@@ -507,7 +626,7 @@ export default function ProjectLab() {
         </div>
       </section>
       {briefOpen && (
-        <section className="generated-brief">
+        <section className="generated-brief" data-motion="mask">
           <div>
             <p className="eyebrow">YOUR PROJECT, IN WORDS</p>
             <h2>A good place to begin.</h2>

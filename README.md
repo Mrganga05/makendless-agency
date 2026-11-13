@@ -1,6 +1,6 @@
-# MAKENDLESS — The Living Experience
+# MAKENDLESS — The Living Digital Universe
 
-A responsive creative and technology studio website built with React, TypeScript and Vite. The visual identity uses the official Glass Prism palette, self-hosted Syne (400–800), photo-led concepts, original CSS illustrations, and restrained motion.
+A responsive creative and technology studio website built with React, TypeScript and Vite. The visual identity uses the official Glass Prism palette, self-hosted Syne (400–800), an open service stage, editorial concept studies, original CSS/SVG compositions, and a shared motion system.
 
 ## Run locally
 
@@ -22,14 +22,15 @@ The compiled website is in `dist/`. Configure your static host to serve `index.h
 
 ## What is implemented
 
-- Seven-part homepage with the Living Showcase, three studio worlds, lazy Live Workshop, shared-state Project Lab introduction, concept work, interactive process and inquiry CTA. Compact Studios / Work / Project Lab / About navigation.
+- Seven-part homepage with the open Living Stage, three studio exhibitions, lazy Live Workshop, shared-state Project Lab introduction, concept work, interactive process and inquiry CTA. Compact Studios / Work / Project Lab / About navigation.
 - CREATE, BUILD and GROW studio pages with all **13 approved service categories** and a detail route for each.
-- Lazy Three.js spatial workbench: default CREATE editing frame/timeline, BUILD wireframe/device/menu states, AI workflow. Accessible HTML controls/fallbacks, reduced-motion/data-saving/mobile handling, on-demand rendering and resource cleanup. Real GPU appearance remains unverified.
-- Thirteen functional demonstrations: before/after editing with captions/framing, podcast highlights, ad treatments, content formats, motion typography, website transformation, mock storefront/cart/checkout, mock bookings, stepped automation, illustrative optimization, campaign planning, content planning and local presence.
+- Reusable lazy Three.js service stage (hero and explicitly opened studio/work studies): default CREATE editing frame/timeline, BUILD wireframe/device/menu states, AI workflow. Accessible HTML controls/fallbacks, reduced-motion/data-saving/mobile handling, on-demand rendering and resource cleanup. Real GPU appearance remains unverified.
+- Thirteen functional demonstrations with distinct presentation and motion: before/after editing with captions/framing, podcast highlights, ad treatments, content formats, editable motion typography with tempo/replay, website transformation and usable sample collection, mock storefront/cart/checkout, mock bookings, stepped automation, illustrative optimization, campaign planning, per-day Reel/Carousel/Story planning with real frame previews, and local presence.
 - Living Project Lab: four business types; website, booking, promotional video and assistant modules; add/remove/reset; optional dismissible pairings; editable brief generation, copy and inquiry handoff.
 - Five-step rule-based discovery with editable recommendations. No paid AI or hidden API calls.
 - Accessible inquiry validation, local inquiry preview and downloadable draft. **No delivery backend is connected. Nothing is sent.**
-- Concept portfolio, About, four-step process, FAQ, clearly marked draft Privacy/Terms and a useful not-found page.
+- Interactive concept case studies, editorial About, illustrated four-step process, searchable FAQ, clearly marked draft Privacy/Terms and a useful not-found page.
+- Eight documented motion families: kinetic typography, construction, masks, prism light, spatial changes, micro feedback, editorial progression and functional media. A shared controller manages viewport/lazy-route entrances, focused controls, reduced motion and cleanup.
 - Keyboard-accessible menus, mobile focus containment, route focus handling, reduced-motion alternatives and touch-oriented layouts.
 
 All portfolio projects and business examples are explicitly conceptual. GROW is **Beta / Coming Soon** throughout. No client achievements, testimonials or real performance metrics are invented.
@@ -61,7 +62,7 @@ npm test
 npm run build
 ```
 
-Latest verification: typecheck, lint and production build pass; **74 tests pass** (5 helper tests and 69 DOM integration tests). See `docs/QA_LOG.md` for current evidence and limits. `AGENTS.md` and `docs/CREATIVE_BRIEF.md` contain the active V9 project instructions; historical reports remain for context.
+Latest verification: typecheck, lint and production build pass; **97 tests pass** (5 helper tests and 92 DOM integration tests). See `docs/QA_LOG.md` for current evidence and limits. `AGENTS.md` and `docs/CREATIVE_BRIEF.md` contain the active V11 project instructions; historical reports remain for context.
 
 **Browser visual review is outstanding.** The managed preview relay timed out and the cloud browser tool failed to initialize. Desktop/mobile screenshots, real viewport overflow checks, browser console review and performance measurements could not be collected. This is not a claim of WCAG compliance or achieved Core Web Vitals.
 
@@ -77,7 +78,10 @@ Latest verification: typecheck, lint and production build pass; **74 tests pass*
 - `src/components/SpatialScene.tsx`, `src/three/living-scene.ts`: lazily loaded Three.js presentation and lifecycle.
 - `src/components/HomeExperiences.tsx`: deferred Workshop and shared homepage Lab.
 - `src/navigation.ts`: centralized primary navigation and studio destinations.
-- `src/refinements.css`: shared visual hierarchy for service, project and supporting pages.
+- `src/components/MotionSystem.tsx`, `src/motion.css`: shared entrance lifecycle and focused/reduced-motion handling.
+- `src/universe.css`: shared architectural background and navigation atmosphere.
+- `src/living-home.css`, `src/studio-worlds.css`, `src/flows.css`, `src/supporting.css`, `src/footer.css`: page-specific compositions.
+- `docs/MOTION_SYSTEM.md`: motion registry, spatial rules and review limits.
 - `public/images/`: locally bundled concept photography; sources and licensing in `docs/REDESIGN.md`.
 - `tests/`: behavioral, routing, keyboard and state-transfer regression coverage.
 - `docs/`: audit, implementation notes and verification/continuation checklist.
