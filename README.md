@@ -18,7 +18,7 @@ npm run build
 npm run preview
 ```
 
-The compiled website is in `dist/`. Configure your static host to serve `index.html` for application routes. Do not deploy without owner approval. This work has not been publicly deployed or pushed to GitHub.
+The compiled website is in `dist/`. Configure your static host to serve `index.html` for application routes. Do not deploy without owner approval. Public website hosting has not been configured. The source is available in the GitHub repository after the owner-authorized push.
 
 ## What is implemented
 

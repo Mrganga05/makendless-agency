@@ -7,7 +7,7 @@
 - No existing application, framework, routes, styles, assets, backend or build scripts were present.
 - User explicitly authorized creating the full website from scratch after reviewing that finding.
 - Implementation is isolated on `feat/glass-prism-website`; original history remains intact.
-- No repository push or public deployment was performed for the website.
+- The initial implementation was kept local. The owner subsequently authorized pushing the source to GitHub; public website deployment remains separate.
 
 ## Implementation checklist
 
