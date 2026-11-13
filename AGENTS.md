@@ -4,7 +4,7 @@ The current authorized task is V14 frontend implementation, governed by [CREATIV
 
 ## Persistent guidance
 
-Read only the guides relevant to the task:
+Read only the guides relevant to the task. For current V14 decisions, start with [implementation record](docs/V14_IMPLEMENTATION.md) and [QA evidence](docs/V14_QA.md); older lab-only scope and palette preferences are historical:
 
 - [Design principles](docs/FRONTEND_DESIGN_PRINCIPLES.md), [brand/theme status](docs/BRAND_AND_THEME_STATUS.md), [responsive rules](docs/RESPONSIVE_DESIGN_RULES.md).
 - [3D engineering](docs/THREED_ENGINEERING_GUIDE.md), [motion graphics](docs/MOTION_GRAPHICS_SYSTEM.md), [interactive patterns](docs/INTERACTIVE_COMPONENT_PATTERNS.md).

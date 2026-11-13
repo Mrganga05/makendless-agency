@@ -1,0 +1,34 @@
+# V14 motion registry
+
+Motion explains a change, gives media a rhythm, or marks a new chapter. Content is visible before enhancement. No autoplay sound, scroll hijacking or endless background loop is introduced. V14 adapts the existing shared `MotionSystem` and the lab's bounded state/lifecycle patterns; no additional animation library is installed.
+
+## Major choreography
+
+| Family / use                | Purpose and trigger                                                          | Start → end                                      | Timing / easing                                                          | Mobile and reduced-motion alternative                                                           |
+| --------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| Kinetic headings            | Mark the opening/section hierarchy when its region first enters view         | Lower masked line → readable complete line       | 640ms; cubic-bezier(.22,.72,.2,1)                                        | ≤760px: short opacity entrance capped400ms; reduced motion: immediate visible text              |
+| Media/mask reveals          | Introduce a studio or work composition on entry/state replacement            | Inset crop and slight scale → full frame         | 740ms mask or360ms media opacity; same shared easing                     | Short opacity only on narrow screens; skip motion when reduced                                  |
+| Spatial mode handoff        | Keep CREATE/BUILD/AI scene, lighting and perspective tied to actual controls | Previous service view → selected service framing | Camera≤680ms; pointer/light settling≤650ms; bounded exponential approach | Compact/Save-Data/reduced starts HTML; opted-in reduced mode snaps immediately, no pointer tilt |
+| Hero captions               | Delineate the three edited-photo story beats during explicit playback/scrub  | Caption crop/offset → resolved caption           | 500ms; cubic-bezier(.2,.7,.2,1)                                          | Reduced motion uses still steps; captions remain visible                                        |
+| Photo-motion playback       | Demonstrate sequencing when the visitor presses Play                         | First frame → final frame; stops at six seconds  | Hero updates every120ms; no replay loop                                  | Manual still selection with reduced motion; stop offscreen/hidden/unmounted                     |
+| Service selection           | Show current mode without hiding the UI                                      | Underline scale0 →1; selected state remains      | 250ms ease; icon opacity200ms                                            | Static pressed states and labels with reduced motion                                            |
+| Website device/treatment    | Explain structure versus finish and narrow versus wide layouts               | Previous semantic HTML layout → chosen layout    | Device max-width450ms; cubic-bezier(.2,.7,.2,1)                          | Mobile recomposes content; reduced motion changes layout immediately                            |
+| Project module construction | Connect a selected capability to the actual site/booking/media/chat module   | Small offset/opacity → settled module            | 320ms; cubic-bezier(.22,.72,.2,1)                                        | Static mounted module under reduced motion; all controls remain usable                          |
+| Project film title          | Give the business-specific concept film a short visual beat                  | Offset/masked type → visible title               | 350ms; shared cubic-bezier                                               | Manual still selection; source state does not depend on animation                               |
+| Editorial change            | Clarify a new customer, package or process view                              | Slight crop/opacity → complete content           | 520ms; shared cubic-bezier                                               | ≤760px opacity cap400ms, or immediate reduced state                                             |
+| Micro feedback              | Acknowledge links, buttons and selected choices                              | Rest → restrained arrow/color change             | 180–250ms ease                                                           | Color/selection remain; transforms disabled with reduced motion                                 |
+| Brand prism motif           | Echo the opening frame at the final wordmark and selected boundaries         | Restrained opacity/light trace → settled mark    | Shared800ms finite entrance                                              | Static mark when reduced; never conceals the CTA                                                |
+
+The hero DOM footprint is reserved independently of GPU readiness. The frame/lens appears around it instead of shrinking the HTML when a canvas loads. The three-dimensional renderer reads selected mode, edit progress, crop/captions/comparison, website state and workflow state; it does not become the interaction controller.
+
+## Ownership and cancellation
+
+`MotionSystem` observes declared regions, plays each pending entry once, and disconnects removed route nodes. Focus inside a region cancels its animation. Hidden documents and live reduced-motion changes cancel active work. Unsupported WAAPI/observation leaves the final readable state. It is viewport-triggered storytelling, not a scroll-linked scrub or altered scrolling model.
+
+The two finite film examples own their timers, visibility listeners and observers. Scrubbing is direct state. Project input changes stop media and invalidate sample booking/chat/brief feedback. The Three renderer owns all GPU resources, textures, listeners and pending frames; see [spatial notes](V14_SPATIAL_NOTES.md).
+
+The retained service-specific typography and format demos preserve their existing finite replay contracts. Archived V11/V12 components remain in source and regression coverage; their old CSS selectors are not the V14 homepage's animation system.
+
+## What remains to inspect
+
+Timing values and lifecycle tests are implementation evidence, not proof of pleasing rhythm or smooth frame delivery. Actual browser review must compare still compositions, first entrance, repeated input, rapid mode changes, keyboard focus, reduced motion, narrow layout and consecutive sections. Measure paint/compositor/GPU cost on representative devices before claiming performance. Record any weak transition and simplify it before adding effects.
