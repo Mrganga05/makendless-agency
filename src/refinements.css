@@ -1,0 +1,462 @@
+/* Shared hierarchy: fewer frames, more breathing room, useful labels. */
+.page-shell .flow-heading h1 {
+  font-size: clamp(42px, 5.8vw, 76px);
+  letter-spacing: -0.045em;
+}
+.studio-header .page-heading {
+  font-size: clamp(42px, 5.5vw, 74px);
+  font-weight: 600;
+}
+.studio-service-selector {
+  background: #151628;
+  border: 1px solid #eaf2ff18;
+  border-radius: 10px;
+  padding: 10px !important;
+}
+.studio-service-selector button {
+  border-radius: 5px !important;
+  border-bottom: 0 !important;
+  margin: 3px 0;
+  min-height: 70px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.studio-service-selector button.selected {
+  background: #c7a6ff !important;
+  color: #1b142c !important;
+}
+.studio-service-selector button.selected span {
+  color: #4f3a6d !important;
+}
+.studio-service-selector button strong {
+  font-size: 12px;
+  font-weight: 500;
+}
+.studio-demo-title h2 {
+  font-size: 26px !important;
+}
+.studio-demo-footer p {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.studio-intro {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.studio-detail-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+}
+.studio-beta-note {
+  background: #c7a6ff10 !important;
+  border-radius: 8px;
+}
+.service-demo {
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+.demo-caption {
+  font-size: 10px !important;
+  padding: 15px 20px !important;
+}
+.service-demo .demo-switcher button,
+.service-demo .demo-primary-button,
+.service-demo .demo-small-button {
+  min-height: 44px;
+  font-size: 12px !important;
+}
+.service-demo .demo-feedback {
+  font-size: 12px !important;
+  line-height: 1.7;
+}
+.service-demo .demo-control-row > span,
+.service-demo .range-field {
+  font-size: 12px;
+}
+.service-demo .maintenance-options label,
+.service-demo .presence-checks label {
+  font-size: 12px;
+  min-height: 30px;
+}
+.service-demo .product-picker button {
+  font-size: 11px;
+  min-height: 44px;
+}
+.service-demo .booking-times button {
+  min-height: 44px;
+  font-size: 12px;
+}
+.service-demo .cart-row button {
+  min-width: 36px;
+  min-height: 36px;
+}
+.service-demo .demo-live {
+  display: none;
+}
+.flow-heading {
+  margin-bottom: 42px;
+}
+.lab-layout {
+  gap: 32px;
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+.lab-canvas {
+  border-radius: 10px;
+  background: #c4c6dd;
+  padding: 18px;
+}
+.canvas-caption,
+.canvas-caption > span:first-child,
+.canvas-footer {
+  color: #242638;
+}
+.canvas-caption .live-dot {
+  background: #6b45a8;
+  box-shadow: none;
+}
+.lab-controls {
+  padding: 15px 0;
+}
+.solution-option {
+  padding: 18px 14px;
+  border-radius: 7px;
+}
+.solution-option.is-selected {
+  background: #c7a6ff;
+  border-color: #c7a6ff;
+}
+.solution-option.is-selected strong,
+.solution-option.is-selected small,
+.solution-option.is-selected > svg {
+  color: #281b40;
+}
+.lab-tip {
+  font-size: 13px;
+}
+.lab-brief-section {
+  padding-top: 55px;
+  gap: 60px;
+}
+.lab-brief-section h2,
+.generated-brief h2 {
+  font-size: 36px;
+}
+.brief-fields .field,
+.contact-page .field,
+.generated-brief .field {
+  font-size: 14px;
+}
+.brief-fields input,
+.brief-fields textarea,
+.brief-fields select,
+.contact-page input,
+.contact-page textarea,
+.contact-page select {
+  font-size: 15px;
+}
+.pairing-add,
+.pairing-dismiss {
+  min-width: 44px;
+  min-height: 44px;
+}
+.mock-button,
+.mock-slots button,
+.chat-questions button {
+  min-height: 44px;
+}
+.mock-slots button,
+.chat-questions button {
+  font-size: 11px;
+}
+.generated-brief {
+  border-radius: 10px;
+  background: #17172a;
+  padding: 35px;
+}
+.discovery-aside {
+  border-right: 1px solid var(--border);
+  padding-right: 25px;
+}
+.discovery-art {
+  display: none;
+}
+.discovery-number {
+  font-size: 50px;
+  color: #c7a6ff;
+}
+.discovery-question h1 {
+  font-size: clamp(34px, 4vw, 52px);
+  letter-spacing: -0.04em;
+}
+.discovery-options > button {
+  border-radius: 7px;
+  font-size: 15px;
+  min-height: 70px;
+  background: #151628;
+}
+.discovery-options > button.selected {
+  background: #c7a6ff;
+  color: #241534;
+  border-color: #c7a6ff;
+}
+.discovery-options > button.selected svg,
+.discovery-options > button.selected .option-letter {
+  color: #48325f;
+}
+.recommendation-card {
+  border-radius: 8px;
+  padding: 28px;
+}
+.recommendation-card.selected {
+  background: #1d1b3a;
+  border-color: #c7a6ff66;
+}
+.contact-layout {
+  gap: 60px;
+  grid-template-columns: 0.85fr 1.15fr;
+}
+.contact-story h1 {
+  font-size: clamp(38px, 4.5vw, 60px);
+  font-weight: 600;
+}
+.contact-form-panel {
+  padding: 35px;
+  border: 1px solid #eaf2ff1a;
+  background: #131426;
+  border-radius: 10px;
+}
+.demo-notice {
+  background: #c7a6ff0d;
+  border-color: #c7a6ff30;
+  padding: 17px 20px;
+  border-radius: 6px;
+}
+.demo-notice p {
+  font-size: 12px;
+}
+.contact-service-fieldset {
+  margin: 8px 0 26px;
+}
+.inquiry-services button {
+  font-size: 11px;
+  min-height: 39px;
+}
+.inquiry-services button.selected {
+  background: #c7a6ff;
+  color: #241534;
+  border-color: #c7a6ff;
+}
+.concept-art-film {
+  background:
+    linear-gradient(#0a0b1b40, #0a0b1b70),
+    url("/images/mountain.jpg") center/cover;
+}
+.concept-art-film .concept-orbit {
+  display: none;
+}
+.concept-film-title {
+  font-weight: 600;
+}
+.concept-art-website {
+  background: #c7c8e0;
+}
+.concept-mini-hero {
+  background:
+    linear-gradient(#0a0b1b44, #0a0b1b77),
+    url("/images/coffee.jpg") center/cover;
+  color: white;
+}
+.concept-mini-hero .concept-mini-button {
+  background: #eaf2ff;
+  color: #171a2f;
+}
+.concept-project {
+  gap: 6%;
+  padding: 50px 0;
+}
+.concept-deliverables li {
+  font-size: 12px;
+  padding: 9px 12px;
+  border-radius: 25px;
+}
+.supporting-cta {
+  border-radius: 10px;
+}
+.faq-item summary {
+  font-size: 18px !important;
+  min-height: 70px;
+}
+.process-step {
+  background: transparent !important;
+}
+.supporting-text-link {
+  font-size: 14px;
+}
+.about-principle p,
+.about-intro p {
+  font-size: 16px;
+  line-height: 1.8;
+}
+@media (max-width: 1000px) {
+  .lab-layout {
+    grid-template-columns: 230px minmax(0, 1fr);
+    gap: 25px;
+  }
+  .contact-layout {
+    gap: 35px;
+  }
+  .contact-form-panel {
+    padding: 25px;
+  }
+  .lab-brief-section {
+    gap: 35px;
+  }
+}
+@media (max-width: 760px) {
+  .lab-layout,
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+  .discovery-aside {
+    border: 0;
+    padding-right: 0;
+  }
+  .contact-story h1 {
+    font-size: 46px;
+  }
+  .studio-intro {
+    font-size: 13px;
+  }
+  .lab-brief-section {
+    gap: 30px;
+  }
+  .lab-canvas {
+    padding: 16px;
+  }
+  .canvas-caption,
+  .canvas-footer {
+    font-size: 9px;
+  }
+  .generated-brief {
+    padding: 25px;
+  }
+  .lab-brief-section h2 {
+    font-size: 32px;
+  }
+}
+@media (max-width: 600px) {
+  .studio-service-selector {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    padding: 7px !important;
+  }
+  .studio-service-selector button {
+    min-height: 52px !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    display: flex !important;
+    gap: 12px !important;
+  }
+  .studio-service-selector button strong {
+    font-size: 13px;
+    flex: 1;
+  }
+  .studio-service-selector button > span {
+    font-size: 10px;
+  }
+  .studio-demo-title {
+    display: block;
+  }
+  .studio-detail-link {
+    margin-top: 6px;
+    font-size: 12px;
+  }
+  .studio-demo-footer p {
+    font-size: 13px;
+  }
+  .studio-header .page-heading {
+    font-size: 43px;
+  }
+  .page-shell .flow-heading h1 {
+    font-size: 42px;
+  }
+  .service-demo .demo-switcher {
+    flex-wrap: wrap;
+  }
+  .service-demo .demo-switcher button {
+    flex: 1;
+  }
+  .service-demo .demo-control-row {
+    flex-wrap: wrap;
+  }
+  .service-demo .shortform-stage {
+    flex-wrap: wrap;
+  }
+  .service-demo .shortform-copy {
+    min-width: 100px;
+    flex: 1;
+  }
+  .service-demo .demo-caption {
+    font-size: 9px !important;
+    padding: 13px 15px !important;
+  }
+  .service-demo .product-picker {
+    flex-wrap: wrap;
+  }
+  .service-demo .product-picker button {
+    font-size: 10px;
+  }
+  .service-demo .range-field {
+    flex-wrap: wrap;
+  }
+  .service-demo .range-field input {
+    min-width: 130px;
+    flex: 1;
+  }
+  .contact-story h1 {
+    font-size: 40px;
+  }
+  .contact-form-panel {
+    padding: 22px 18px;
+  }
+  .contact-page .flow-field-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .concept-project {
+    padding: 30px 0;
+  }
+  .concept-art {
+    height: 310px;
+  }
+  .faq-item summary {
+    font-size: 16px !important;
+  }
+  .discovery-options > button {
+    font-size: 14px;
+  }
+  .discovery-options-compact {
+    grid-template-columns: 1fr;
+  }
+  .solution-options {
+    grid-template-columns: 1fr;
+  }
+  .solution-option {
+    min-height: 64px;
+  }
+  .solution-option strong {
+    font-size: 14px;
+  }
+  .solution-option small {
+    font-size: 11px;
+  }
+  .lab-brief-section {
+    padding-top: 35px;
+  }
+  .lab-brief-section h2,
+  .generated-brief h2 {
+    font-size: 30px;
+  }
+}

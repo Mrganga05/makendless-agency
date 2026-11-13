@@ -34,17 +34,17 @@ describe("navigation and routing", () => {
       ).toBe("/");
     });
   }
-  it("returns keyboard focus to the desktop Studios opener on Escape", async () => {
-    const user = userEvent.setup();
+  it("offers direct Services, Work and About links without a nested menu", () => {
     window.history.replaceState({}, "", "/");
     render(<App />);
-    const trigger = screen.getByRole("button", { name: "Studios" });
-    await user.click(trigger);
-    const first = screen.getByRole("link", { name: /CREATE Video Editing/ });
-    first.focus();
-    await user.keyboard("{Escape}");
-    expect(document.activeElement).toBe(trigger);
-    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    const nav = screen.getByRole("navigation", { name: "Main navigation" });
+    expect(
+      Array.from(nav.querySelectorAll("a")).map((a) => a.textContent),
+    ).toEqual(["Services", "Work", "About"]);
+    expect(nav.querySelector("button")).toBeNull();
+    expect(
+      screen.getByRole("link", { name: "Services" }).getAttribute("href"),
+    ).toBe("/studios");
   });
   it("opens mobile navigation, contains focus and closes after navigation", async () => {
     const user = userEvent.setup();

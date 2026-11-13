@@ -15,7 +15,7 @@ function StudioWorld({ world }: { world: World }) {
   return (
     <div className={`page-shell studio-page studio-${world}`}>
       <div className="studio-breadcrumb">
-        <Link to="/studios">Explore Studios</Link>
+        <Link to="/studios">All services</Link>
         <span>/</span>
         <span>{info.label}</span>
       </div>
@@ -34,7 +34,7 @@ function StudioWorld({ world }: { world: World }) {
         <p className="studio-intro">
           {info.intro}
           <br />
-          <span>Explore the possibilities. Try them for yourself.</span>
+          <span>Choose a service below and try its interactive example.</span>
         </p>
       </header>
       {world === "grow" && (
@@ -112,7 +112,7 @@ function StudioWorld({ world }: { world: World }) {
             Combine services in the Project Lab and see your idea take shape.
           </p>
           <Link to="/project-lab" className="button button-secondary">
-            Enter the Project Lab <ArrowRight size={17} />
+            Plan your project <ArrowRight size={17} />
           </Link>
         </div>
       </section>

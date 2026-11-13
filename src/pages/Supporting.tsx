@@ -24,7 +24,7 @@ const concepts = [
     className: "film",
     service: "V3",
     description:
-      "An original studio exercise in rhythm, composition and visual identity. A single abstract scene becomes a cinematic promotional sequence.",
+      "An original studio exercise in rhythm, composition and visual identity. An outdoor photograph becomes a typography-led motion concept.",
     deliverables: [
       "Visual treatment",
       "Motion direction",

@@ -1,500 +1,341 @@
-import { useRef, useState, type PointerEvent } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowUpRight,
   ArrowRight,
-  Play,
-  MoveDown,
-  Plus,
-  Check,
-  Sparkles,
-  Code2,
   Film,
-  MousePointer2,
+  Monitor,
+  Sparkles,
+  Check,
+  Play,
 } from "lucide-react";
-import ServiceDemo from "../components/ServiceDemo";
+import LiveShowcase from "../components/LiveShowcase";
 import { Process } from "./Supporting";
 export function StudioCards() {
   return (
-    <div className="world-grid">
-      <Link className="world-card create-card" to="/studios/create">
-        <div className="world-top">
-          <span>01 / THE CREATIVE STUDIO</span>
-          <ArrowUpRight size={21} />
-        </div>
-        <div className="world-art film-art" aria-hidden="true">
-          <div className="film-frame">
-            <span className="frame-corner">
-              REC <i />
-            </span>
-            <div className="home-film-type">
-              MAKE
-              <br />
-              <em>THEM</em>
-              <br />
-              FEEL.
-            </div>
-            <div className="home-film-play">
-              <Play size={16} fill="currentColor" />
-            </div>
-            <span className="film-time">00:00:24:08</span>
+    <div className="service-collection">
+      <article className="service-feature service-video">
+        <div className="service-photo">
+          <img
+            src="/images/mountain.jpg"
+            alt="Mountain landscape used in a storytelling concept"
+            width="1400"
+            height="933"
+            loading="lazy"
+          />
+          <span className="service-art-label">CREATE / VIDEO & CREATIVE</span>
+          <div className="service-photo-title">
+            Every frame.
+            <br />
+            <em>A feeling.</em>
           </div>
-          <div className="film-timeline">
-            {Array.from({ length: 15 }, (_, i) => (
-              <i key={i} style={{ height: `${10 + ((i * 17) % 24)}px` }} />
+          <Link
+            to="/studios/create"
+            className="service-play"
+            aria-label="Explore video editing demos"
+          >
+            <Play size={24} fill="currentColor" />
+          </Link>
+          <div className="photo-wave" aria-hidden="true">
+            {Array.from({ length: 45 }, (_, i) => (
+              <i key={i} style={{ height: `${8 + ((i * 13) % 28)}px` }} />
             ))}
           </div>
-          <span className="art-caption">
-            FRAME BY FRAME. FEELING BY FEELING.
-          </span>
         </div>
-        <div className="world-bottom">
+        <div className="service-description">
+          <Film size={22} />
           <h3>
-            CREATE<span>↗</span>
+            Videos people
+            <br />
+            actually feel.
           </h3>
-          <p>Video Editing & Creative Production</p>
-          <small>Stories that move.</small>
+          <p>
+            From a quick scroll-stopper to a full-length story. We bring the
+            rhythm, clarity and craft.
+          </p>
+          <div className="service-tags">
+            <span>Reels & shorts</span>
+            <span>Podcasts</span>
+            <span>Ads & motion</span>
+          </div>
+          <Link className="text-link" to="/studios/create">
+            Explore video editing <ArrowUpRight size={19} />
+          </Link>
         </div>
-      </Link>
-      <Link className="world-card build-card" to="/studios/build">
-        <div className="world-top">
-          <span>02 / THE DIGITAL STUDIO</span>
-          <ArrowUpRight size={21} />
+      </article>
+      <article className="service-feature service-digital">
+        <div className="service-description">
+          <Monitor size={22} />
+          <h3>
+            A better home
+            <br />
+            for your business.
+          </h3>
+          <p>
+            Websites that welcome. Booking flows that work. AI tools that make
+            the everyday easier.
+          </p>
+          <div className="service-tags">
+            <span>Websites & stores</span>
+            <span>Booking systems</span>
+            <span>AI & automation</span>
+          </div>
+          <Link className="text-link" to="/studios/build">
+            Explore websites & AI <ArrowUpRight size={19} />
+          </Link>
         </div>
-        <div className="world-art web-art" aria-hidden="true">
-          <div className="mini-window">
-            <div className="window-bar">
-              <i />
-              <i />
-              <i />
-              <span>your-next-idea</span>
+        <div className="digital-art">
+          <div className="digital-window">
+            <div className="digital-browser">
+              <span>● ● ●</span> a little idea, brought to life.
             </div>
-            <div className="home-mini-site">
-              <span>THE NEXT CHAPTER</span>
-              <h4>
-                Built to
-                <br />
-                <em>be different.</em>
-              </h4>
-              <div className="mini-button">Explore the possibilities ↗</div>
-              <div className="mini-shape" />
+            <div className="digital-cafe">
+              <img
+                src="/images/coffee.jpg"
+                alt="Coffee shop website concept"
+                width="1200"
+                height="800"
+                loading="lazy"
+              />
+              <div>
+                <strong>still.</strong>
+                <h4>
+                  Good things
+                  <br />
+                  start here.
+                </h4>
+                <span>COFFEE & COMPANY ↗</span>
+              </div>
             </div>
           </div>
-          <span className="code-label">
-            <Code2 size={13} /> Ideas, brought to life.
-          </span>
-          <MousePointer2 className="art-pointer" size={25} fill="#22D3EE" />
+          <div className="digital-toast">
+            <span>
+              <Check size={19} />
+            </span>
+            <div>
+              <strong>One less thing to think about.</strong>
+              <small>Website + booking + automation</small>
+            </div>
+          </div>
         </div>
-        <div className="world-bottom">
-          <h3>
-            BUILD<span>↗</span>
-          </h3>
-          <p>Websites, IT & AI Solutions</p>
-          <small>Ideas made real.</small>
+      </article>
+      <div className="grow-announcement">
+        <Sparkles size={21} />
+        <div>
+          <strong>Next up: helping your business grow.</strong>
+          <p>Digital marketing is in development. Explore what’s coming.</p>
         </div>
-      </Link>
-      <Link className="world-card grow-card" to="/studios/grow">
-        <div className="world-top">
-          <span>03 / THE NEXT CHAPTER</span>
-          <ArrowUpRight size={21} />
-        </div>
-        <div className="world-art growth-art" aria-hidden="true">
-          <div className="orbit orbit-one" />
-          <div className="orbit orbit-two" />
-          <div className="orbit orbit-three" />
-          <div className="growth-spark">✳</div>
-          <span className="coming-pill">BETA / COMING SOON</span>
-        </div>
-        <div className="world-bottom">
-          <h3>
-            GROW<span>↗</span>
-          </h3>
-          <p>Digital Marketing</p>
-          <small>The next chapter of your brand.</small>
-        </div>
-      </Link>
+        <Link to="/studios/grow">
+          GROW · Coming soon <ArrowUpRight size={17} />
+        </Link>
+      </div>
     </div>
   );
 }
 export function Studios() {
   return (
-    <div className="page-shell studios-index">
-      <div className="page-heading">
-        <span className="eyebrow">ONE STUDIO. ENDLESS POSSIBILITIES.</span>
-        <h1>Find your world.</h1>
+    <div className="page-shell services-page">
+      <header className="page-heading">
+        <span className="eyebrow">OUR SERVICES</span>
+        <h1>
+          What do you
+          <br />
+          want to make?
+        </h1>
         <p>
-          Three connected worlds. One shared ambition: make your next idea
-          matter.
+          Choose a starting point. Explore the services, try a demo, and tell us
+          what you have in mind.
         </p>
-      </div>
+      </header>
       <StudioCards />
-      <div className="studio-guidance">
-        <Sparkles size={22} />
+      <div className="help-choose">
         <div>
-          <h3>Not sure where to begin?</h3>
-          <p>A few simple questions. A clearer starting point.</p>
+          <h2>A little help choosing?</h2>
+          <p>Answer five quick questions to find a useful starting point.</p>
         </div>
-        <Link className="button button-secondary" to="/find-solution">
-          Find My Solution <ArrowUpRight size={17} />
+        <Link className="button button-primary" to="/find-solution">
+          Help me choose <ArrowRight size={18} />
         </Link>
       </div>
     </div>
   );
 }
-function HomeLab() {
-  const [selected, setSelected] = useState(["Website"]);
-  return (
-    <section className="home-lab section-wrap">
-      <div className="lab-intro">
-        <span className="eyebrow">
-          <span className="small-cross">✳</span> THE LIVING PROJECT LAB
-        </span>
-        <h2>
-          Your idea.
-          <br />A little more <em>real.</em>
-        </h2>
-        <p>
-          What happens when the right pieces come together? Build a small
-          preview of your next big thing.
-        </p>
-        <Link className="text-link" to="/project-lab">
-          Enter the Project Lab <ArrowUpRight size={18} />
-        </Link>
-      </div>
-      <div className="home-lab-board">
-        <div className="lab-board-top">
-          <span>
-            <i className="status-dot" /> LIVE CONCEPT PREVIEW
-          </span>
-          <span>MADE BY YOU ↗</span>
-        </div>
-        <div className="lab-board-body">
-          <div className="lab-home-controls">
-            <span>YOUR INGREDIENTS</span>
-            {["Website", "Booking", "Video", "AI Assistant"].map((s, i) => (
-              <button
-                key={s}
-                className={
-                  selected.includes(s) ? "ingredient active" : "ingredient"
-                }
-                aria-pressed={selected.includes(s)}
-                onClick={() =>
-                  setSelected((p) =>
-                    p.includes(s) ? p.filter((x) => x !== s) : [...p, s],
-                  )
-                }
-              >
-                <span>0{i + 1}</span>
-                {s}
-                {selected.includes(s) ? (
-                  <Check size={14} />
-                ) : (
-                  <Plus size={14} />
-                )}
-              </button>
-            ))}
-          </div>
-          <div className="live-concept" aria-live="polite">
-            <div className="concept-header">
-              <b>STUDIO / YOU</b>
-              <span>✳</span>
-            </div>
-            {selected.length === 0 ? (
-              <div className="concept-empty">
-                A blank canvas.
-                <br />
-                <span>Add an ingredient to begin.</span>
-              </div>
-            ) : (
-              <>
-                <h3>
-                  Room for
-                  <br />
-                  <em>your next idea.</em>
-                </h3>
-                {selected.includes("Website") && (
-                  <div className="concept-web">
-                    A digital home, shaped around you.{" "}
-                    <ArrowUpRight size={14} />
-                  </div>
-                )}
-                {selected.includes("Booking") && (
-                  <div className="concept-book">
-                    <span>YOUR NEXT VISIT</span>
-                    <div>
-                      Mon <b>Tue</b> Wed Thu Fri
-                    </div>
-                  </div>
-                )}
-                {selected.includes("Video") && (
-                  <div className="concept-video">
-                    <Play size={15} /> Your story, in motion
-                  </div>
-                )}
-                {selected.includes("AI Assistant") && (
-                  <div className="concept-chat">
-                    <Sparkles size={14} /> Hello! What can we help you explore?
-                  </div>
-                )}
-              </>
-            )}
-            <span className="concept-note">
-              Illustrative preview · No live services
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 export default function Home() {
-  const artRef = useRef<HTMLDivElement>(null);
-  function movePrism(event: PointerEvent<HTMLElement>) {
-    if (
-      event.pointerType !== "mouse" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    )
-      return;
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 12;
-    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 10;
-    artRef.current?.style.setProperty("--prism-x", `${x}px`);
-    artRef.current?.style.setProperty("--prism-y", `${y}px`);
-  }
-  const [capability, setCapability] = useState("V1");
   return (
     <>
-      <section
-        className="hero section-wrap"
-        onPointerMove={movePrism}
-        onPointerLeave={() => {
-          artRef.current?.style.setProperty("--prism-x", "0px");
-          artRef.current?.style.setProperty("--prism-y", "0px");
-        }}
-      >
-        <div className="hero-copy">
-          <div className="hero-eyebrow">
-            <span className="status-dot" /> CREATIVE & TECHNOLOGY STUDIO
-          </div>
+      <section className="new-hero section-wrap">
+        <div className="new-hero-copy">
+          <span className="hero-kicker">
+            <i /> CREATIVE MINDS. PRACTICAL MAGIC.
+          </span>
           <h1>
-            Make your
+            Good ideas.
             <br />
-            next idea
-            <br />
-            <span>unforgettable.</span>
+            Great <span>execution.</span>
           </h1>
           <p>
-            Video editing, websites and AI solutions
-            <br className="desktop-break" /> for ambitious brands and
-            businesses.
+            We turn your ideas into videos people feel,
+            <br className="desktop-break" /> websites people love, and tools
+            that work.
           </p>
           <div className="hero-actions">
-            <Link className="button button-primary" to="/studios">
-              Explore Studios <ArrowUpRight size={18} />
+            <Link className="button button-primary" to="/contact">
+              Let’s make it happen <ArrowUpRight size={19} />
             </Link>
-            <Link className="button button-secondary" to="/contact">
-              Start a Project <ArrowUpRight size={18} />
-            </Link>
+            <a className="text-link" href="#services">
+              See what we do <ArrowRight size={17} />
+            </a>
           </div>
-          <Link className="hero-discovery" to="/find-solution">
-            A big idea. Not sure where to start?{" "}
-            <span>
-              Find my solution <ArrowRight size={14} />
-            </span>
-          </Link>
-        </div>
-        <div className="hero-art" ref={artRef}>
-          <span className="prism-label label-top">
-            THE SHAPE OF POSSIBILITY
-          </span>
-          <img
-            src="/assets/prism.svg"
-            alt="An original folded glass ribbon refracting aqua and violet light"
-            fetchPriority="high"
-            width="760"
-            height="760"
-          />
-          <div className="art-coordinate coordinate-left">
-            01 / IMAGINE
-            <br />
-            <span>02 / MAKE IT REAL</span>
-          </div>
-          <div className="prism-label label-bottom">
-            <span className="tiny-cross">+</span> IDEAS WITHOUT LIMITS.
-          </div>
-        </div>
-        <div className="hero-baseline">
-          <div>
-            <span>CREATE</span>
+          <div className="hero-service-list">
+            <span>Video editing</span>
             <i />
-            <span>BUILD</span>
+            <span>Websites</span>
             <i />
-            <span className="grow-baseline">
-              GROW <small>COMING SOON</small>
-            </span>
+            <span>AI solutions</span>
           </div>
-          <a href="#studios">
-            SCROLL TO EXPLORE <MoveDown size={15} />
-          </a>
         </div>
+        <LiveShowcase />
       </section>
-      <section className="world-section section-wrap" id="studios">
+      <div className="intro-line section-wrap">
+        <span>MAKENDLESS / CREATIVE & TECHNOLOGY STUDIO</span>
+        <p>
+          From “what if”
+          <ArrowRight size={18} />
+          to “here it is.”
+        </p>
+      </div>
+      <section className="home-services section-wrap" id="services">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">01 / EXPLORE THE STUDIOS</span>
+            <span className="eyebrow">WHAT WE DO</span>
             <h2>
-              Three worlds.
+              Make an impression.
               <br />
-              <span>Endless possibilities.</span>
+              <span>Make it work.</span>
             </h2>
           </div>
           <p>
-            From the first frame to the next big launch.
+            One creative partner.
             <br />
-            Find the right space for your ambition.
+            From your first idea to the final detail.
           </p>
         </div>
         <StudioCards />
       </section>
-      <section className="capabilities section-wrap">
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">02 / LESS TALK. MORE POSSIBILITY.</span>
-            <h2>
-              Don’t just imagine it.
-              <br />
-              <span>Try it.</span>
-            </h2>
-          </div>
-          <div
-            className="capability-switch"
-            role="group"
-            aria-label="Choose a capability demo"
-          >
-            <button
-              aria-pressed={capability === "V1"}
-              onClick={() => setCapability("V1")}
-            >
-              <Film size={16} /> The edit
-            </button>
-            <button
-              aria-pressed={capability === "T1"}
-              onClick={() => setCapability("T1")}
-            >
-              <Code2 size={16} /> The build
-            </button>
-          </div>
-        </div>
-        <ServiceDemo key={capability} id={capability} />
-        <div className="capability-foot">
-          <span>
-            Original, interactive demonstrations. A glimpse of what we can make.
-          </span>
-          <Link
-            className="text-link"
-            to={capability === "V1" ? "/studios/create" : "/studios/build"}
-          >
-            Explore this studio <ArrowUpRight size={16} />
-          </Link>
-        </div>
-      </section>
-      <HomeLab />
-      <section className="home-work section-wrap">
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">03 / SELECTED EXPLORATIONS</span>
-            <h2>
-              A taste of <span>what’s possible.</span>
-            </h2>
-          </div>
-          <Link className="text-link" to="/work">
-            Explore Our Work <ArrowUpRight size={17} />
-          </Link>
-        </div>
-        <div className="home-work-grid">
-          <Link to="/work" className="home-project project-film">
-            <div className="project-cover">
-              <span className="concept-tag">CONCEPT PROJECT</span>
-              <div className="motion-title">
-                LESS
+      <section className="work-band">
+        <div className="section-wrap">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">A FEW POSSIBILITIES</span>
+              <h2>
+                See the idea.
                 <br />
-                <em>SCROLL.</em>
-                <br />
-                MORE SOUL<span>↗</span>
-              </div>
-              <div className="project-lines" />
+                Feel the difference.
+              </h2>
             </div>
-            <div className="project-caption">
-              <div>
-                <h3>A story in every frame</h3>
-                <p>Video Editing · Motion Design</p>
+            <Link className="text-link" to="/work">
+              View concept projects <ArrowUpRight size={19} />
+            </Link>
+          </div>
+          <div className="new-work-grid">
+            <Link to="/services/V3" className="new-work-card">
+              <div className="work-image work-mountain">
+                <img
+                  src="/images/mountain.jpg"
+                  alt="Outdoor storytelling concept in a mountain valley"
+                  width="1400"
+                  height="933"
+                  loading="lazy"
+                />
+                <span className="work-stamp">CONCEPT / 01</span>
+                <strong>
+                  Outside
+                  <br />
+                  the ordinary.
+                </strong>
+                <span className="work-arrow">
+                  <ArrowUpRight size={24} />
+                </span>
               </div>
-              <ArrowUpRight size={22} />
-            </div>
-          </Link>
-          <Link to="/work" className="home-project project-web">
-            <div className="project-cover">
-              <span className="concept-tag">CONCEPT PROJECT</span>
-              <div className="portfolio-browser">
-                <div className="portfolio-browser-bar">
-                  FORM & STILL <span>MENU +</span>
-                </div>
-                <div className="portfolio-inner">
-                  <small>A CONCEPT DIGITAL EXPERIENCE</small>
-                  <h4>
-                    Make space
-                    <br />
-                    for <em>better.</em>
-                  </h4>
-                  <div className="portfolio-sculpture" />
-                  <span>DISCOVER THE COLLECTION ↗</span>
-                </div>
+              <div className="work-info">
+                <h3>A little adventure. A lasting impression.</h3>
+                <p>Video direction · Promotional editing</p>
               </div>
-            </div>
-            <div className="project-caption">
-              <div>
-                <h3>A new kind of digital home</h3>
-                <p>Web Design · Development</p>
+            </Link>
+            <Link to="/services/T1" className="new-work-card">
+              <div className="work-image work-coffee">
+                <img
+                  src="/images/coffee.jpg"
+                  alt="A café experience concept with coffee and company"
+                  width="1200"
+                  height="800"
+                  loading="lazy"
+                />
+                <span className="work-stamp">CONCEPT / 02</span>
+                <strong>
+                  Meet your
+                  <br />
+                  new favourite.
+                </strong>
+                <span className="work-arrow">
+                  <ArrowUpRight size={24} />
+                </span>
               </div>
-              <ArrowUpRight size={22} />
-            </div>
-          </Link>
+              <div className="work-info">
+                <h3>A neighbourhood café, reimagined online.</h3>
+                <p>Web design · Booking experience</p>
+              </div>
+            </Link>
+          </div>
+          <p className="work-honesty">
+            Studio explorations, not client commissions. A glimpse of how we
+            think and make.
+          </p>
         </div>
       </section>
       <section className="home-process section-wrap">
-        <span className="eyebrow">04 / FROM WHAT IF TO WHAT’S NEXT</span>
         <div className="section-heading">
-          <h2>
-            Great things.
-            <br />
-            <span>Made together.</span>
-          </h2>
+          <div>
+            <span className="eyebrow">SIMPLE FROM THE START</span>
+            <h2>
+              Good work starts
+              <br />
+              with a conversation.
+            </h2>
+          </div>
           <p>
-            A clear process. A close collaboration.
-            <br />A result that feels like you.
+            You bring the idea. We bring the questions,
+            <br />
+            the craft, and a clear way forward.
           </p>
         </div>
         <Process />
-      </section>
-      <section className="closing-cta section-wrap">
-        <div className="cta-orb" aria-hidden="true">
-          ✳
+        <div className="planner-entry">
+          <Sparkles size={24} />
+          <div>
+            <h3>Still piecing your idea together?</h3>
+            <p>
+              Try our project planner. Choose what you need and leave with an
+              editable brief.
+            </p>
+          </div>
+          <Link className="text-link" to="/project-lab">
+            Plan my project <ArrowUpRight size={19} />
+          </Link>
         </div>
-        <span className="eyebrow">YOUR NEXT CHAPTER STARTS HERE</span>
+      </section>
+      <section className="new-cta section-wrap">
+        <span className="eyebrow">BIG IDEA? SMALL QUESTION? BOTH WELCOME.</span>
         <h2>
           Let’s make
           <br />
-          <em>something matter.</em>
+          <span>your next move.</span>
         </h2>
-        <p>
-          A spark, a sketch, or a fully formed plan. We’re ready to explore it.
-        </p>
         <Link className="button button-primary" to="/contact">
-          Start a Project <ArrowUpRight size={18} />
+          Start a Project <ArrowUpRight size={20} />
         </Link>
-        <Link className="closing-secondary" to="/find-solution">
-          Or let’s find your starting point <ArrowRight size={14} />
-        </Link>
+        <div className="cta-word" aria-hidden="true">
+          MAKENDLESS
+        </div>
       </section>
     </>
   );

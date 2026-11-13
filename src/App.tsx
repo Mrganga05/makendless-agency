@@ -26,11 +26,11 @@ import { ProjectProvider } from "./project";
 import { services } from "./data";
 const titles: Record<string, string> = {
   "/": "Creative & Technology Studio",
-  "/studios": "Explore Studios",
+  "/studios": "Services",
   "/studios/create": "CREATE — Video & Creative",
   "/studios/build": "BUILD — Websites & AI",
   "/studios/grow": "GROW — Coming Soon",
-  "/project-lab": "Living Project Lab",
+  "/project-lab": "Project Planner",
   "/find-solution": "Find My Solution",
   "/contact": "Start a Project",
   "/work": "Our Work — Concept Explorations",

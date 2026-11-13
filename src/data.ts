@@ -170,19 +170,19 @@ export const services: Service[] = [
 export const worldInfo = {
   create: {
     label: "CREATE",
-    title: "Stories that move.",
+    title: "Video editing with feeling.",
     subtitle: "Video Editing & Creative Production",
     intro: "A little rhythm. A fresh perspective. A story they feel.",
   },
   build: {
     label: "BUILD",
-    title: "Ideas made real.",
+    title: "Websites & AI that work.",
     subtitle: "Websites, IT & AI Solutions",
     intro: "Beautiful on the surface. Thoughtful in every interaction.",
   },
   grow: {
     label: "GROW",
-    title: "Growth starts here.",
+    title: "Digital marketing. Coming soon.",
     subtitle: "Digital Marketing — Beta / Coming Soon",
     intro: "The next chapter is taking shape. Explore what’s on the horizon.",
   },

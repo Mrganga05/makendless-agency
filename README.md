@@ -1,6 +1,6 @@
 # MAKENDLESS — Glass Prism
 
-A responsive creative and technology studio website built with React, TypeScript and Vite. The visual identity uses the official Glass Prism palette, self-hosted Syne (400–800), original SVG/CSS artwork, and restrained motion.
+A responsive creative and technology studio website built with React, TypeScript and Vite. The visual identity uses the official Glass Prism palette, self-hosted Syne (400–800), photo-led concepts, original CSS illustrations, and restrained motion.
 
 ## Run locally
 
@@ -22,7 +22,7 @@ The compiled website is in `dist/`. Configure your static host to serve `index.h
 
 ## What is implemented
 
-- Homepage with original folded-glass hero artwork, pointer response, distinct studio previews, interactive capability demonstrations, miniature project teaser, concept work, process and inquiry actions.
+- Redesigned homepage with direct navigation, a working café/booking and video-edit hero showcase, clear service presentations, photographic concept work, process and inquiry actions.
 - CREATE, BUILD and GROW studio pages with all **13 approved service categories** and a detail route for each.
 - Thirteen functional demonstrations: before/after editing with captions/framing, podcast highlights, ad treatments, content formats, motion typography, website transformation, mock storefront/cart/checkout, mock bookings, stepped automation, illustrative optimization, campaign planning, content planning and local presence.
 - Living Project Lab: four business types; website, booking, promotional video and assistant modules; add/remove/reset; optional dismissible pairings; editable brief generation, copy and inquiry handoff.
@@ -60,7 +60,7 @@ npm test
 npm run build
 ```
 
-Latest verification: typecheck, lint and production build pass; **55 tests pass** (5 helper tests and 50 DOM integration tests). See `docs/VERIFICATION.md` for the tested behaviors and important limits.
+Latest verification: typecheck, lint and production build pass; **58 tests pass** (5 helper tests and 53 DOM integration tests). See `docs/REDESIGN.md` for the latest design changes and verification, and `docs/VERIFICATION.md` for the original implementation checks.
 
 **Browser visual review is outstanding.** The managed preview relay timed out and the cloud browser tool failed to initialize. Desktop/mobile screenshots, real viewport overflow checks, browser console review and performance measurements could not be collected. This is not a claim of WCAG compliance or achieved Core Web Vitals.
 
@@ -72,13 +72,15 @@ Latest verification: typecheck, lint and production build pass; **55 tests pass*
 - `src/brief.ts`: brief generation, deterministic recommendations and optional pairings.
 - `src/components/ServiceDemo.tsx`: the 13 demonstrations.
 - `src/pages/`: routed homepage, studio, Project Lab, discovery, inquiry and supporting content.
-- `public/assets/prism.svg`: original hero artwork.
+- `src/components/LiveShowcase.tsx`: functional hero café and motion examples.
+- `src/refinements.css`: shared visual hierarchy for service, project and supporting pages.
+- `public/images/`: locally bundled concept photography; sources and licensing in `docs/REDESIGN.md`.
 - `tests/`: behavioral, routing, keyboard and state-transfer regression coverage.
 - `docs/`: audit, implementation notes and verification/continuation checklist.
 
 ## Data, assets and production setup
 
-Visitor state is held in React memory and resets on refresh. The demo does not persist inquiries, use analytics, call an AI service or process payments. Clipboard copy is initiated by the visitor and includes a manual fallback message. Fonts are served locally through the build. Syne is licensed under SIL OFL 1.1; Lucide uses ISC. Original visual compositions are implemented in this repository; no third-party stock media is used.
+Visitor state is held in React memory and resets on refresh. The demo does not persist inquiries, use analytics, call an AI service or process payments. Clipboard copy is initiated by the visitor and includes a manual fallback message. Fonts are served locally through the build. Syne is licensed under SIL OFL 1.1; Lucide uses ISC. Original visual compositions are implemented in this repository. Unsplash photography is bundled locally for fictional concept projects; source/license links are recorded in `docs/REDESIGN.md`.
 
 Before a real launch, connect and test a delivery backend, provide verified business contact information, review legal documents, replace or supplement concept work with approved real work, and complete browser QA. Service scope, timelines and prices remain subject to discussion.
 

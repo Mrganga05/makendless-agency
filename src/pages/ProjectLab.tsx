@@ -138,12 +138,12 @@ export default function ProjectLab() {
     <div className="page-shell lab-page">
       <header className="page-heading flow-heading">
         <p className="eyebrow">
-          <span className="live-dot" /> THE LIVING PROJECT LAB
+          <span className="live-dot" /> YOUR PROJECT PLANNER
         </p>
         <h1>
-          Your idea.
+          Build your brief.
           <br />
-          <span className="flow-accent">Coming to life.</span>
+          <span className="flow-accent">See the possibilities.</span>
         </h1>
         <p>Choose a business. Add a possibility. Watch it become something.</p>
       </header>

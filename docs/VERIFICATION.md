@@ -1,4 +1,6 @@
-# Verification and remaining review
+# Initial implementation verification and remaining review
+
+The latest redesign and its 58-test verification are recorded in [REDESIGN.md](REDESIGN.md). This document retains the initial implementation results.
 
 Verified in the managed cloud workspace on 2026-11-13.
 

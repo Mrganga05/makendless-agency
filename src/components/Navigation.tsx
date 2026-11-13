@@ -1,39 +1,29 @@
-import { ArrowUpRight, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { worldInfo } from "../data";
+const links = [
+  { to: "/studios", label: "Services" },
+  { to: "/work", label: "Work" },
+  { to: "/about", label: "About" },
+];
 export default function Navigation() {
   const [open, setOpen] = useState(false);
-  const [studios, setStudios] = useState(false);
-  const location = useLocation();
+  const { pathname } = useLocation();
   const panel = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
-  const studioRef = useRef<HTMLDivElement>(null);
-  const studioTrigger = useRef<HTMLButtonElement>(null);
+  useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
-    setOpen(false);
-    setStudios(false);
-  }, [location.pathname]);
-  useEffect(() => {
-    const close = (e: MouseEvent) => {
-      if (!studioRef.current?.contains(e.target as Node)) setStudios(false);
-    };
-    document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
-  }, []);
-  useEffect(() => {
-    if (!open && !studios) return;
-    const handle = (e: KeyboardEvent) => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpen(false);
-        setStudios(false);
-        (open ? trigger : studioTrigger).current?.focus();
+        trigger.current?.focus();
       }
-      if (open && e.key === "Tab") {
-        const els = panel.current?.querySelectorAll<HTMLElement>("a,button");
-        if (!els?.length) return;
-        const first = els[0],
-          last = els[els.length - 1];
+      if (e.key === "Tab") {
+        const items = panel.current?.querySelectorAll<HTMLElement>("button,a");
+        if (!items?.length) return;
+        const first = items[0],
+          last = items[items.length - 1];
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
           last.focus();
@@ -43,16 +33,14 @@ export default function Navigation() {
         }
       }
     };
-    document.addEventListener("keydown", handle);
-    if (open) {
-      panel.current?.querySelector<HTMLElement>("button")?.focus();
-      document.body.style.overflow = "hidden";
-    }
+    panel.current?.querySelector("button")?.focus();
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onKey);
     return () => {
-      document.removeEventListener("keydown", handle);
       document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
     };
-  }, [open, studios]);
+  }, [open]);
   return (
     <>
       <a className="skip-link" href="#main">
@@ -61,44 +49,17 @@ export default function Navigation() {
       <header className="site-header">
         <div className="nav-inner">
           <Link className="wordmark" to="/" aria-label="MAKENDLESS home">
-            MAKENDLESS<span>✳</span>
+            MAKENDLESS<span aria-hidden="true">✳</span>
           </Link>
           <nav className="desktop-nav" aria-label="Main navigation">
-            <div className="studio-nav" ref={studioRef}>
-              <button
-                ref={studioTrigger}
-                className={
-                  location.pathname.startsWith("/studios")
-                    ? "nav-button active"
-                    : "nav-button"
-                }
-                aria-expanded={studios}
-                aria-controls="studio-menu"
-                onClick={() => setStudios(!studios)}
-              >
-                Studios <ChevronDown size={13} />
-              </button>
-              {studios && (
-                <div className="studio-dropdown" id="studio-menu">
-                  {Object.entries(worldInfo).map(([id, w]) => (
-                    <Link key={id} to={`/studios/${id}`}>
-                      <strong>{w.label}</strong>
-                      <span>{w.subtitle}</span>
-                      <ArrowUpRight size={16} />
-                    </Link>
-                  ))}
-                  <Link to="/studios">
-                    Explore all studios <ArrowRight size={15} />
-                  </Link>
-                </div>
-              )}
-            </div>
-            <NavLink to="/work">Our Work</NavLink>
-            <NavLink to="/project-lab">Project Lab</NavLink>
-            <NavLink to="/about">About</NavLink>
+            {links.map((l) => (
+              <NavLink to={l.to} key={l.to}>
+                {l.label}
+              </NavLink>
+            ))}
           </nav>
           <Link className="nav-cta" to="/contact">
-            Start a Project <ArrowUpRight size={16} />
+            Start a Project <ArrowUpRight size={17} />
           </Link>
           <button
             className="menu-toggle"
@@ -135,25 +96,18 @@ export default function Navigation() {
             </button>
           </div>
           <nav aria-label="Mobile navigation">
-            <Link to="/studios">
-              Explore Studios <ArrowUpRight />
-            </Link>
-            {Object.entries(worldInfo).map(([id, w]) => (
-              <Link className="mobile-studio" key={id} to={`/studios/${id}`}>
-                {w.label}
-                <small>
-                  {id === "grow"
-                    ? "Marketing · Coming soon"
-                    : id === "create"
-                      ? "Video & creative"
-                      : "Websites & AI"}
-                </small>
+            {links.map((l, i) => (
+              <Link to={l.to} key={l.to}>
+                <small>0{i + 1}</small>
+                {l.label}
+                <ArrowUpRight />
               </Link>
             ))}
-            <Link to="/work">Our Work</Link>
-            <Link to="/project-lab">Project Lab</Link>
-            <Link to="/find-solution">Find My Solution</Link>
-            <Link to="/about">About</Link>
+            <p>
+              Have something in mind?
+              <br />
+              Let’s make it happen.
+            </p>
             <Link className="button button-primary" to="/contact">
               Start a Project <ArrowUpRight size={18} />
             </Link>

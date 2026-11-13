@@ -6,43 +6,40 @@ export default function Footer() {
       <div className="footer-top">
         <div>
           <Link to="/" className="wordmark">
-            MAKENDLESS
+            MAKENDLESS<span>✳</span>
           </Link>
           <p>
-            A creative mind. A technical soul.
+            Video. Websites. AI.
             <br />
-            Endless possibilities.
+            Good ideas, brought to life.
           </p>
-          <span className="eyebrow">CREATE · BUILD · GROW</span>
         </div>
         <div className="footer-links">
           <div>
-            <span>EXPLORE</span>
-            <Link to="/studios/create">Create</Link>
-            <Link to="/studios/build">Build</Link>
-            <Link to="/studios/grow">
-              Grow <small>Coming soon</small>
-            </Link>
+            <span>WHAT WE DO</span>
+            <Link to="/studios/create">Video editing</Link>
+            <Link to="/studios/build">Websites & AI</Link>
+            <Link to="/studios/grow">Marketing · Coming soon</Link>
           </div>
           <div>
-            <span>MAKE SOMETHING</span>
-            <Link to="/project-lab">Project Lab</Link>
-            <Link to="/find-solution">Find My Solution</Link>
-            <Link to="/contact">
-              Start a Project <ArrowUpRight size={13} />
-            </Link>
-          </div>
-          <div>
-            <span>THE STUDIO</span>
-            <Link to="/work">Our Work</Link>
-            <Link to="/about">About us</Link>
+            <span>GET TO KNOW US</span>
+            <Link to="/work">Work & concepts</Link>
+            <Link to="/about">About</Link>
             <Link to="/faq">Questions & answers</Link>
+          </div>
+          <div>
+            <span>YOUR NEXT STEP</span>
+            <Link to="/contact">
+              Start a Project <ArrowUpRight size={14} />
+            </Link>
+            <Link to="/project-lab">Project planner</Link>
+            <Link to="/find-solution">Help me choose</Link>
           </div>
         </div>
       </div>
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} MAKENDLESS</span>
-        <span>Made with intention. Built for possibility.</span>
+        <span>CREATE · BUILD · GROW</span>
         <div>
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
