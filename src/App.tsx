@@ -44,7 +44,7 @@ const titles: Record<string, string> = {
   "/": "Creative & Technology Studio",
   "/studios": "Services",
   "/studios/create": "CREATE — Video & Creative",
-  "/studios/build": "BUILD — Websites & AI",
+  "/studios/build": "BUILD — Website Development",
   "/studios/grow": "GROW — Coming Soon",
   "/project-lab": "Project Planner",
   "/find-solution": "Find My Solution",
@@ -68,7 +68,7 @@ function RouteEffects() {
       ?.setAttribute("content", title);
     const description =
       service?.description ||
-      "Explore MAKENDLESS: a creative and technology studio for video editing, websites and AI solutions. Digital marketing is coming soon.";
+      "Explore MAKENDLESS: premium video editing and website development for creators and businesses. Digital Marketing — Beta / Coming Soon.";
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute("content", description);
@@ -146,6 +146,10 @@ export default function App() {
                 <Route
                   path="/studios/grow"
                   element={<Studio key="grow" world="grow" />}
+                />
+                <Route
+                  path="/services/T4"
+                  element={<Navigate to="/studios/build" replace />}
                 />
                 <Route path="/services/:id" element={<ServiceDetail />} />
                 <Route path="/project-lab" element={<ProjectLab />} />

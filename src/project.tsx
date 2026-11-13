@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { services } from "./data";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+  type ReactNode,
+} from "react";
 export type Project = {
   business: string;
   services: string[];
@@ -23,8 +30,25 @@ const ProjectContext = createContext<{
   toggleService: (id: string) => void;
   reset: () => void;
 } | null>(null);
+const currentServiceIds = new Set(services.map((service) => service.id));
 export function ProjectProvider({ children }: { children: ReactNode }) {
-  const [project, setProject] = useState<Project>(empty);
+  const [project, storeProject] = useState<Project>(empty);
+  const setProject = useCallback(
+    (update: Project | ((previous: Project) => Project)) => {
+      storeProject((previous) => {
+        const next = typeof update === "function" ? update(previous) : update;
+        const selected = [
+          ...new Set(next.services.filter((id) => currentServiceIds.has(id))),
+        ];
+        return {
+          ...next,
+          services: selected,
+          brief: selected.length < next.services.length ? "" : next.brief,
+        };
+      });
+    },
+    [],
+  );
   const toggleService = (id: string) =>
     setProject((p) => ({
       ...p,

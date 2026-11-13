@@ -5,12 +5,9 @@ import StudioWorlds from "../components/v14/StudioWorlds";
 import LiveShowcase from "../components/LiveShowcase";
 import {
   AudienceSection,
-  WorkSection,
   PackagesSection,
-  AboutSection,
   ProcessSection,
 } from "../components/v14/BusinessJourney";
-import ProjectLabExperience from "../components/v14/ProjectLabExperience";
 import { useSiteTheme } from "../theme-context";
 import "../v14.css";
 export default function Home() {
@@ -36,8 +33,8 @@ export default function Home() {
               </h2>
             </div>
             <p>
-              Move the frame. Change the design. Follow an idea through the
-              workflow. This is where the possibilities become tangible.
+              Move the frame. Change the website. Explore a campaign concept.
+              Try the possibilities, with Digital Marketing clearly in Beta.
             </p>
           </header>
           <LiveShowcase variant="study" theme={theme} />
@@ -52,10 +49,7 @@ export default function Home() {
         </div>
       </section>
       <AudienceSection />
-      <WorkSection />
       <PackagesSection />
-      <ProjectLabExperience />
-      <AboutSection />
       <ProcessSection />
       <section
         className="v14-finale"
@@ -65,7 +59,7 @@ export default function Home() {
       >
         <div className="v14-wrap">
           <div className="v14-final-index">
-            <span className="v14-eyebrow">10 / THE NEXT CHAPTER IS YOURS</span>
+            <span className="v14-eyebrow">07 / THE NEXT CHAPTER IS YOURS</span>
             <span aria-hidden="true">↗</span>
           </div>
           <h2 id="invitation-title" data-motion="typography">
@@ -75,9 +69,9 @@ export default function Home() {
           </h2>
           <div className="v14-final-bottom">
             <p>
-              Tell us what you're building.
+              Tell us about your project.
               <br />
-              We'll help shape the next step.
+              We'll help you take the next step.
             </p>
             <Link className="v14-final-action" to="/contact">
               Start a Project <ArrowUpRight size={32} />

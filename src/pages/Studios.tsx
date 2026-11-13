@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { StudioDestinations } from "../components/v14/StudioWorlds";
 import "../living-home.css";
 
-/** Retained export for existing callers; composition now follows V14 worlds. */
+/** Retained export for existing callers; composition follows the three V16 divisions. */
 export const StudioCards = StudioDestinations;
 export default function Studios() {
   return (
@@ -18,8 +18,8 @@ export default function Studios() {
           your next idea.
         </h1>
         <p>
-          Video editing with feeling. Digital products with purpose. A new
-          chapter of marketing in development. Explore the studio that fits your
+          Video editing with feeling. Website development with purpose. Digital
+          marketing in Beta / Coming Soon. Explore the studio that fits your
           ambition.
         </p>
       </header>

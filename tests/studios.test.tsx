@@ -142,9 +142,7 @@ describe("CREATE studio demonstrations", () => {
     expect(screen.getByRole("heading", { name: /MAKE IT MOVE/ })).not.toBe(
       title,
     );
-    expect(
-      screen.getByText(/no AI generation is being performed/),
-    ).toBeTruthy();
+    expect(screen.getByText(/Original motion study/)).toBeTruthy();
     await user.clear(
       screen.getByRole("textbox", { name: "Your motion headline" }),
     );
@@ -263,32 +261,26 @@ describe("BUILD studio demonstrations", () => {
     );
   });
 
-  it("routes simulated inquiries and keeps human review as the final workflow step", async () => {
+  it("changes a landing-page purpose and validates its real local form", async () => {
     const user = userEvent.setup();
-    render(<ServiceDemo id="T4" />);
-    expect((button("Back") as HTMLButtonElement).disabled).toBe(true);
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "Example inquiry" }),
-      "Video editing",
+    render(<ServiceDemo id="T6" />);
+    await user.click(button("Preview launch interest"));
+    expect(screen.getByRole("alert").textContent).toContain(
+      "valid sample email",
     );
-    await user.click(button("Next step"));
-    expect(
-      screen.getByRole("heading", { name: "Classification" }),
-    ).toBeTruthy();
-    await user.click(button("Next step"));
-    expect(
-      screen.getByText(/Suggested destination: CREATE studio/),
-    ).toBeTruthy();
-    await user.click(button("Next step"));
-    expect(
-      screen.getByRole("heading", { name: "Draft response" }),
-    ).toBeTruthy();
-    await user.click(button("Next step"));
-    expect(screen.getByText(/Nothing is sent by this demo/)).toBeTruthy();
-    await user.click(button("Restart"));
-    expect(
-      screen.getByRole("heading", { name: "Customer inquiry" }),
-    ).toBeTruthy();
+    await user.type(
+      screen.getByRole("textbox", { name: "Sample email" }),
+      "visitor@example.invalid",
+    );
+    await user.click(button("Preview launch interest"));
+    expect(screen.getByRole("status").textContent).toContain(
+      "Nothing was sent or registered",
+    );
+    await user.click(button("Studio visit"));
+    expect(screen.queryByRole("status")).toBeNull();
+    expect(button("Preview visit request")).toBeTruthy();
+    await user.click(button("Mobile layout"));
+    isPressed("Desktop layout");
   });
 
   it("applies independent illustrative maintenance improvements without speed claims", async () => {
@@ -399,17 +391,17 @@ describe("GROW beta concepts", () => {
     expect(screen.getByText("Story frame 1 of 3")).toBeTruthy();
   });
 
-  it("tracks profile completeness and labels analytics as fictional", async () => {
+  it("tracks local profile completeness and updates the illustrative search listing", async () => {
     const user = userEvent.setup();
     render(<ServiceDemo id="M3" />);
     await user.click(screen.getByRole("checkbox", { name: "Opening hours" }));
     expect(screen.getByRole("status").textContent).toContain("2 of 4");
-    await user.click(button("Analytics"));
+    await user.click(button("Search preview"));
+    expect(screen.getByText("Opening hours included")).toBeTruthy();
     expect(
-      screen.getByText(/fictional sample values, not client results/),
+      screen.getByText(/no real listing is created or changed/),
     ).toBeTruthy();
-    expect(screen.getByText("Sample profile views")).toBeTruthy();
-    await user.click(button("Presence"));
+    await user.click(button("Profile"));
     expect(
       (
         screen.getByRole("checkbox", {

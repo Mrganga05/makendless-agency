@@ -30,16 +30,17 @@ async function finishDefaultDiscovery(
   );
 }
 describe("project exploration and inquiry", () => {
-  it("rebuilds business-specific modules without retaining an old business conversation", async () => {
+  it("rebuilds business-specific modules without retaining an old campaign configuration", async () => {
     const user = userEvent.setup();
     renderFlows();
     await user.click(
-      screen.getByRole("button", {
-        name: /^AI assistant A useful first response/,
-      }),
+      screen.getByRole("button", { name: /^Digital marketing BETA/ }),
     );
-    await user.click(screen.getByRole("button", { name: "Opening hours?" }));
-    expect(screen.getByText(/In this example, FORME STUDIO/)).toBeTruthy();
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Campaign objective" }),
+      "visits",
+    );
+    await user.click(screen.getByRole("button", { name: "Story" }));
     await user.click(
       screen.getByRole("button", {
         name: /^Promotional video Give your story motion/,
@@ -52,20 +53,29 @@ describe("project exploration and inquiry", () => {
       screen.getByLabelText("Your business"),
       "Gym / Fitness",
     );
-    expect(screen.queryByText(/In this example, FORME STUDIO/)).toBeNull();
     expect(
-      screen.getByText("Hello! Explore a sample customer conversation."),
-    ).toBeTruthy();
+      (
+        screen.getByRole("combobox", {
+          name: "Campaign objective",
+        }) as HTMLSelectElement
+      ).value,
+    ).toBe("awareness");
+    expect(
+      screen.getByRole("button", { name: "Feed" }).getAttribute("aria-pressed"),
+    ).toBe("true");
     expect(
       screen.getByRole("heading", { name: "START SOMEWHERE." }),
     ).toBeTruthy();
     expect(
       screen.getByRole("button", { name: "Play illustrative animation" }),
     ).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: "Can I book?" }));
-    expect(screen.getByText(/I can help with intro session/)).toBeTruthy();
     const choices = screen.getByLabelText("Selected services");
     expect(within(choices).getAllByRole("button")).toHaveLength(2);
+    expect(
+      within(choices).getByRole("button", {
+        name: "Remove Meta & Google Ads Management",
+      }).textContent,
+    ).toContain("Beta / Coming Soon");
   });
 
   it("stops the film outside the viewport and requires explicit replay", async () => {
@@ -153,7 +163,7 @@ describe("project exploration and inquiry", () => {
     ).toBeTruthy();
     await user.click(
       screen.getByRole("button", {
-        name: "Remove Booking Systems & Custom Web Applications",
+        name: "Remove Booking Websites & Web Applications",
       }),
     );
     expect(screen.queryByRole("heading", { name: "Table for two" })).toBeNull();
@@ -181,7 +191,7 @@ describe("project exploration and inquiry", () => {
     const brief = screen.getByLabelText(
       "Editable project brief",
     ) as HTMLTextAreaElement;
-    expect(brief.value).toContain("Business Website Design & Development");
+    expect(brief.value).toContain("Business Website Development");
     expect(brief.value).toContain("Build a welcoming online home");
     await user.clear(brief);
     await user.type(brief, "My edited brief: a welcoming salon website.");
@@ -294,9 +304,7 @@ describe("project exploration and inquiry", () => {
     const description = screen.getByLabelText(
       /Tell us about your project/,
     ) as HTMLTextAreaElement;
-    expect(description.value).toContain(
-      "Business Website Design & Development",
-    );
+    expect(description.value).toContain("Business Website Development");
     await user.selectOptions(
       screen.getByLabelText("Preferred timeline (optional)"),
       "1–3 months",
@@ -305,9 +313,7 @@ describe("project exploration and inquiry", () => {
     await user.click(
       screen.getByRole("button", { name: "Booking & web apps" }),
     );
-    expect(description.value).toContain(
-      "Booking Systems & Custom Web Applications",
-    );
+    expect(description.value).toContain("Booking Websites & Web Applications");
     await user.clear(description);
     await user.type(description, "Please preserve my own words.");
     await user.click(screen.getByRole("button", { name: "Business websites" }));
@@ -325,7 +331,7 @@ describe("project exploration and inquiry", () => {
       }),
     );
     await user.click(
-      screen.getByRole("button", { name: /Simplify everyday work/ }),
+      screen.getByRole("button", { name: /Make booking easier/ }),
     );
     await user.click(screen.getByRole("button", { name: "Continue" }));
     await user.click(screen.getByRole("button", { name: "Business websites" }));
@@ -337,21 +343,17 @@ describe("project exploration and inquiry", () => {
     );
     expect(
       screen.getByRole("heading", {
-        name: "Booking Systems & Custom Web Applications",
+        name: "Booking Websites & Web Applications",
       }),
     ).toBeTruthy();
-    expect(
-      screen.getByRole("heading", {
-        name: "Business Automation & AI Assistants",
-      }),
-    ).toBeTruthy();
+    expect(screen.queryByText(/\bAI\b|automation/i)).toBeNull();
     await user.click(
       screen.getByRole("link", { name: "Explore in Project Lab" }),
     );
     expect(
       (screen.getByLabelText("Your business") as HTMLSelectElement).value,
     ).toBe("Gym / Fitness");
-    expect(screen.getByText("3 solutions selected")).toBeTruthy();
+    expect(screen.getByText("2 solutions selected")).toBeTruthy();
     expect(screen.getByText("PACE CLUB")).toBeTruthy();
     expect(screen.getByRole("heading", { name: "Intro session" })).toBeTruthy();
     expect(
@@ -365,30 +367,30 @@ describe("project exploration and inquiry", () => {
     await finishDefaultDiscovery(user);
     await user.click(
       screen.getByRole("button", {
-        name: "Add Booking Systems & Custom Web Applications",
+        name: "Add Booking Websites & Web Applications",
       }),
     );
     const card = screen
       .getByRole("heading", {
-        name: "Booking Systems & Custom Web Applications",
+        name: "Booking Websites & Web Applications",
       })
       .closest("button");
     expect(card).toBeTruthy();
     await user.click(card!);
     await user.click(
       screen.getByRole("button", {
-        name: "Add Booking Systems & Custom Web Applications",
+        name: "Add Booking Websites & Web Applications",
       }),
     );
     expect(
       screen.getAllByRole("heading", {
-        name: "Booking Systems & Custom Web Applications",
+        name: "Booking Websites & Web Applications",
       }),
     ).toHaveLength(1);
     expect(
       screen
         .getByRole("heading", {
-          name: "Booking Systems & Custom Web Applications",
+          name: "Booking Websites & Web Applications",
         })
         .closest("button")
         ?.getAttribute("aria-pressed"),

@@ -4,30 +4,17 @@ import {
   lazy,
   useCallback,
   useEffect,
-  useId,
   useRef,
   useState,
   type ReactNode,
 } from "react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  Layers3,
-  Pause,
-  Play,
-  RotateCcw,
-} from "lucide-react";
+import { ArrowRight, Check, Layers3, Pause, Play } from "lucide-react";
 import { Link } from "react-router-dom";
-import {
-  classifyInquiry,
-  initialShowcaseState,
-  workflowSteps,
-  type ShowcaseMode,
-} from "../showcase-state";
+import { initialShowcaseState, type ShowcaseMode } from "../showcase-state";
 import { useProject } from "../project";
 import { useSiteTheme } from "../theme-context";
 import "../showcase.css";
+import CampaignPreview from "./CampaignPreview";
 const SpatialScene = lazy(() => import("./SpatialScene"));
 class SceneBoundary extends Component<
   { children: ReactNode; onError: () => void },
@@ -73,17 +60,22 @@ function availableWebGL() {
 const modes = [
   {
     id: "create" as const,
-    label: "CREATE",
-    description: "Video editing",
+    label: "VIDEO EDITING",
+    description: "CREATE",
     number: "01",
   },
   {
     id: "build" as const,
-    label: "BUILD",
-    description: "Websites",
+    label: "WEBSITES",
+    description: "BUILD",
     number: "02",
   },
-  { id: "ai" as const, label: "AI", description: "Automation", number: "03" },
+  {
+    id: "grow" as const,
+    label: "DIGITAL MARKETING",
+    description: "GROW · BETA / COMING SOON",
+    number: "03",
+  },
 ];
 export default function LiveShowcase({
   initialMode = "create",
@@ -107,7 +99,6 @@ export default function LiveShowcase({
     ...initialShowcaseState,
     mode: initialMode,
   }));
-  const [reviewed, setReviewed] = useState(false);
   const [view, setView] = useState<"auto" | "flat" | "spatial">("auto");
   const [supported, setSupported] = useState<boolean | null>(null);
   const [failed, setFailed] = useState(false);
@@ -115,7 +106,6 @@ export default function LiveShowcase({
   const [visible, setVisible] = useState(false);
   const [pageVisible, setPageVisible] = useState(!document.hidden);
   const host = useRef<HTMLDivElement>(null);
-  const id = useId();
   const reduced = useMedia("(prefers-reduced-motion: reduce)");
   const compact = useMedia("(max-width: 767px)");
   const saveData = Boolean(
@@ -186,11 +176,9 @@ export default function LiveShowcase({
         ? "Feel something."
         : "Make it matter.";
   const comparison = state.comparison ?? 100;
-  const classification = classifyInquiry(state.inquiry || "");
-  const generatedDraft = `Thanks for reaching out. Let’s explore your ${classification.category.toLowerCase()} goals. What are you hoping to create, and what timeline do you have in mind?`;
   const spatialActive = enhance && ready;
   const serviceId =
-    state.mode === "create" ? "V1" : state.mode === "build" ? "T1" : "T4";
+    state.mode === "create" ? "V1" : state.mode === "build" ? "T1" : "M1";
   const added = project.services.includes(serviceId);
   const editComparison = (value: number) =>
     setState((s) => ({
@@ -199,16 +187,6 @@ export default function LiveShowcase({
       edited: value > 0,
       playing: false,
     }));
-  const changeInquiry = (inquiry: string) => {
-    setReviewed(false);
-    setState((s) => ({
-      ...s,
-      inquiry,
-      workflowCategory: classifyInquiry(inquiry).category,
-      draft: undefined,
-      step: 0,
-    }));
-  };
   return (
     <section
       className={`living-showcase living-showcase--${variant}`}
@@ -236,7 +214,11 @@ export default function LiveShowcase({
                 {number}
               </span>
               <span>
-                <strong>{label}</strong>
+                <strong>
+                  {id === "build" && variant === "study"
+                    ? "WEBSITE DEVELOPMENT"
+                    : label}
+                </strong>
                 <small>{description}</small>
               </span>
               <ArrowRight size={15} aria-hidden="true" />
@@ -253,11 +235,7 @@ export default function LiveShowcase({
               <Suspense fallback={null}>
                 <SpatialScene
                   theme={theme}
-                  state={{
-                    ...state,
-                    workflowCategory: classification.category,
-                    draft: state.draft ?? generatedDraft,
-                  }}
+                  state={state}
                   onReady={onReady}
                   onError={onError}
                 />
@@ -418,108 +396,11 @@ export default function LiveShowcase({
               </div>
             </div>
           ) : (
-            <div className="living-ai">
-              <div className="living-ai-topline">
-                <span>ONE REQUEST. A CLEAR NEXT STEP.</span>
-                <span>LOCAL SIMULATION</span>
-              </div>
-              <ol className="living-workflow" aria-label="Workflow stages">
-                {workflowSteps.map((name, i) => (
-                  <li
-                    key={name}
-                    className={`${i === state.step ? "active" : ""} ${i < state.step ? "complete" : ""}`}
-                    aria-current={i === state.step ? "step" : undefined}
-                  >
-                    <span>
-                      {i < state.step ? (
-                        <Check size={13} />
-                      ) : (
-                        String(i + 1).padStart(2, "0")
-                      )}
-                    </span>
-                    <small>
-                      {["Inquiry", "Classify", "Route", "Draft", "Review"][i]}
-                    </small>
-                  </li>
-                ))}
-              </ol>
-              <div
-                className="living-ai-message"
-                key={state.step}
-                data-motion="transform"
-              >
-                <span>STEP {state.step + 1} / 5</span>
-                <h2>{workflowSteps[state.step]}</h2>
-                {state.step === 0 && (
-                  <>
-                    <p>“{state.inquiry}”</p>
-                    <details className="living-inquiry-editor">
-                      <summary>Try your own inquiry</summary>
-                      <label htmlFor={`${id}-inquiry`}>Example inquiry</label>
-                      <textarea
-                        id={`${id}-inquiry`}
-                        maxLength={360}
-                        rows={3}
-                        value={state.inquiry}
-                        onChange={(event) => changeInquiry(event.target.value)}
-                      />
-                      {!state.inquiry?.trim() && (
-                        <small>Write a request to begin.</small>
-                      )}
-                    </details>
-                  </>
-                )}
-                {state.step === 1 && (
-                  <>
-                    <p>{classification.category}</p>
-                    <small>
-                      Classified by local keyword rules. No AI request is made.
-                    </small>
-                  </>
-                )}
-                {state.step === 2 && (
-                  <>
-                    <p>Routed to {classification.studio}.</p>
-                    <small>
-                      The request stays available for a person to check.
-                    </small>
-                  </>
-                )}
-                {state.step === 3 && (
-                  <label className="living-draft-label">
-                    Editable response draft
-                    <textarea
-                      rows={4}
-                      value={state.draft ?? generatedDraft}
-                      onChange={(event) => {
-                        setReviewed(false);
-                        setState((s) => ({ ...s, draft: event.target.value }));
-                      }}
-                    />
-                  </label>
-                )}
-                {state.step === 4 && (
-                  <>
-                    <p>{state.draft ?? generatedDraft}</p>
-                    <span className="living-human-check">
-                      <Check size={15} />
-                      {reviewed
-                        ? "Reviewed locally. Nothing was sent."
-                        : "Human decision required"}
-                    </span>
-                    <button
-                      className="living-review-button"
-                      disabled={
-                        reviewed || !(state.draft ?? generatedDraft).trim()
-                      }
-                      onClick={() => setReviewed(true)}
-                    >
-                      {reviewed ? "Review recorded" : "Mark as reviewed"}
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
+            <CampaignPreview
+              value={state.campaign}
+              onChange={(campaign) => setState((s) => ({ ...s, campaign }))}
+              compact={variant === "hero"}
+            />
           )}
         </div>
         <div className="living-view-bar">
@@ -732,47 +613,7 @@ export default function LiveShowcase({
               </button>
             </div>
           </div>
-        ) : (
-          <div className="living-control-row">
-            <span className="living-step-caption">
-              {state.step + 1} of 5 · {workflowSteps[state.step]}
-            </span>
-            <div className="living-ai-controls">
-              <button
-                aria-label="Previous workflow step"
-                disabled={state.step === 0}
-                onClick={() => setState((s) => ({ ...s, step: s.step - 1 }))}
-              >
-                <ArrowLeft size={16} />
-              </button>
-              <button
-                disabled={
-                  !state.inquiry?.trim() ||
-                  (state.step === 3 && !(state.draft ?? generatedDraft).trim())
-                }
-                onClick={() => {
-                  setReviewed(false);
-                  setState((s) => ({
-                    ...s,
-                    step: s.step === 4 ? 0 : s.step + 1,
-                  }));
-                }}
-              >
-                {state.step === 4 ? (
-                  <>
-                    <RotateCcw size={15} />
-                    Restart
-                  </>
-                ) : (
-                  <>
-                    Next step
-                    <ArrowRight size={15} />
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        )}
+        ) : null}
         <p
           className="living-demo-note"
           role="status"
@@ -782,7 +623,7 @@ export default function LiveShowcase({
             ? `${state.edited ? "Edited concept" : "Original photo"} · Photo-to-motion illustration, not client footage.`
             : state.mode === "build"
               ? `${state.mobile ? "Mobile" : "Desktop"} · ${state.finished ? "Finished" : "Wireframe"} website concept. No live business or booking.`
-              : `${workflowSteps[state.step]} · Rule-based simulation. Nothing is sent.`}
+              : "Digital Marketing · Beta / Coming Soon. Illustrative campaign only; no ads are launched."}
           {failed || supported === false
             ? " Flat preview active; all controls still work."
             : ""}
@@ -790,7 +631,7 @@ export default function LiveShowcase({
         {showServiceActions && (
           <div className="living-service-actions">
             <Link to={`/services/${serviceId}`}>
-              Explore this service
+              {state.mode === "grow" ? "Explore Beta" : "Explore this service"}
               <ArrowRight size={14} />
             </Link>
             <button
@@ -800,11 +641,15 @@ export default function LiveShowcase({
               {added ? (
                 <>
                   <Check size={14} />
-                  Added · remove
+                  {state.mode === "grow"
+                    ? "Interest noted · remove"
+                    : "Added · remove"}
                 </>
               ) : (
                 <>
-                  Add to my project
+                  {state.mode === "grow"
+                    ? "Add future interest"
+                    : "Add to my project"}
                   <ArrowRight size={14} />
                 </>
               )}

@@ -320,92 +320,148 @@
   color: var(--home-muted-dark);
   margin: 0;
 }
-.bj-startup-pages {
-  position: absolute;
-  right: 0;
-  bottom: 35px;
-  width: 33%;
-  transform: rotate(-7deg);
-  display: grid;
-  gap: 10px;
-}
-.bj-startup-pages span {
-  display: block;
-  padding: 17px 14px;
-  background: var(--home-violet-light);
-  color: var(--home-night);
-  font-size: 8px;
-  letter-spacing: 0.07em;
-  box-shadow: 8px 8px 0 color-mix(in srgb, var(--home-night) 30%, transparent);
-}
-.bj-startup-pages span:nth-child(2) {
-  transform: translateX(-14px);
-  background: var(--home-aqua);
-}
-.bj-startup-pages span:nth-child(3) {
-  transform: translateX(-28px);
-  background: var(--home-white);
-}
-.bj-startup-pages i {
-  display: block;
-  width: 60%;
-  height: 3px;
-  margin-top: 10px;
-  background: currentColor;
-  opacity: 0.45;
-}
-.bj-startup-progress {
-  border-top: 1px solid var(--home-line-dark);
-  padding-top: 20px;
-}
-.bj-startup-progress ol {
+/* The startup example is a real landing page, not a workflow diagram. */
+.bj-landing-nav {
   display: flex;
   justify-content: space-between;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  gap: 12px;
-}
-.bj-startup-progress li {
-  display: flex;
   align-items: center;
-  font-size: 11px;
-  gap: 8px;
+  gap: 20px;
+  padding: 0 0 22px;
+  border-bottom: 1px solid var(--home-line-dark);
+}
+.bj-landing-nav strong {
+  font-size: 24px;
+  letter-spacing: -0.06em;
+}
+.bj-landing-nav span {
+  font-size: 10px;
   color: var(--home-muted-dark);
-}
-.bj-startup-progress li > span {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--home-line-dark);
-  border-radius: 50%;
-  font-size: 8px;
-}
-.bj-startup-progress li[aria-current="step"] {
-  color: var(--home-white);
-}
-.bj-startup-progress li[aria-current="step"] > span {
-  border-color: var(--home-violet-light);
-}
-.bj-startup-progress p {
-  color: var(--home-muted-dark);
-  font-size: 11px;
-  min-height: 35px;
   line-height: 1.6;
-  margin: 16px 0 8px;
 }
-.bj-startup-progress button {
+.bj-landing-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 22px;
+  padding-block: 30px;
+  min-height: 305px;
+}
+.bj-landing-layout > div > span {
+  font-size: 10px;
+  color: var(--home-violet-light);
+  letter-spacing: 0.07em;
+}
+.bj-landing-layout h3 {
+  font-size: clamp(30px, 3.4vw, 48px);
+  line-height: 1.03;
+  letter-spacing: -0.05em;
+  margin: 17px 0;
+}
+.bj-landing-layout p,
+.bj-landing-layout ul {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--home-muted-dark);
+  margin: 15px 0;
+  max-width: 300px;
+}
+.bj-landing-layout ul {
+  padding-left: 18px;
+}
+.bj-landing-layout button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 25px;
-  background: transparent;
+  gap: 15px;
+  background: var(--home-paper);
+  color: var(--home-ink);
   border: 0;
-  padding: 10px 0;
   min-height: 44px;
+  padding: 12px 15px;
   font-size: 12px;
-  color: var(--home-white);
+  margin-top: 20px;
+}
+.bj-landing-art {
+  position: relative;
+  background: var(--home-violet-light);
+  overflow: hidden;
+  min-height: 200px;
+}
+.bj-landing-art i {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  height: 65%;
+  width: 60%;
+  background: var(--home-paper);
+  border-radius: 90px 90px 0 0;
+}
+.bj-landing-art i:nth-child(2) {
+  left: 50%;
+  bottom: -25px;
+  background: var(--home-aqua-ink);
+}
+.bj-landing-art > span {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  color: var(--home-ink) !important;
+  font-size: 18px !important;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.04em !important;
+}
+.bj-startup-preview > .bj-landing-note {
+  border-top: 1px solid var(--home-line-dark);
+  padding-top: 16px;
+  font-size: 11px;
+}
+.bj-beta-label {
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--home-violet-ink);
+  font-weight: 600;
+}
+.bj-beta-notice {
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+  margin-top: 20px !important;
+  color: var(--home-muted-light) !important;
+}
+.bj-beta-scope {
+  margin-block: 20px !important;
+}
+.bj-beta-scope li {
+  font-size: 12px !important;
+  line-height: 1.6;
+}
+@media (max-width: 600px) {
+  .bj-landing-layout {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .bj-landing-art {
+    min-height: 170px;
+  }
+  .bj-landing-layout h3 {
+    font-size: 38px;
+  }
+  .bj-landing-nav {
+    gap: 15px;
+  }
+  .bj-landing-nav span {
+    max-width: 180px;
+  }
+  .bj-landing-layout button {
+    width: 100%;
+  }
+  .bj-landing-art i {
+    height: 90%;
+    width: 45%;
+    left: 30%;
+  }
+  .bj-landing-art i:nth-child(2) {
+    left: 65%;
+  }
 }
 .bj-store-preview {
   min-height: 280px;

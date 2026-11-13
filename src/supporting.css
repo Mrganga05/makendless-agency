@@ -1887,3 +1887,14 @@
     transition: none !important;
   }
 }
+
+/* The retired deep link stays navigable without occupying the project grid. */
+.concept-legacy-anchor {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.concept-project-campaign .concept-project-visual {
+  min-width: 0;
+}

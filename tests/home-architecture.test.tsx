@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest";
 import App from "../src/App";
 import { PRISM_ATELIER } from "../src/theme";
 
-describe("V14 complete customer journey", () => {
-  it("presents the ten-section journey, useful studio destination and one main heading", () => {
+describe("V16 seven-section customer journey", () => {
+  it("presents the seven-section journey, useful studio destination and one main heading", () => {
     window.history.replaceState({}, "", "/");
     const { container } = render(<App />);
     const page = container.querySelector(".v14-home")!;
@@ -15,10 +15,7 @@ describe("V14 complete customer journey", () => {
       "studios",
       "showcase",
       "solutions",
-      "work",
       "packages",
-      "project-lab",
-      "about",
       "process",
       "start",
     ]);
@@ -36,11 +33,12 @@ describe("V14 complete customer journey", () => {
       (node) => node.id,
     );
     expect(new Set(ids).size).toBe(ids.length);
+    expect(page.querySelector("#work")).toBeNull();
+    expect(page.querySelector("#project-lab")).toBeNull();
+    expect(page.querySelector("#about")).toBeNull();
     expect(
-      screen.getByRole("heading", {
-        name: /Creative minds.*Technical thinking/,
-      }),
-    ).toBeTruthy();
+      screen.getAllByRole("link", { name: "Project Lab" }).length,
+    ).toBeGreaterThan(0);
   });
   it("keeps the chosen palette through real navigation and the inquiry destination reachable", async () => {
     const user = userEvent.setup();
@@ -61,5 +59,43 @@ describe("V14 complete customer journey", () => {
     await screen.findByRole("heading", { level: 1 });
     unmount();
     expect(document.documentElement.dataset.theme).toBeUndefined();
+  });
+  it("keeps the two campaign previews independent with uniquely associated controls", async () => {
+    const user = userEvent.setup();
+    window.history.replaceState({}, "", "/");
+    const { container } = render(<App />);
+    const hero = within(container.querySelector("#home") as HTMLElement);
+    const transformation = within(
+      container.querySelector("#showcase") as HTMLElement,
+    );
+    await user.click(
+      hero.getByRole("button", { name: /DIGITAL MARKETING GROW/ }),
+    );
+    await user.click(
+      transformation.getByRole("button", { name: /DIGITAL MARKETING GROW/ }),
+    );
+    await user.selectOptions(
+      hero.getByRole("combobox", { name: "Campaign objective" }),
+      "visits",
+    );
+    expect(
+      (
+        transformation.getByRole("combobox", {
+          name: "Campaign objective",
+        }) as HTMLSelectElement
+      ).value,
+    ).toBe("awareness");
+    await user.click(
+      transformation.getByRole("button", { name: "Story", exact: true }),
+    );
+    expect(
+      hero
+        .getByRole("button", { name: "Feed", exact: true })
+        .getAttribute("aria-pressed"),
+    ).toBe("true");
+    const ids = Array.from(container.querySelectorAll("[id]")).map(
+      (node) => node.id,
+    );
+    expect(new Set(ids).size).toBe(ids.length);
   });
 });

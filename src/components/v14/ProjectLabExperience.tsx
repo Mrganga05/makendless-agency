@@ -13,12 +13,13 @@ import {
   Play,
   Plus,
   RotateCcw,
-  Sparkles,
+  Megaphone,
   X,
 } from "lucide-react";
 import { businesses, services } from "../../data";
 import { generateBrief } from "../../brief";
 import { useProject } from "../../project";
+import CampaignPreview from "../CampaignPreview";
 import "../../v14-project.css";
 
 const solutions = [
@@ -36,10 +37,10 @@ const solutions = [
     Icon: Film,
   },
   {
-    id: "T4",
-    name: "AI assistant",
-    detail: "A useful first response",
-    Icon: Sparkles,
+    id: "M1",
+    name: "Digital marketing",
+    detail: "BETA / COMING SOON",
+    Icon: Megaphone,
   },
 ];
 const scenes: Record<
@@ -196,8 +197,7 @@ export default function ProjectLabExperience({
   const [date, setDate] = useState("2030-06-18");
   const [slot, setSlot] = useState("10:00 AM");
   const [booked, setBooked] = useState(false);
-  const [reply, setReply] = useState("");
-  const [question, setQuestion] = useState("");
+  const [campaignVersion, setCampaignVersion] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [briefOpen, setBriefOpen] = useState(false);
@@ -252,8 +252,7 @@ export default function ProjectLabExperience({
   }, [briefOpen]);
   function resetPreview() {
     setBooked(false);
-    setReply("");
-    setQuestion("");
+    setCampaignVersion((version) => version + 1);
     setPlaying(false);
     setElapsed(0);
     setCopyStatus("");
@@ -317,26 +316,6 @@ export default function ProjectLabExperience({
     if (elapsed >= 6) setElapsed(0);
     setPlaying((value) => !value);
   }
-  function answer(input: string) {
-    setQuestion(input);
-    const text = input.toLowerCase();
-    if (/book|appointment|reserve|session/.test(text))
-      setReply(
-        `I can help with ${scene.appointment.toLowerCase()} in this concept. ${visible("T3") ? "Use the sample booking form to explore the next step." : "Add Booking system to try an appointment flow."} No real appointment is made.`,
-      );
-    else if (/hours|open|time/.test(text))
-      setReply(
-        `In this example, ${scene.name} would answer using the business hours you provide. No opening hours have been supplied, so a person would need to confirm them.`,
-      );
-    else if (/price|cost|pay/.test(text))
-      setReply(
-        "No prices are supplied in this concept. I would ask a team member to confirm the service and quote before suggesting a cost.",
-      );
-    else
-      setReply(
-        `Thanks for asking about ${scene.name}. This scripted example needs a person to answer that question. It cannot invent an answer or send your message.`,
-      );
-  }
   function explore() {
     setExplored(true);
     preview.current?.focus({ preventScroll: true });
@@ -356,9 +335,7 @@ export default function ProjectLabExperience({
       <div className="v14-project-shell">
         <header className="v14-project-heading">
           <div>
-            <span className="v14-project-kicker">
-              07 / THE LIVING PROJECT LAB
-            </span>
+            <span className="v14-project-kicker">THE LIVING PROJECT LAB</span>
             <Title id={`${uid}-title`} data-motion="typography">
               Build your
               <br />
@@ -449,6 +426,7 @@ export default function ProjectLabExperience({
             </button>
             <p className="v14-project-note">
               A place to explore. Nothing is booked, sent or purchased here.
+              Digital marketing selections record future interest only.
             </p>
           </aside>
           <div className="v14-project-stage" data-business={scene.kind}>
@@ -540,7 +518,7 @@ export default function ProjectLabExperience({
                   </button>
                 </div>
               )}
-              {(visible("T3") || visible("V3") || visible("T4")) && (
+              {(visible("T3") || visible("V3") || visible("M1")) && (
                 <div className="v14-project-modules">
                   {visible("T3") && (
                     <section
@@ -638,66 +616,27 @@ export default function ProjectLabExperience({
                       </p>
                     </section>
                   )}
-                  {visible("T4") && (
+                  {visible("M1") && (
                     <section
-                      className="v14-project-chat"
-                      aria-label="Simulated assistant"
+                      className="v14-project-marketing"
+                      aria-label="Digital marketing concept"
                       data-motion="transform"
                     >
                       <div className="v14-project-module-head">
-                        <Sparkles size={18} />
-                        <span>A USEFUL FIRST RESPONSE</span>
-                        <small>SCRIPTED</small>
+                        <Megaphone size={18} />
+                        <span>YOUR NEXT CAMPAIGN, CONSIDERED</span>
+                        <small>BETA / COMING SOON</small>
                       </div>
-                      <h4>Hello from {scene.name}.</h4>
+                      <h4>A campaign direction to explore.</h4>
                       <p>
-                        Try a customer question. This example uses visible
-                        rules, not a live AI service.
+                        Explore an illustrative objective, creative and
+                        placement. This is future interest only: no campaign
+                        launches, advertising accounts or performance results.
                       </p>
-                      <div className="v14-project-chat-suggestions">
-                        {[
-                          "Opening hours?",
-                          "Can I book?",
-                          "What does it cost?",
-                        ].map((text) => (
-                          <button key={text} onClick={() => answer(text)}>
-                            {text}
-                          </button>
-                        ))}
-                      </div>
-                      <form
-                        onSubmit={(event) => {
-                          event.preventDefault();
-                          if (question.trim()) answer(question);
-                        }}
-                      >
-                        <label
-                          className="v14-project-sr"
-                          htmlFor={`${uid}-question`}
-                        >
-                          Ask the sample assistant
-                        </label>
-                        <input
-                          id={`${uid}-question`}
-                          value={question}
-                          onChange={(event) => {
-                            setQuestion(event.target.value);
-                            setReply("");
-                          }}
-                          placeholder="Ask a sample question…"
-                          maxLength={300}
-                        />
-                        <button
-                          disabled={!question.trim()}
-                          aria-label="Try sample question"
-                        >
-                          <ArrowUpRight size={17} />
-                        </button>
-                      </form>
-                      <p className="v14-project-reply" role="status">
-                        {reply ||
-                          "Hello! Explore a sample customer conversation."}
-                      </p>
+                      <CampaignPreview
+                        key={`${project.business}:${campaignVersion}`}
+                        compact
+                      />
                     </section>
                   )}
                 </div>
@@ -730,8 +669,8 @@ export default function ProjectLabExperience({
             </div>
             {explored && (
               <p className="v14-project-explored" role="status">
-                Preview focused. Try the website, booking or assistant controls
-                inside it.
+                Preview focused. Try the website, booking, video or marketing
+                concept controls inside it.
               </p>
             )}
           </div>
@@ -758,7 +697,7 @@ export default function ProjectLabExperience({
                   onClick={() => toggle(service.id)}
                 >
                   {service.short}
-                  {service.world === "grow" ? " · Beta" : ""}
+                  {service.world === "grow" ? " · Beta / Coming Soon" : ""}
                   <X size={13} />
                 </button>
               ))}

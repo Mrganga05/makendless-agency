@@ -5,6 +5,15 @@ import App from "../src/App";
 import { services } from "../src/data";
 
 describe("navigation and routing", () => {
+  it("redirects the retired service URL to BUILD without reusing its ID", async () => {
+    window.history.replaceState({}, "", "/services/T4");
+    render(<App />);
+    await screen.findByRole("heading", { level: 1 });
+    await waitFor(() =>
+      expect(window.location.pathname).toBe("/studios/build"),
+    );
+    expect(services.some((service) => service.id === "T4")).toBe(false);
+  });
   it.each(["outside", "still"])(
     "scrolls to the %s concept after its lazy route mounts",
     async (anchor) => {
@@ -44,8 +53,20 @@ describe("navigation and routing", () => {
   ]) {
     it(`renders ${path} with one main heading and working main landmark`, async () => {
       window.history.replaceState({}, "", path);
-      render(<App />);
+      const { container } = render(<App />);
       await screen.findByRole("heading", { level: 1 });
+      const interfaceCopy = Array.from(
+        container.querySelectorAll("[aria-label],[alt],[placeholder],[title]"),
+      )
+        .map((node) =>
+          ["aria-label", "alt", "placeholder", "title"]
+            .map((key) => node.getAttribute(key) || "")
+            .join(" "),
+        )
+        .join(" ");
+      expect(
+        `${container.textContent} ${interfaceCopy} ${document.title}`,
+      ).not.toMatch(/\b(?:AI|automation|automate|assistants?)\b/i);
       expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
       expect(screen.getByRole("main")).toBeTruthy();
       expect(
@@ -68,7 +89,7 @@ describe("navigation and routing", () => {
     const opener = within(nav).getByRole("button", { name: "Studios" });
     await user.click(opener);
     const grow = within(nav).getByRole("link", {
-      name: /GROW Marketing Beta \/ Coming Soon/,
+      name: /GROW Digital Marketing Beta \/ Coming Soon/,
     });
     expect(grow.getAttribute("href")).toBe("/studios/grow");
     const first = within(nav).getByRole("link", {
@@ -91,7 +112,9 @@ describe("navigation and routing", () => {
     await user.click(screen.getByRole("heading", { level: 1 }));
     expect(opener.getAttribute("aria-expanded")).toBe("false");
     await user.click(opener);
-    await user.click(screen.getByRole("link", { name: "BUILD Websites & AI" }));
+    await user.click(
+      screen.getByRole("link", { name: "BUILD Website Development" }),
+    );
     expect(window.location.pathname).toBe("/studios/build");
     expect(opener.getAttribute("aria-expanded")).toBe("false");
   });
@@ -131,9 +154,9 @@ describe("navigation and routing", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(document.body.style.overflow).toBe("");
   });
-  it("keeps GROW availability visible and all 13 categories intact", () => {
-    expect(services).toHaveLength(13);
-    expect(new Set(services.map((s) => s.id)).size).toBe(13);
+  it("keeps GROW availability visible and all 14 categories intact", () => {
+    expect(services).toHaveLength(14);
+    expect(new Set(services.map((s) => s.id)).size).toBe(14);
     window.history.replaceState({}, "", "/studios/grow");
     render(<App />);
     expect(screen.getAllByText(/coming soon/i).length).toBeGreaterThan(0);

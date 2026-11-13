@@ -43,7 +43,7 @@ function state() {
   );
 }
 const button = (name: string | RegExp) => screen.getByRole("button", { name });
-describe("V14 living project experience", () => {
+describe("V16 standalone project experience", () => {
   it("shows a useful example without silently adding services to a brief", async () => {
     const user = userEvent.setup();
     setup();
@@ -60,13 +60,13 @@ describe("V14 living project experience", () => {
       "Editable project brief",
     ) as HTMLTextAreaElement;
     expect(brief.value).toContain("Chosen solutions: To be discussed");
-    expect(brief.value).not.toContain("Business Website Design");
+    expect(brief.value).not.toContain("Business Website Development");
     expect(document.activeElement).toBe(brief);
     await user.click(button("Use this example"));
     expect(state().services).toEqual(["T1", "T3"]);
     expect(screen.queryByLabelText("Editable project brief")).toBeNull();
   });
-  it("changes each real module and invalidates booking, reply and brief when inputs change", async () => {
+  it("changes each real module and resets campaign, booking and brief feedback when inputs change", async () => {
     const user = userEvent.setup();
     setup();
     await user.click(button("Use this example"));
@@ -79,21 +79,37 @@ describe("V14 living project experience", () => {
     await user.click(button("1:30 PM"));
     await user.click(button("Preview booking"));
     expect(screen.getByText(/2030-06-19 at 1:30 PM/)).toBeTruthy();
-    await user.click(button(/^AI assistant/));
-    await user.click(button("Opening hours?"));
-    expect(screen.getByText(/In this example, FORME STUDIO/)).toBeTruthy();
+    await user.click(button(/^Digital marketing/));
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Campaign objective" }),
+      "inquiries",
+    );
+    await user.click(button("People & story"));
+    await user.click(button("Story"));
+    expect(button("Story").getAttribute("aria-pressed")).toBe("true");
     await user.click(button("Generate my project brief"));
+    expect(
+      (screen.getByLabelText("Editable project brief") as HTMLTextAreaElement)
+        .value,
+    ).toContain("Beta / Coming Soon — expression of interest");
     await user.selectOptions(
       screen.getByLabelText("Your business"),
       "Café / Restaurant",
     );
     expect(screen.getByText("STILL CAFÉ")).toBeTruthy();
-    expect(screen.queryByText(/In this example, FORME STUDIO/)).toBeNull();
+    expect(
+      (
+        screen.getByRole("combobox", {
+          name: "Campaign objective",
+        }) as HTMLSelectElement
+      ).value,
+    ).toBe("awareness");
+    expect(button("Feed").getAttribute("aria-pressed")).toBe("true");
     expect(screen.queryByLabelText("Editable project brief")).toBeNull();
     await user.click(button(/^Website Your own/));
     expect(screen.queryByText("STILL CAFÉ")).toBeNull();
     expect(
-      screen.getByRole("region", { name: "Simulated assistant" }),
+      screen.getByRole("region", { name: "Digital marketing concept" }),
     ).toBeTruthy();
     await user.click(button(/^Booking system Make/));
     expect(
@@ -109,21 +125,21 @@ describe("V14 living project experience", () => {
     expect(state().services).toEqual(["V2"]);
     expect(state().goal).toBe("Edit my podcast");
     expect(state().notes).toBe("Keep this context");
-    await user.click(button(/^AI assistant/));
+    await user.click(button(/^Digital marketing/));
     await user.click(button("Generate my project brief"));
     const brief = screen.getByLabelText("Editable project brief");
     await user.clear(brief);
     await user.type(
       brief,
-      "An assistant, with podcast editing and human review.",
+      "Podcast editing and future interest in digital marketing beta.",
     );
     await user.click(screen.getByRole("link", { name: "Continue to inquiry" }));
     expect(
       screen.getByRole("heading", { name: "Inquiry destination" }),
     ).toBeTruthy();
-    expect(state().services).toEqual(["V2", "T4"]);
+    expect(state().services).toEqual(["V2", "M1"]);
     expect(state().brief).toBe(
-      "An assistant, with podcast editing and human review.",
+      "Podcast editing and future interest in digital marketing beta.",
     );
   });
   it("copies the edited brief and exposes a selected manual fallback if clipboard fails", async () => {
@@ -194,16 +210,25 @@ describe("V14 living project experience", () => {
       expect(document.activeElement).toBe(
         screen.getByLabelText("Live project preview"),
       );
-      await user.click(button(/^AI assistant/));
-      const chat = screen.getByRole("region", { name: "Simulated assistant" });
-      await user.type(
-        within(chat).getByLabelText("Ask the sample assistant"),
-        "Anything unknown",
+      await user.click(button(/^Digital marketing/));
+      const campaign = screen.getByRole("region", {
+        name: "Digital marketing concept",
+      });
+      await user.selectOptions(
+        within(campaign).getByRole("combobox", { name: "Campaign objective" }),
+        "visits",
       );
-      await user.click(
-        within(chat).getByRole("button", { name: "Try sample question" }),
-      );
-      expect(within(chat).getByText(/cannot invent an answer/)).toBeTruthy();
+      expect(
+        (
+          within(campaign).getByRole("combobox", {
+            name: "Campaign objective",
+          }) as HTMLSelectElement
+        ).value,
+      ).toBe("visits");
+      expect(
+        within(campaign).getAllByText(/BETA \/ COMING SOON/).length,
+      ).toBeGreaterThan(0);
+      expect(within(campaign).getByText(/No campaign is running/)).toBeTruthy();
     } finally {
       preference.mockRestore();
     }

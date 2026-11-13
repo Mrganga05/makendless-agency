@@ -148,19 +148,19 @@ describe("V12 transformation stage", () => {
     ).toBeTruthy();
     expect(screen.queryByRole("slider")).toBeNull();
     await user.click(
-      screen.getByRole("button", { name: /03 Automate a workflow/ }),
+      screen.getByRole("button", { name: /03 Preview a campaign — Beta/ }),
     );
-    expect(
-      await screen.findByRole("heading", { name: "Customer inquiry" }),
-    ).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: "Next step" }));
-    expect(
-      screen.getByRole("heading", { name: "Classification" }),
-    ).toBeTruthy();
+    const objective = await screen.findByRole("combobox", {
+      name: "Campaign objective",
+    });
+    await user.selectOptions(objective, "Website visits");
+    expect(screen.getByRole("status").textContent).toContain(
+      "No campaign is launched",
+    );
     expect(
       screen
         .getByRole("link", { name: "Explore this service" })
         .getAttribute("href"),
-    ).toBe("/services/T4");
+    ).toBe("/services/M1");
   });
 });

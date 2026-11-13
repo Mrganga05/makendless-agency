@@ -20,7 +20,7 @@ const audiences = [
     title: "One recording. More possibilities.",
     scenario:
       "You have the ideas and the footage. Shape them into a consistent set of Reels, highlights and stories, with your voice intact.",
-    services: ["V1", "V4", "V5"],
+    services: ["V1", "V2", "V4"],
     goal: "Create a cohesive set of edited and repurposed content.",
   },
   {
@@ -37,18 +37,18 @@ const audiences = [
     label: "Startup",
     title: "Give your next idea a clear shape.",
     scenario:
-      "Introduce your product with a focused website, then connect the useful workflows behind your first customer conversations.",
-    services: ["T1", "T3", "T4"],
-    goal: "Create a startup website, product experience and useful automation.",
+      "Introduce your product with a focused website and landing page. Explore promotional content and Digital Marketing Beta concepts.",
+    services: ["T1", "T6", "V3", "M1"],
+    goal: "Create a startup website and landing page; explore promotional video and Digital Marketing Beta concepts.",
   },
   {
     id: "store",
     label: "Online Store",
     title: "Make the product part of the story.",
     scenario:
-      "Bring product details, a considered shopping journey and your operational tools together in one digital experience.",
-    services: ["T2", "V3", "T4"],
-    goal: "Develop an e-commerce experience with product media and operational integrations.",
+      "Bring product details, a considered shopping journey and illustrative Digital Marketing Beta concepts together.",
+    services: ["T2", "V3", "M1"],
+    goal: "Develop an e-commerce experience with product media; explore Digital Marketing Beta concepts.",
   },
 ] as const;
 
@@ -191,22 +191,23 @@ function AudienceVisual({ id }: { id: string }) {
                 <i />
               </div>
             </div>
-            <div className="hp-startup-flow">
-              <span>BEHIND THE FIRST CONVERSATION</span>
-              <div>
-                {["Inquiry", "Organize", "Human review"].map((s, i) => (
-                  <span className={i <= frame ? "is-current" : ""} key={s}>
-                    <b>{i < frame ? <Check size={13} /> : `0${i + 1}`}</b>
-                    {s}
-                  </span>
-                ))}
-              </div>
+            <div className="hp-startup-details">
+              <span>LANDING PAGE CONCEPT</span>
+              <strong>
+                {
+                  [
+                    "Meet the product.",
+                    "See what it does.",
+                    "Take the next step.",
+                  ][frame]
+                }
+              </strong>
               <p role="status">
                 {
                   [
-                    "A sample project inquiry arrives.",
-                    "The request is organized for the right conversation.",
-                    "A person reviews the suggested next step. Nothing is sent.",
+                    "A focused introduction to the product and its purpose.",
+                    "A feature section explains the details in a clear sequence.",
+                    "A contact section gives interested visitors one clear next action. Nothing is submitted.",
                   ][frame]
                 }
               </p>
@@ -216,7 +217,7 @@ function AudienceVisual({ id }: { id: string }) {
             className="hp-art-action"
             onClick={() => setFrame((n) => (n + 1) % 3)}
           >
-            {frame === 2 ? "Reset sample flow" : "Follow the inquiry"}
+            {frame === 2 ? "Reset landing preview" : "Explore landing page"}
             {frame === 2 ? <RotateCcw size={15} /> : <ArrowRight size={16} />}
           </button>
         </>
@@ -356,6 +357,9 @@ export function AudienceSolutions() {
                 {selected.services.map((id) => (
                   <Link key={id} to={`/services/${id}`}>
                     {services.find((s) => s.id === id)?.short}
+                    {services.find((s) => s.id === id)?.world === "grow"
+                      ? " — Beta / Coming Soon"
+                      : ""}
                     <ArrowUpRight size={13} />
                   </Link>
                 ))}

@@ -55,17 +55,20 @@ describe("homepage package guide", () => {
       screen.getByText(/Page count, content creation, CMS requirements/),
     ).toBeTruthy();
     await user.click(
-      screen.getByRole("button", { name: "AI assistant integration" }),
+      screen.getByRole("button", { name: "Social content planning — Beta" }),
     );
-    expect(screen.getByText("Human handoff planning")).toBeTruthy();
+    expect(screen.getByText("Example publishing plan")).toBeTruthy();
     expect(
-      screen.getByText(/privacy requirements and provider costs/),
+      screen.getByText(/publishing frequency and approved assets/),
     ).toBeTruthy();
     expect(project().services).toEqual([]);
     expect(project().notes).toBe("");
-    expect(
-      screen.getByRole("button", { name: "Request a tailored estimate" }),
-    ).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Explore Beta" })).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Explore Beta" }));
+    expect(screen.getByLabelText("Current route").textContent).toBe(
+      "/studios/grow",
+    );
+    expect(project().services).toEqual([]);
     expect(screen.queryByText(/\$\d|₹\d|£\d|€\d/)).toBeNull();
   });
   it("transfers the chosen format into an inquiry while preserving the existing project", async () => {

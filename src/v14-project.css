@@ -15,14 +15,14 @@
 .v14-project summary {
   min-height: 44px;
 }
-.v14-project button {
+:where(.v14-project) button {
   border: 0;
   background: transparent;
   font-size: 13px;
 }
-.v14-project input,
-.v14-project textarea,
-.v14-project select {
+:where(.v14-project) input,
+:where(.v14-project) textarea,
+:where(.v14-project) select {
   width: 100%;
   max-width: 100%;
   border: 1px solid var(--home-line-dark);
@@ -36,7 +36,7 @@
   resize: vertical;
   line-height: 1.6;
 }
-.v14-project select option {
+:where(.v14-project) select option {
   background: var(--home-night);
   color: var(--home-white);
 }
@@ -596,44 +596,28 @@
   color: var(--home-muted-dark);
   margin-top: 15px;
 }
-.v14-project-chat {
-  border-top: 1px solid var(--home-line-light);
+.v14-project-marketing {
+  grid-column: 1 / -1;
+  background: var(--home-paper);
+  color: var(--home-ink);
+  padding: 26px;
 }
-.v14-project-chat > p {
-  font-size: 12px;
+.v14-project-marketing > p {
   color: var(--home-muted-light);
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 12px 0 22px;
 }
-.v14-project-chat-suggestions {
-  display: flex;
+.v14-project-marketing .v14-project-module-head {
+  color: var(--home-muted-light);
   flex-wrap: wrap;
-  gap: 7px;
-  margin: 17px 0;
 }
-.v14-project-chat-suggestions button {
-  border: 1px solid var(--home-line-light);
-  padding: 8px 10px;
-  font-size: 11px;
+.v14-project-marketing .v14-project-module-head small {
+  color: var(--home-violet-ink);
+  font-size: 10px;
 }
-.v14-project-chat form {
-  display: flex;
-  gap: 8px;
-}
-.v14-project-chat input {
-  min-width: 0;
-  border-color: var(--home-line-light);
-  font-size: 12px;
-}
-.v14-project-chat form button {
-  width: 44px;
-  flex-shrink: 0;
-  background: var(--home-ink);
-  color: var(--home-paper);
-}
-.v14-project-chat > .v14-project-reply {
-  padding: 15px;
-  background: var(--home-wash);
-  margin-top: 14px;
-  font-size: 12px;
+.v14-project-marketing :is(button, input, select):focus-visible {
+  outline-color: var(--home-violet-ink);
 }
 .v14-project-stage-bottom {
   display: flex;

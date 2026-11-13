@@ -119,6 +119,8 @@ beforeEach(() => {
     save: vi.fn(),
     restore: vi.fn(),
     rect: vi.fn(),
+    ellipse: vi.fn(),
+    fill: vi.fn(),
     clip: vi.fn(),
     createLinearGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
   };
@@ -209,9 +211,8 @@ describe("living renderer ownership (WebGL driver mocked, real Three scene graph
     const before = renderer.render.mock.calls.length;
     handle.update({
       ...initialShowcaseState,
-      mode: "ai",
-      step: 3,
-      draft: "A considered draft",
+      mode: "grow",
+      campaign: { objective: "visits", creative: "story", placement: "story" },
     });
     settle();
     expect(renderer.render).toHaveBeenCalledTimes(before);
@@ -221,6 +222,50 @@ describe("living renderer ownership (WebGL driver mocked, real Three scene graph
     );
     settle();
     expect(renderer.render.mock.calls.length).toBeGreaterThan(before);
+    handle.dispose();
+  });
+
+  it("synchronizes campaign copy, creative and placement without inventing advertising results", () => {
+    const fail = vi.fn();
+    const handle = createLivingScene(
+      host,
+      { ...initialShowcaseState, mode: "grow" },
+      vi.fn(),
+      fail,
+      "atelier",
+    );
+    settle();
+    const context = document.createElement("canvas").getContext("2d")!;
+    const labels = () =>
+      vi.mocked(context.fillText).mock.calls.map(([value]) => value);
+    expect(labels()).toContain("GROW — BETA / COMING SOON");
+    expect(labels()).toContain("BRAND AWARENESS / FEED");
+    expect(labels()).toContain("Discover the café");
+    expect(
+      labels().some((value) => /automation|workflow|\bAI\b/i.test(value)),
+    ).toBe(false);
+    const renderer = gpu.instances[0];
+    const scene = renderer.render.mock.calls[0][0] as Scene;
+    const story = scene.getObjectByName("campaign-story")!;
+    const before = story.scale.x;
+    const originalEllipseCalls = vi.mocked(context.ellipse).mock.calls.length;
+    vi.mocked(context.fillText).mockClear();
+    handle.update({
+      ...initialShowcaseState,
+      mode: "grow",
+      campaign: { objective: "visits", creative: "story", placement: "story" },
+    });
+    settle();
+    expect(labels()).toContain("WEBSITE VISITS / STORY");
+    expect(labels()).toContain("Explore the sample menu");
+    expect(labels()).toContain("SELECTED PLACEMENT · ILLUSTRATIVE ONLY");
+    expect(story.scale.x).toBeGreaterThan(before);
+    expect(vi.mocked(context.ellipse).mock.calls.length).toBe(
+      originalEllipseCalls,
+    );
+    expect(gpu.instances).toHaveLength(1);
+    expect(frames.size).toBe(0);
+    expect(fail).not.toHaveBeenCalled();
     handle.dispose();
   });
 
@@ -268,7 +313,7 @@ describe("living renderer ownership (WebGL driver mocked, real Three scene graph
     expect(frames.size).toBe(0);
     const renderer = gpu.instances[0];
     expect(renderer.render).toHaveBeenCalledTimes(1);
-    handle.update({ ...initialShowcaseState, mode: "ai", step: 4 });
+    handle.update({ ...initialShowcaseState, mode: "grow" });
     tick();
     expect(frames.size).toBe(0);
     expect(renderer.render).toHaveBeenCalledTimes(2);

@@ -75,7 +75,7 @@ describe("homepage business journeys", () => {
     expect(
       screen.getByRole("heading", { name: "Your project workspace" }),
     ).toBeTruthy();
-    expect(project().services).toEqual(["T5", "T2", "V3", "T4"]);
+    expect(project().services).toEqual(["T5", "T2", "V3", "M1"]);
     expect(project().goal).toBe("Keep my own goal");
     expect(project().notes).toBe(
       "Keep this context\nSelected business journey: Online Store.",
@@ -89,14 +89,14 @@ describe("homepage business journeys", () => {
     await user.click(screen.getByRole("button", { name: "Seed my project" }));
     await user.click(screen.getByRole("button", { name: /Startup/ }));
     await user.click(
-      screen.getByRole("button", { name: "Follow the inquiry" }),
+      screen.getByRole("button", { name: "Explore landing page" }),
     );
-    expect(screen.getByRole("status").textContent).toContain("organized");
+    expect(screen.getByRole("status").textContent).toContain("feature section");
     await user.click(
-      screen.getByRole("button", { name: "Follow the inquiry" }),
+      screen.getByRole("button", { name: "Explore landing page" }),
     );
     expect(screen.getByRole("status").textContent).toContain(
-      "Nothing is sent.",
+      "Nothing is submitted.",
     );
     await user.click(
       screen.getByRole("link", { name: "Start with my own choices" }),

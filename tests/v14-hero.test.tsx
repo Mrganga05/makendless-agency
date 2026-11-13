@@ -22,7 +22,7 @@ function mount() {
     </MemoryRouter>,
   );
 }
-describe("V14 hero journey", () => {
+describe("V16 hero journey", () => {
   it("communicates the business and preserves real studio and inquiry destinations", async () => {
     const user = userEvent.setup();
     mount();
@@ -34,7 +34,7 @@ describe("V14 hero journey", () => {
     ).toBeTruthy();
     expect(
       screen.getByText(
-        "Video editing, websites and AI solutions for ambitious creators and businesses.",
+        "Premium video editing, website development and digital marketing solutions for ambitious creators and businesses.",
       ),
     ).toBeTruthy();
     expect(
@@ -48,8 +48,10 @@ describe("V14 hero journey", () => {
   it("carries an explicitly explored service into the inquiry", async () => {
     const user = userEvent.setup();
     mount();
-    await user.click(screen.getByRole("button", { name: "AI Automation" }));
+    await user.click(
+      screen.getByRole("button", { name: /^DIGITAL MARKETING/ }),
+    );
     await user.click(screen.getByRole("link", { name: "Start a Project" }));
-    expect(screen.getByText("Inquiry services: T4")).toBeTruthy();
+    expect(screen.getByText("Inquiry services: M1")).toBeTruthy();
   });
 });

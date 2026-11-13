@@ -140,15 +140,24 @@ describe("homepage project creation", () => {
     ).toBeTruthy();
     await user.click(button(/Website A digital home/));
     await user.click(button(/Promotional Video A story in motion/));
-    await user.click(button(/AI Assistant A useful first response/));
-    expect(state().services).toEqual(["T3", "T1", "V3", "T4"]);
+    await user.click(
+      button(/Digital Marketing Beta Campaign concepts — coming soon/),
+    );
+    expect(state().services).toEqual(["T3", "T1", "V3", "M1"]);
     expect(
       screen.getByRole("region", { name: "Promotional motion concept" }),
     ).toBeTruthy();
-    await user.click(button("What can I arrange?"));
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Campaign objective" }),
+      "visits",
+    );
     expect(
-      screen.getByText(/This salon concept offers a styling consultation/),
-    ).toBeTruthy();
+      (
+        screen.getByRole("combobox", {
+          name: "Campaign objective",
+        }) as HTMLSelectElement
+      ).value,
+    ).toBe("visits");
     await user.selectOptions(
       screen.getByLabelText("Choose your business"),
       "Café / Restaurant",
@@ -156,10 +165,16 @@ describe("homepage project creation", () => {
     expect(
       screen.getByRole("heading", { name: "Make room for good company." }),
     ).toBeTruthy();
-    expect(screen.queryByText(/This salon concept offers/)).toBeNull();
     expect(
-      screen.getByText("Hello from LUNE. What would you like to know?"),
-    ).toBeTruthy();
+      (
+        screen.getByRole("combobox", {
+          name: "Campaign objective",
+        }) as HTMLSelectElement
+      ).value,
+    ).toBe("awareness");
+    expect(screen.getAllByText(/BETA \/ COMING SOON/i).length).toBeGreaterThan(
+      0,
+    );
     expect(state().services).toHaveLength(4);
   });
 
@@ -171,7 +186,9 @@ describe("homepage project creation", () => {
     expect(state().services).toEqual(["V2"]);
     expect(state().goal).toBe("Edit my podcast");
     expect(state().notes).toBe("Keep my existing brief context");
-    await user.click(button(/AI Assistant A useful first response/));
+    await user.click(
+      button(/Digital Marketing Beta Campaign concepts — coming soon/),
+    );
     await user.selectOptions(
       screen.getByLabelText("Choose your business"),
       "Gym / Fitness",
@@ -181,13 +198,13 @@ describe("homepage project creation", () => {
     await user.clear(brief);
     await user.type(
       brief,
-      "A fitness studio assistant and podcast editing, with human review.",
+      "A fitness studio marketing beta concept and podcast editing.",
     );
     await user.click(screen.getByRole("link", { name: "Continue to inquiry" }));
     expect(state().business).toBe("Gym / Fitness");
-    expect(state().services).toEqual(["V2", "T4"]);
+    expect(state().services).toEqual(["V2", "M1"]);
     expect(state().brief).toBe(
-      "A fitness studio assistant and podcast editing, with human review.",
+      "A fitness studio marketing beta concept and podcast editing.",
     );
   });
 

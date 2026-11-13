@@ -62,18 +62,32 @@ describe("homepage workshop and project introduction", () => {
       "Café / Restaurant",
     );
     await user.click(screen.getByRole("button", { name: /01 Website/ }));
-    await user.click(screen.getByRole("button", { name: /04 AI Assistant/ }));
+    await user.click(
+      screen.getByRole("button", { name: /04 Digital Marketing Beta/ }),
+    );
     expect(
       screen.getByRole("heading", { name: "Good mornings begin here." }),
     ).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: /What can I book/ }));
-    expect(screen.getByText(/This example offers table for two/)).toBeTruthy();
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Campaign objective" }),
+      "inquiries",
+    );
+    expect(
+      (
+        screen.getByRole("combobox", {
+          name: "Campaign objective",
+        }) as HTMLSelectElement
+      ).value,
+    ).toBe("inquiries");
+    expect(screen.getAllByText(/BETA \/ COMING SOON/i).length).toBeGreaterThan(
+      0,
+    );
     await user.click(
       screen.getByRole("link", { name: /Create my project brief/ }),
     );
     expect(
       screen.getByRole("status", { name: "Project handoff" }).textContent,
-    ).toBe("Café / Restaurant / T1,T4");
+    ).toBe("Café / Restaurant / T1,M1");
   });
   it("runs a mock booking, clears only homepage ingredients and retains unrelated selections", async () => {
     const user = userEvent.setup();

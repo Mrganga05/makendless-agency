@@ -20,13 +20,10 @@ import {
   Monitor,
   Smartphone,
   Sparkles,
-  MessageSquare,
-  Mail,
   MousePointer2,
   ChevronRight,
   Scissors,
   Film,
-  Layers,
   MapPin,
 } from "lucide-react";
 import "../studios.css";
@@ -694,8 +691,8 @@ function Motion() {
           </button>
         </div>
         <p className="demo-feedback">
-          Human-directed motion study. This demo uses CSS animation; no AI
-          generation is being performed.
+          Original motion study. This demo uses typography, composition and
+          finite animation.
         </p>
       </div>
     </Shell>
@@ -1072,7 +1069,7 @@ function Booking() {
             >
               <option>Creative consultation</option>
               <option>Website planning</option>
-              <option>Automation discovery</option>
+              <option>Landing page consultation</option>
             </select>
           </label>
           <span className="booking-label">Choose a date</span>
@@ -1137,189 +1134,138 @@ function Booking() {
     </Shell>
   );
 }
-const workflowSteps = [
-  "Customer inquiry",
-  "Classification",
-  "Routing",
-  "Draft response",
-  "Human review",
-];
-function Automation() {
-  const [step, setStep] = useState(0);
-  const [inquiry, setInquiry] = useState("Website project");
-  const [message, setMessage] = useState(
-    "Hello, I’d like a website for my business with an appointment booking form.",
+function LandingPage() {
+  const [goal, setGoal] = useState("Product launch");
+  const [headline, setHeadline] = useState(
+    "A little sound. A new perspective.",
   );
-  const [draft, setDraft] = useState<string | null>(null);
-  const [reviewed, setReviewed] = useState(false);
-  const classification = /video|editing|reel|podcast/i.test(message)
-    ? "Video editing"
-    : /marketing|campaign|advertis|social media/i.test(message)
-      ? "Digital marketing"
-      : /website|booking|shop|automation|assistant|app\b/i.test(message)
-        ? "Website project"
-        : "General inquiry";
-  const route =
-    classification === "Video editing"
-      ? "CREATE studio"
-      : classification === "Digital marketing"
-        ? "GROW interest list"
-        : classification === "Website project"
-          ? "BUILD studio"
-          : "Human triage";
-  const defaultDraft =
-    classification === "Digital marketing"
-      ? "Thanks for sharing your interest. Our GROW services are still in development. A person should confirm availability before discussing a project."
-      : `Thanks for reaching out. We’d love to understand your ${classification.toLowerCase()} goals. Could you share your priorities and preferred timeline?`;
-  const content = [
-    message.trim()
-      ? `“${message.trim()}”`
-      : "Write an example inquiry to begin.",
-    `Rule match: ${classification}. This is keyword matching, not an AI model.`,
-    `Suggested destination: ${route}. A human can change this routing.`,
-    "A suggested response, ready for a person to edit.",
-    "A team member reviews the draft, checks the details and chooses whether to send. Nothing is sent by this demo.",
-  ];
-  function reviseMessage(value: string) {
-    setMessage(value);
-    setStep(0);
-    setDraft(null);
-    setReviewed(false);
+  const [mobile, setMobile] = useState(false);
+  const [email, setEmail] = useState("");
+  const [previewed, setPreviewed] = useState(false);
+  const [error, setError] = useState("");
+  const callToAction =
+    goal === "Product launch"
+      ? "Preview launch interest"
+      : "Preview visit request";
+  function invalidate() {
+    setPreviewed(false);
+    setError("");
   }
   return (
     <Shell
-      identity="T4"
-      label="Rule-based workflow demonstration · simulated customer inquiry"
+      identity="T6"
+      label="Interactive landing-page concept · local form demonstration"
     >
-      <div className="demo-visual automation-stage">
-        <div
-          className="automation-path"
-          style={{ "--workflow-progress": `${step * 25}%` } as CSSProperties}
-        >
-          {workflowSteps.map((name, i) => (
-            <button
-              key={name}
-              disabled={i > step}
-              onClick={() => {
-                setStep(i);
-                setReviewed(false);
-              }}
-              aria-pressed={step === i}
-              className={`${step === i ? "active" : ""} ${step > i ? "complete" : ""}`}
-            >
-              <span>{step > i ? <Check size={16} /> : i + 1}</span>
-              <small>{name}</small>
-            </button>
-          ))}
-        </div>
-        <div className="automation-message" key={`${step}-${inquiry}`}>
-          <span className="demo-kicker">
-            STEP {String(step + 1).padStart(2, "0")} / 05
-          </span>
-          {step === 0 ? (
-            <MessageSquare size={26} />
-          ) : step === 3 ? (
-            <Mail size={26} />
-          ) : step === 4 ? (
-            <CheckCircle2 size={26} />
-          ) : (
-            <Layers size={26} />
-          )}
-          <h3>{workflowSteps[step]}</h3>
-          <p>{content[step]}</p>
-          {step === 3 && (
-            <label className="v14-workflow-draft">
-              Response draft
-              <textarea
-                value={draft ?? defaultDraft}
-                onChange={(event) => {
-                  setDraft(event.target.value);
-                  setReviewed(false);
+      <div
+        className={`demo-visual landing-study ${mobile ? "landing-study--mobile" : ""}`}
+      >
+        <div className="landing-study-page">
+          <div className="landing-study-masthead">
+            <strong>ARC / STUDIO</strong>
+            <span>FICTIONAL PRODUCT CONCEPT</span>
+          </div>
+          <div className="landing-study-composition">
+            <div className="landing-study-copy">
+              <span className="demo-kicker">
+                {goal === "Product launch"
+                  ? "ONE IDEA. A CLEAR INTRODUCTION."
+                  : "COME A LITTLE CLOSER."}
+              </span>
+              <h3>{headline.trim() || "Your idea, clearly expressed."}</h3>
+              <p>
+                {goal === "Product launch"
+                  ? "A focused page for a considered object. Discover the details and try the next step."
+                  : "An invitation to explore the object in person. This is a sample visit-request interface."}
+              </p>
+              <form
+                noValidate
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+                    setError("Enter a valid sample email address.");
+                    setPreviewed(false);
+                    return;
+                  }
+                  setError("");
+                  setPreviewed(true);
                 }}
-                rows={4}
-              />
-            </label>
-          )}
-          {step === 4 && (
-            <div className="v14-human-review">
-              <blockquote>{draft ?? defaultDraft}</blockquote>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={reviewed}
-                  onChange={(event) => setReviewed(event.target.checked)}
-                />{" "}
-                I have reviewed this example
-              </label>
-              {reviewed && (
-                <p role="status">Reviewed locally. No message was sent.</p>
-              )}
+              >
+                <label>
+                  Sample email
+                  <input
+                    type="email"
+                    value={email}
+                    placeholder="visitor@example.invalid"
+                    onChange={(event) => {
+                      setEmail(event.target.value);
+                      invalidate();
+                    }}
+                    aria-invalid={!!error}
+                  />
+                </label>
+                <button className="demo-primary-button" type="submit">
+                  {callToAction}
+                  <ArrowRight size={14} />
+                </button>
+                {error && <p role="alert">{error}</p>}
+                {previewed && (
+                  <p role="status">
+                    Local preview ready:{" "}
+                    {goal === "Product launch"
+                      ? "launch interest"
+                      : "visit request"}{" "}
+                    for {email}. Nothing was sent or registered.
+                  </p>
+                )}
+              </form>
             </div>
-          )}
+            <div className="landing-study-object" aria-hidden="true">
+              <div>
+                <i />
+                <i />
+                <i />
+                <span>ARC</span>
+              </div>
+              <span>SOUND / FORM / FEELING</span>
+            </div>
+          </div>
+          <p className="landing-study-note">
+            An original concept. No product is sold and no email leaves this
+            page.
+          </p>
         </div>
       </div>
       <div className="demo-controls">
-        <div className="demo-control-row">
-          <label className="inline-select">
-            Example inquiry
-            <select
-              value={inquiry}
-              onChange={(event) => {
-                setInquiry(event.target.value);
-                reviseMessage(
-                  event.target.value === "Video editing"
-                    ? "I need video editing for a short-form reel."
-                    : event.target.value === "Digital marketing"
-                      ? "I’m interested in digital marketing and campaign planning."
-                      : "I need a website with a booking form.",
-                );
-              }}
-            >
-              <option>Website project</option>
-              <option>Video editing</option>
-              <option>Digital marketing</option>
-            </select>
-          </label>
-          <div className="demo-step-controls">
-            <button
-              className="demo-small-button"
-              disabled={step === 0}
-              onClick={() => {
-                setStep((value) => value - 1);
-                setReviewed(false);
-              }}
-            >
-              <ArrowLeft size={14} /> Back
-            </button>
-            <button
-              className="demo-primary-button"
-              disabled={
-                !message.trim() ||
-                (step === 3 && !(draft ?? defaultDraft).trim())
-              }
-              onClick={() => {
-                setStep((value) => (value === 4 ? 0 : value + 1));
-                setReviewed(false);
-              }}
-            >
-              {step === 4 ? "Restart" : "Next step"}
-              <ArrowRight size={14} />
-            </button>
-          </div>
-        </div>
-        <label className="v14-inquiry-input">
-          Your sample inquiry
-          <textarea
-            value={message}
-            maxLength={500}
-            rows={2}
-            onChange={(event) => reviseMessage(event.target.value)}
+        <label className="landing-study-headline">
+          Landing page headline
+          <input
+            value={headline}
+            maxLength={80}
+            onChange={(event) => {
+              setHeadline(event.target.value);
+              invalidate();
+            }}
           />
-          <small>
-            Editing the inquiry resets downstream work. Use fictional
-            information.
-          </small>
         </label>
+        <div className="demo-control-row">
+          <Switcher
+            label="Landing page purpose"
+            items={["Product launch", "Studio visit"]}
+            value={goal}
+            onChange={(value) => {
+              setGoal(value);
+              invalidate();
+            }}
+          />
+          <button
+            className="demo-small-button"
+            aria-pressed={mobile}
+            onClick={() => setMobile((value) => !value)}
+          >
+            {mobile ? <Monitor size={14} /> : <Smartphone size={14} />}{" "}
+            {mobile ? "Desktop" : "Mobile"} layout
+          </button>
+        </div>
       </div>
     </Shell>
   );
@@ -1687,7 +1633,7 @@ function Planner() {
 }
 function Presence() {
   const [checks, setChecks] = useState<string[]>(["Business information"]);
-  const [tab, setTab] = useState("Presence");
+  const [tab, setTab] = useState("Profile");
   const items = [
     "Business information",
     "Opening hours",
@@ -1697,7 +1643,7 @@ function Presence() {
   return (
     <Shell
       identity="M3"
-      label="BETA / COMING SOON · fictional local business · simulated overview"
+      label="BETA / COMING SOON · fictional local business · profile concept"
     >
       <div className="demo-visual presence-stage">
         <div className="presence-map" data-view={tab}>
@@ -1729,13 +1675,16 @@ function Presence() {
           </h3>
           <Switcher
             label="Local presence overview"
-            items={["Presence", "Analytics"]}
+            items={["Profile", "Search preview"]}
             value={tab}
             onChange={setTab}
           />
-          {tab === "Presence" ? (
+          {tab === "Profile" ? (
             <>
-              <p>Build a more complete profile, one useful detail at a time.</p>
+              <p>
+                Build a more useful local profile, one considered detail at a
+                time.
+              </p>
               <div className="presence-checks">
                 {items.map((item) => (
                   <label key={item}>
@@ -1743,10 +1692,10 @@ function Presence() {
                       type="checkbox"
                       checked={checks.includes(item)}
                       onChange={() =>
-                        setChecks((p) =>
-                          p.includes(item)
-                            ? p.filter((x) => x !== item)
-                            : [...p, item],
+                        setChecks((previous) =>
+                          previous.includes(item)
+                            ? previous.filter((value) => value !== item)
+                            : [...previous, item],
                         )
                       }
                     />
@@ -1754,31 +1703,180 @@ function Presence() {
                   </label>
                 ))}
               </div>
-              <p className="demo-feedback" role="status">
-                {checks.length} of {items.length} profile details included.
-              </p>
             </>
           ) : (
-            <div className="presence-analytics">
-              <p>
-                Illustrative activity only. These are fictional sample values,
-                not client results.
-              </p>
-              <div>
-                <span>Sample profile views</span>
-                <strong>120</strong>
-              </div>
-              <div>
-                <span>Sample website visits</span>
-                <strong>24</strong>
-              </div>
-              <div>
-                <span>Sample direction requests</span>
-                <strong>8</strong>
-              </div>
+            <div
+              className="v16-local-listing"
+              aria-label="Example local listing"
+            >
+              <strong>
+                {checks.includes("Business information")
+                  ? "Neighbourhood studio / concept listing"
+                  : "Business information not yet included"}
+              </strong>
+              <ul>
+                {items
+                  .slice(1)
+                  .filter((item) => checks.includes(item))
+                  .map((item) => (
+                    <li key={item}>
+                      <Check size={14} />
+                      {item} included
+                    </li>
+                  ))}
+              </ul>
+              {checks.length < 4 && (
+                <p>Return to Profile to add the missing details.</p>
+              )}
+              <small>
+                Illustrative preview; no real listing is created or changed.
+              </small>
             </div>
           )}
+          <p className="demo-feedback" role="status">
+            {checks.length} of {items.length} profile details included.
+          </p>
         </div>
+      </div>
+    </Shell>
+  );
+}
+const reportingSamples = {
+  Website: [18, 24, 21, 30],
+  Social: [32, 27, 38, 41],
+  Local: [11, 16, 14, 20],
+};
+function Reporting() {
+  const [channel, setChannel] =
+    useState<keyof typeof reportingSamples>("Website");
+  const [period, setPeriod] = useState("Four sample weeks");
+  const [notes, setNotes] = useState(
+    "Review the activity alongside the content published in each period.",
+  );
+  const [prepared, setPrepared] = useState(false);
+  const values = reportingSamples[channel].slice(
+    period === "Latest sample week" ? 3 : 0,
+  );
+  const total = values.reduce((sum, value) => sum + value, 0);
+  function changeChannel(value: string) {
+    setChannel(value as keyof typeof reportingSamples);
+    setPrepared(false);
+  }
+  return (
+    <Shell
+      identity="M4"
+      label="BETA / COMING SOON · fictional sample dataset · report concept"
+    >
+      <div className="demo-visual v16-report-study">
+        <header>
+          <span className="demo-kicker">FROM ACTIVITY TO A CLEARER VIEW</span>
+          <h3>
+            A little context.
+            <br />A more useful report.
+          </h3>
+          <p>
+            These invented sample values explain a reporting layout. They are
+            not client results, live measurements or predictions.
+          </p>
+        </header>
+        <section
+          className="v16-report-sheet"
+          aria-label="Illustrative activity report"
+        >
+          <div className="v16-report-sheet-head">
+            <span>{channel.toUpperCase()} / SAMPLE ACTIVITY</span>
+            <span>{period}</span>
+          </div>
+          <div className="v16-report-total">
+            <strong>{total}</strong>
+            <span>
+              example visits
+              <br />
+              in the selected sample
+            </span>
+          </div>
+          <div className="v16-report-bars" aria-hidden="true">
+            {values.map((value, index) => (
+              <div key={`${channel}-${index}`}>
+                <i style={{ height: `${value * 3}px` }} />
+                <span>W{period === "Latest sample week" ? 4 : index + 1}</span>
+              </div>
+            ))}
+          </div>
+          <table>
+            <caption>Fictional {channel.toLowerCase()} dataset</caption>
+            <thead>
+              <tr>
+                <th>Sample period</th>
+                <th>Example visits</th>
+              </tr>
+            </thead>
+            <tbody>
+              {values.map((value, index) => (
+                <tr key={index}>
+                  <td>
+                    Week {period === "Latest sample week" ? 4 : index + 1}
+                  </td>
+                  <td>{value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      </div>
+      <div className="demo-controls">
+        <div className="demo-control-row">
+          <Switcher
+            label="Report channel"
+            items={Object.keys(reportingSamples)}
+            value={channel}
+            onChange={changeChannel}
+          />
+          <label className="inline-select">
+            Report period
+            <select
+              value={period}
+              onChange={(event) => {
+                setPeriod(event.target.value);
+                setPrepared(false);
+              }}
+            >
+              <option>Four sample weeks</option>
+              <option>Latest sample week</option>
+            </select>
+          </label>
+        </div>
+        <label className="v16-report-notes">
+          Report observation
+          <textarea
+            value={notes}
+            rows={2}
+            maxLength={400}
+            onChange={(event) => {
+              setNotes(event.target.value);
+              setPrepared(false);
+            }}
+          />
+        </label>
+        <button
+          className="demo-primary-button"
+          disabled={!notes.trim()}
+          onClick={() => setPrepared(true)}
+        >
+          Prepare sample report <ArrowRight size={14} />
+        </button>
+        {prepared && (
+          <div className="v16-report-summary" role="status">
+            <strong>Sample report prepared locally.</strong>
+            <p>
+              {channel} · {period} · {total} fictional example visits.
+            </p>
+            <p>{notes}</p>
+            <small>
+              No account is connected, no result is claimed and nothing is sent.
+            </small>
+          </div>
+        )}
       </div>
     </Shell>
   );
@@ -1801,8 +1899,8 @@ export default function ServiceDemo({ id }: { id: string }) {
       return <Store />;
     case "T3":
       return <Booking />;
-    case "T4":
-      return <Automation />;
+    case "T6":
+      return <LandingPage />;
     case "T5":
       return <Maintenance />;
     case "M1":
@@ -1811,6 +1909,8 @@ export default function ServiceDemo({ id }: { id: string }) {
       return <Planner />;
     case "M3":
       return <Presence />;
+    case "M4":
+      return <Reporting />;
     default:
       return <p>Select a service to explore its demonstration.</p>;
   }

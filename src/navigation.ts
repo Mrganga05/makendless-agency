@@ -7,11 +7,11 @@ export const PRIMARY_LINKS = [
 
 export const STUDIO_LINKS = [
   { to: "/studios/create", name: "CREATE", description: "Video Editing" },
-  { to: "/studios/build", name: "BUILD", description: "Websites & AI" },
+  { to: "/studios/build", name: "BUILD", description: "Website Development" },
   {
     to: "/studios/grow",
     name: "GROW",
-    description: "Marketing",
+    description: "Digital Marketing",
     availability: "Beta / Coming Soon",
   },
 ] as const;

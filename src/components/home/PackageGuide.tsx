@@ -17,7 +17,7 @@ const packageGroups: {
   formats: ProjectFormat[];
 }[] = [
   {
-    name: "Video content",
+    name: "Video Editing",
     note: "A single story or a whole body of work.",
     formats: [
       {
@@ -59,7 +59,7 @@ const packageGroups: {
     ],
   },
   {
-    name: "Websites & digital products",
+    name: "Website Development",
     note: "From your first page to a useful digital product.",
     formats: [
       {
@@ -115,46 +115,47 @@ const packageGroups: {
     ],
   },
   {
-    name: "AI & automation",
-    note: "Start with one useful task. Build from there.",
+    name: "Digital Marketing — Beta / Coming Soon",
+    note: "Illustrative project scopes for a future service. Not available to purchase.",
     formats: [
       {
-        name: "Small workflow pilot",
-        services: ["T4"],
-        summary: "Explore a bounded, practical automation before expanding it.",
+        name: "Campaign planning — Beta",
+        services: ["M1"],
+        summary:
+          "Explore a sample campaign direction. Beta / Coming Soon; no ads are launched.",
         deliverables: [
-          "Workflow mapping",
-          "Scoped integration",
-          "Human review checkpoints",
+          "Objective planning",
+          "Creative concept",
+          "Placement approach",
         ],
         factors:
-          "Systems involved, available access, task complexity and review requirements.",
+          "Proposed channels, creative requirements and reporting needs; scope remains to be confirmed.",
       },
       {
-        name: "AI assistant integration",
-        services: ["T4"],
+        name: "Social content planning — Beta",
+        services: ["M2"],
         summary:
-          "Shape an assistant around a defined role and clear boundaries.",
+          "Explore a consistent content direction for a future service. Beta / Coming Soon.",
         deliverables: [
-          "Assistant configuration",
-          "Agreed knowledge sources",
-          "Human handoff planning",
+          "Content themes",
+          "Example publishing plan",
+          "Creative coordination",
         ],
         factors:
-          "Knowledge preparation, channels, system access, privacy requirements and provider costs.",
+          "Channels, content formats, publishing frequency and approved assets.",
       },
       {
-        name: "Custom business automation",
-        services: ["T4"],
+        name: "Local marketing & reporting — Beta",
+        services: ["M3", "M4"],
         summary:
-          "Connect the tools and repetitive steps in your business workflow.",
+          "Discuss a clearer local presence and useful reporting. Beta / Coming Soon.",
         deliverables: [
-          "Process and workflow map",
-          "Automation integrations",
-          "Exception and review handling",
+          "Profile planning",
+          "Reporting outline",
+          "Measurement questions",
         ],
         factors:
-          "Number of systems, workflow branches, custom development and support scope.",
+          "Profile coverage, agreed reporting questions and available source data.",
       },
     ],
   },
@@ -166,6 +167,10 @@ export default function PackageGuide() {
   const { setProject } = useProject();
   const navigate = useNavigate();
   const requestEstimate = () => {
+    if (selection.group === 2) {
+      navigate("/studios/grow");
+      return;
+    }
     const projectLine = `Project format to discuss: ${chosen.name}.`;
     setProject((project) => ({
       ...project,
@@ -266,7 +271,9 @@ export default function PackageGuide() {
             </p>
           </div>
           <button className="hp-package-estimate" onClick={requestEstimate}>
-            Request a tailored estimate{" "}
+            {selection.group === 2
+              ? "Explore Beta"
+              : "Request a tailored estimate"}{" "}
             <ArrowRight size={18} aria-hidden="true" />
           </button>
         </div>

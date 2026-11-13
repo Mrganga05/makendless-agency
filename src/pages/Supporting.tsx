@@ -10,12 +10,12 @@ import {
   GitBranch,
   Layers,
   Plus,
-  RotateCcw,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { services, worldInfo } from "../data";
 import { useProject } from "../project";
 import ServiceDemo from "../components/ServiceDemo";
+import CampaignPreview from "../components/CampaignPreview";
 import "../supporting.css";
 const SpatialStudy = lazy(() => import("../components/LiveShowcase"));
 
@@ -48,34 +48,31 @@ const concepts = [
   },
   {
     number: "03",
-    anchor: "workflow",
-    name: "A little less busywork.",
-    type: "Automation & human oversight",
-    className: "automation",
-    service: "T4",
+    anchor: "campaign",
+    name: "A story in the right places.",
+    type: "Digital Marketing — Beta / Coming Soon",
+    className: "campaign",
+    service: "M1",
     description:
-      "An example inquiry workflow that helps organize requests, prepare a draft and keep the final decision with a person.",
-    deliverables: ["Workflow concept", "Inquiry routing", "Human review step"],
+      "An illustrative campaign study: shape a message, choose a placement and compare creative directions. Digital Marketing is Beta / Coming Soon; no campaign is launched.",
+    deliverables: [
+      "Campaign concept",
+      "Creative treatments",
+      "Placement planning",
+    ],
   },
 ];
 
-type ConceptKind = "film" | "website" | "automation";
-const workflowNotes = [
-  "A sample website inquiry arrives with a business name and project goal.",
-  "The request is sorted into website planning. A suggested next step is prepared.",
-  "A person checks the details and edits the draft. Nothing is sent automatically.",
-];
+type ConceptKind = "film" | "website" | "campaign";
 
 function ConceptArt({
   kind,
   directed = true,
   mobile = false,
-  step = 0,
 }: {
   kind: ConceptKind;
   directed?: boolean;
   mobile?: boolean;
-  step?: number;
 }) {
   if (kind === "film")
     return (
@@ -178,55 +175,7 @@ function ConceptArt({
         </div>
       </div>
     );
-  return (
-    <div className="concept-art concept-art-automation" aria-hidden="true">
-      <div className="concept-automation-kicker">
-        LESS BUSYWORK. MORE HUMAN.
-      </div>
-      {[
-        {
-          label: "CUSTOMER INQUIRY",
-          title: "A new possibility.",
-          Icon: CircleHelp,
-        },
-        {
-          label: "ORGANIZE & PREPARE",
-          title: "A clearer next step.",
-          Icon: GitBranch,
-        },
-        {
-          label: "HUMAN REVIEW",
-          title: "People stay in the loop.",
-          Icon: Check,
-        },
-      ].map(({ label, title, Icon }, i) => (
-        <div className="concept-flow-step" key={label}>
-          {i > 0 && (
-            <div
-              className={`concept-flow-line ${step >= i ? "is-connected" : ""}`}
-            />
-          )}
-          <div
-            className={`concept-flow-node ${step === i ? "is-current" : ""} ${step > i ? "is-complete" : ""}`}
-          >
-            <span className="concept-node-icon">
-              <Icon size={19} />
-            </span>
-            <div>
-              <small>
-                0{i + 1} / {label}
-              </small>
-              <b>{title}</b>
-            </div>
-            {step > i && <Check className="concept-node-check" size={15} />}
-          </div>
-        </div>
-      ))}
-      <div className="concept-art-caption">
-        SIMULATED WORKFLOW / STEP {step + 1} OF 3
-      </div>
-    </div>
-  );
+  return <CampaignPreview compact />;
 }
 
 const caseNotes = [
@@ -245,11 +194,11 @@ const caseNotes = [
       "A responsive website and booking concept that can be scoped together. The illustrated time selection is a design example; the BUILD studio includes the working mock booking flow.",
   },
   {
-    question: "What should happen after a new inquiry?",
+    question: "How can one idea work across different placements?",
     approach:
-      "Make the handoff visible. Capture the request, organize it by need, and prepare a suggested next step. Keep the person who understands the business in control.",
+      "Give the campaign one clear purpose. Adjust the creative and format for each placement while keeping the message recognizable.",
     result:
-      "A three-stage workflow prototype with an explicit human review point. No external service runs and no message is sent by this simulation.",
+      "A local campaign layout study with objective, creative and placement controls. Digital Marketing remains Beta / Coming Soon. No accounts are connected, no ads run and no results are claimed.",
   },
 ];
 
@@ -266,7 +215,6 @@ function ConceptProject({
 }) {
   const [directed, setDirected] = useState(true);
   const [mobile, setMobile] = useState(false);
-  const [step, setStep] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const note = caseNotes[index];
   const kind = concept.className as ConceptKind;
@@ -275,6 +223,13 @@ function ConceptProject({
       className={`concept-project concept-project-${kind}`}
       id={concept.anchor}
     >
+      {kind === "campaign" && (
+        <span
+          id="workflow"
+          className="concept-legacy-anchor"
+          aria-hidden="true"
+        />
+      )}
       <div
         className="concept-project-visual"
         data-motion={
@@ -285,13 +240,10 @@ function ConceptProject({
               : "transform"
         }
       >
-        <ConceptArt
-          kind={kind}
-          directed={directed}
-          mobile={mobile}
-          step={step}
-        />
-        <span className="concept-label">CONCEPT PROJECT</span>
+        <ConceptArt kind={kind} directed={directed} mobile={mobile} />
+        {kind !== "campaign" && (
+          <span className="concept-label">CONCEPT PROJECT</span>
+        )}
       </div>
       <div className="concept-project-info" data-motion="editorial">
         <div className="concept-project-category">
@@ -328,23 +280,7 @@ function ConceptProject({
                 Mobile composition
               </button>
             </>
-          ) : (
-            <>
-              <button
-                disabled={step === 2}
-                onClick={() => setStep((s) => Math.min(s + 1, 2))}
-              >
-                {step === 2 ? "Ready for human review" : "Follow the inquiry"}
-                <ArrowRight size={15} />
-              </button>
-              <button
-                aria-label="Reset concept workflow"
-                onClick={() => setStep(0)}
-              >
-                <RotateCcw size={15} />
-              </button>
-            </>
-          )}
+          ) : null}
         </div>
         <p className="concept-preview-note" role="status">
           {kind === "film"
@@ -355,7 +291,7 @@ function ConceptProject({
               ? mobile
                 ? "Mobile composition: a focused view of the visit and booking concept."
                 : "Desktop composition: the website and booking experience together."
-              : workflowNotes[step]}
+              : "Illustrative campaign controls; Digital Marketing is Beta / Coming Soon. No campaign is launched."}
         </p>
         <button
           className="concept-study-toggle supporting-text-link"
@@ -425,7 +361,7 @@ function ConceptProject({
                       ? "create"
                       : kind === "website"
                         ? "build"
-                        : "ai"
+                        : "grow"
                   }
                   variant="study"
                   showModeSwitch={false}
@@ -567,7 +503,7 @@ const principles = [
   {
     name: "Make it useful",
     title: "The experience should earn its place.",
-    text: "A beautiful transition, a booking flow or an automation should make the next step easier. We connect the creative idea to a practical purpose.",
+    text: "A beautiful transition, a booking flow or a focused landing page should make the next step easier. We connect the creative idea to a practical purpose.",
     mark: "02 / PURPOSE",
   },
   {
@@ -686,8 +622,7 @@ export function About() {
           <span>02 / BUILD</span>
           <h2>Ideas made real.</h2>
           <p>
-            Websites, custom applications and AI solutions with a useful
-            purpose.
+            Websites, landing pages and web applications with a useful purpose.
           </p>
           <ArrowUpRight size={23} />
         </Link>
@@ -721,11 +656,11 @@ export function About() {
 const faqs = [
   [
     "What does MAKENDLESS do?",
-    "MAKENDLESS is a creative and technology studio. CREATE covers five video editing and creative production services. BUILD covers business websites, e-commerce, booking systems, automation and maintenance. GROW is our digital marketing division, currently in beta and coming soon.",
+    "MAKENDLESS is a creative and technology studio. CREATE covers five video editing and creative production services. BUILD covers business websites, e-commerce, landing pages, booking websites and redesign/maintenance. GROW is our digital marketing division, currently in beta and coming soon.",
   ],
   [
     "I am not sure which services I need. Where should I begin?",
-    "Try Find My Solution for a short guided journey, or use the Project Lab to combine a website, booking system, promotional video and AI assistant. You can change or remove choices before preparing your project brief.",
+    "Try Find My Solution for a short guided journey, or use the Project Lab to combine a website, booking system, promotional video and illustrative Digital Marketing Beta concepts. You can change or remove choices before preparing your project brief.",
   ],
   [
     "Can I combine video editing and website development?",
@@ -733,7 +668,7 @@ const faqs = [
   ],
   [
     "Are the demos and portfolio projects real client work?",
-    "The current demonstrations and portfolio projects are original illustrative concepts. They are clearly labeled and do not represent completed client engagements, verified results or live business systems. Demo bookings, payments and AI responses are simulated.",
+    "The current demonstrations and portfolio projects are original illustrative concepts. They are clearly labeled and do not represent completed client engagements, verified results or live business systems. Demo bookings, payments and marketing previews are simulated.",
   ],
   [
     "Are your digital marketing services available now?",
@@ -891,9 +826,9 @@ export function Terms() {
       intro="Draft terms for the current demonstration website. These are not finalized commercial terms and require legal review before production use."
     >
       <LegalSection title="1. About this experience">
-        MAKENDLESS presents video editing, website development and AI solution
-        capabilities through interactive demonstrations. All mock storefronts,
-        bookings, campaign data and workflow responses are illustrative. They do
+        MAKENDLESS presents video editing, website development and Digital
+        Marketing Beta capabilities through interactive demonstrations. All mock
+        storefronts, bookings and campaign previews are illustrative. They do
         not create real transactions, reservations or customer communications.
       </LegalSection>
       <LegalSection title="2. Project inquiries and estimates">
@@ -1065,7 +1000,11 @@ export function ServiceDetail() {
         </ul>
       </section>
       <aside className="supporting-end-cta">
-        <h2>Let’s make it yours.</h2>
+        <h2>
+          {service.world === "grow"
+            ? "The next chapter. Coming soon."
+            : "Let’s make it yours."}
+        </h2>
         <Link
           className="button button-primary"
           to="/contact"
@@ -1073,7 +1012,10 @@ export function ServiceDetail() {
             if (!selected) toggleService(service.id);
           }}
         >
-          Start a project <ArrowUpRight size={18} />
+          {service.world === "grow"
+            ? "Prepare interest draft"
+            : "Start a project"}{" "}
+          <ArrowUpRight size={18} />
         </Link>
       </aside>
     </div>

@@ -9,7 +9,7 @@ import "../../v14-hero.css";
 export default function Hero({ theme = HOME_THEME }: { theme?: HomeTheme }) {
   const [mode, setMode] = useState<ShowcaseMode | null>(null);
   const { setProject } = useProject();
-  const serviceId = mode === "create" ? "V1" : mode === "build" ? "T1" : "T4";
+  const serviceId = mode === "create" ? "V1" : mode === "build" ? "T1" : "M1";
   function carrySelection() {
     if (!mode) return;
     setProject((previous) => ({
@@ -43,8 +43,8 @@ export default function Hero({ theme = HOME_THEME }: { theme?: HomeTheme }) {
             to ignore<span className="v14-hero-dot">.</span>
           </h1>
           <p>
-            Video editing, websites and AI solutions for ambitious creators and
-            businesses.
+            Premium video editing, website development and digital marketing
+            solutions for ambitious creators and businesses.
           </p>
           <div className="v14-hero-actions">
             <a className="v14-hero-primary" href="#studios">
@@ -77,7 +77,7 @@ export default function Hero({ theme = HOME_THEME }: { theme?: HomeTheme }) {
         <a href="#showcase">
           A little possibility. A real interaction. <ArrowDown size={14} />
         </a>
-        <span>01 — 10</span>
+        <span>01 — 07</span>
       </div>
     </section>
   );

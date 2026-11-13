@@ -31,13 +31,16 @@ export function recommendServices(
     );
     matched.set("V4", "Make more useful content from every recording.");
   }
-  if (goal === "Simplify everyday work") {
-    matched.set("T3", "Make bookings and business tasks easier to manage.");
-    matched.set(
-      "T4",
-      "Connect repetitive tasks with a considered automation workflow.",
-    );
+  if (goal === "Make booking easier") {
+    matched.set("T3", "Give visitors a clear way to request an appointment.");
   }
+  if (goal === "Launch a focused campaign page")
+    matched.set("T6", "Give a single offering a focused website destination.");
+  if (goal === "Explore digital marketing beta")
+    matched.set(
+      "M1",
+      "Explore a campaign concept while Digital Marketing is Beta / Coming Soon.",
+    );
   if (goal === "Sell products online")
     matched.set(
       "T2",
@@ -73,10 +76,16 @@ export function getPairings(ids: string[]): { id: string; reason: string }[] {
       id: "V4",
       reason: "Turn your promotional film into several social formats.",
     });
-  if (ids.includes("T4"))
+  if (ids.includes("T6"))
     pairs.push({
-      id: "T1",
-      reason: "Give your assistant a useful home on your business website.",
+      id: "V3",
+      reason: "Give your landing page a concise promotional video.",
+    });
+  if (ids.includes("M1"))
+    pairs.push({
+      id: "M4",
+      reason:
+        "Explore a reporting approach alongside a campaign concept (Beta / Coming Soon).",
     });
   return pairs.filter(
     (pair, index) =>

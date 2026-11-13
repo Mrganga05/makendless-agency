@@ -65,9 +65,9 @@ function StudioWorld({ world }: { world: World }) {
         <div className="studio-beta-note">
           <Sparkles size={19} />
           <p>
-            These services are in development. Explore the concepts and register
-            your interest in a future conversation. Availability is not yet
-            confirmed.
+            These services are in development. Explore the concepts and prepare
+            an interest draft for a future conversation. Nothing is submitted,
+            and availability is not yet confirmed.
           </p>
         </div>
       )}
@@ -178,8 +178,8 @@ function StudioWorld({ world }: { world: World }) {
           {world === "create"
             ? "Start a Video Project"
             : world === "build"
-              ? "Start a Build Project"
-              : "Share your interest"}{" "}
+              ? "Start a Website Project"
+              : "Prepare interest draft"}{" "}
           <ArrowUpRight size={17} />
         </Link>
       </div>

@@ -54,7 +54,7 @@ describe("editorial concept studies", () => {
     ).toBeNull();
   });
 
-  it("recomposes the website and progresses a resettable, human-reviewed workflow", async () => {
+  it("recomposes the website and explores a resettable beta campaign", async () => {
     const user = userEvent.setup();
     renderPage(<Work />);
     const site = within(
@@ -71,29 +71,40 @@ describe("editorial concept studies", () => {
     expect(site.getByRole("status").textContent).toContain("focused view");
     const flow = within(
       screen
-        .getByRole("heading", { name: "A little less busywork." })
+        .getByRole("heading", { name: "A story in the right places." })
         .closest("article")!,
     );
-    await user.click(flow.getByRole("button", { name: "Follow the inquiry" }));
-    expect(flow.getByRole("status").textContent).toContain(
-      "sorted into website planning",
+    expect(flow.getAllByText(/BETA \/ COMING SOON/i).length).toBeGreaterThan(0);
+    await user.selectOptions(
+      flow.getByRole("combobox", { name: "Campaign objective" }),
+      "visits",
     );
-    await user.click(flow.getByRole("button", { name: "Follow the inquiry" }));
-    expect(flow.getByRole("status").textContent).toContain(
-      "Nothing is sent automatically",
+    await user.click(flow.getByRole("button", { name: "People & story" }));
+    await user.click(flow.getByRole("button", { name: "Story", exact: true }));
+    expect(
+      flow
+        .getByRole("button", { name: "Story", exact: true })
+        .getAttribute("aria-pressed"),
+    ).toBe("true");
+    expect(
+      (
+        flow.getByRole("combobox", {
+          name: "Campaign objective",
+        }) as HTMLSelectElement
+      ).value,
+    ).toBe("visits");
+    await user.click(
+      flow.getByRole("button", { name: "Reset campaign preview" }),
     );
     expect(
       (
-        flow.getByRole("button", {
-          name: "Ready for human review",
-        }) as HTMLButtonElement
-      ).disabled,
-    ).toBe(true);
-    await user.click(
-      flow.getByRole("button", { name: "Reset concept workflow" }),
-    );
+        flow.getByRole("combobox", {
+          name: "Campaign objective",
+        }) as HTMLSelectElement
+      ).value,
+    ).toBe("awareness");
     expect(flow.getByRole("status").textContent).toContain(
-      "sample website inquiry arrives",
+      "No campaign is launched",
     );
   });
 

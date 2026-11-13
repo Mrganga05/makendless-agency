@@ -17,6 +17,7 @@ import {
 import { businesses } from "../../data";
 import { generateBrief } from "../../brief";
 import { useProject } from "../../project";
+import CampaignPreview from "../CampaignPreview";
 import "../../home-project.css";
 
 const ingredients = [
@@ -34,9 +35,9 @@ const ingredients = [
     Icon: Film,
   },
   {
-    id: "T4",
-    name: "AI Assistant",
-    detail: "A useful first response",
+    id: "M1",
+    name: "Digital Marketing Beta",
+    detail: "Campaign concepts — coming soon",
     Icon: Sparkles,
   },
 ];
@@ -160,7 +161,6 @@ export function HomepageLab() {
   const scene = scenes[project.business] || scenes["General Small Business"];
   const [slot, setSlot] = useState("10:00");
   const [booked, setBooked] = useState(false);
-  const [reply, setReply] = useState("");
   const [playing, setPlaying] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [briefOpen, setBriefOpen] = useState(false);
@@ -209,7 +209,6 @@ export function HomepageLab() {
 
   function resetPreview() {
     setBooked(false);
-    setReply("");
     setPlaying(false);
     setElapsed(0);
     setCopyStatus("");
@@ -488,44 +487,13 @@ export function HomepageLab() {
                     </div>
                   </section>
                 )}
-                {visible("T4") && (
+                {visible("M1") && (
                   <section
-                    className="hp-lab-assistant"
+                    className="hp-campaign-concept"
+                    aria-label="Digital Marketing Beta concept"
                     data-motion="spatial"
-                    aria-label="Scripted assistant preview"
                   >
-                    <span className="hp-module-kicker">
-                      <Sparkles size={15} /> ASSISTANT / SCRIPTED EXAMPLE
-                    </span>
-                    <div
-                      className="hp-assistant-reply"
-                      aria-live="polite"
-                      data-motion="media"
-                      data-motion-key={reply || scene.name}
-                    >
-                      {reply ||
-                        `Hello from ${scene.name}. What would you like to know?`}
-                    </div>
-                    <div className="hp-assistant-prompts">
-                      <button
-                        onClick={() =>
-                          setReply(
-                            `This ${project.business.toLowerCase()} concept offers a ${scene.appointment.toLowerCase()}. A real integration would check availability before confirming anything.`,
-                          )
-                        }
-                      >
-                        What can I arrange?
-                      </button>
-                      <button
-                        onClick={() =>
-                          setReply(
-                            "A real assistant could pass your question to the team for human review. This scripted example does not send messages.",
-                          )
-                        }
-                      >
-                        Ask the team
-                      </button>
-                    </div>
+                    <CampaignPreview key={project.business} compact />
                   </section>
                 )}
               </div>
@@ -620,7 +588,7 @@ const process = [
   {
     name: "DELIVER",
     title: "Ready for your next step.",
-    text: "Review the agreed deliverables and prepare the files, website or workflow for handover.",
+    text: "Review the agreed deliverables and prepare the files, website or campaign concepts for handover.",
   },
 ];
 const faqs = [
@@ -647,12 +615,12 @@ const faqs = [
   {
     question: "How are files or websites handed over?",
     answer:
-      "Handover is planned around the agreed deliverables: for example, edited exports, a website and its access details, or documentation for a workflow. Final formats, hosting responsibilities and any training should be confirmed in the project scope.",
+      "Handover is planned around the agreed deliverables: for example, edited exports, a website and its access details, or a campaign planning document. Final formats, hosting responsibilities and any training should be confirmed in the project scope.",
   },
   {
     question: "Is ongoing maintenance available?",
     answer:
-      "Website Maintenance & Optimization is an available service category. Updates, support requirements and the appropriate maintenance scope can be discussed for your website; no ongoing plan is added automatically.",
+      "Website Redesign & Maintenance is an available service category. Updates, support requirements and the appropriate maintenance scope can be discussed for your website; no ongoing plan is added automatically.",
   },
 ];
 export function ProcessFaq() {

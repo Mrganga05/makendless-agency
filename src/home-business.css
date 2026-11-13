@@ -1503,3 +1503,24 @@
 .hp-booking-canvas button:focus-visible {
   outline-color: var(--home-violet);
 }
+
+.hp-startup-details {
+  padding: 25px;
+  background: var(--home-paper);
+  color: var(--home-ink);
+  display: grid;
+  align-content: center;
+  gap: 16px;
+}
+.hp-startup-details > span {
+  color: var(--home-muted-light);
+  font-size: 11px;
+}
+.hp-startup-details > strong {
+  font-size: 24px;
+  line-height: 1.15;
+}
+.hp-startup-details p {
+  color: var(--home-muted-light);
+  font-size: 13px;
+}

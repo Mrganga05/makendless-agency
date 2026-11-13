@@ -24,7 +24,8 @@
   align-items: center;
   gap: 10px;
   padding: 15px 0;
-  min-height: 56px;
+  min-height: 70px;
+  min-width: 0;
   flex: 1;
   text-align: left;
   position: relative;
@@ -53,10 +54,12 @@
 }
 .living-mode-tabs strong {
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.035em;
+  line-height: 1.35;
 }
 .living-mode-tabs small {
-  font-size: 11px;
+  font-size: 10px;
+  line-height: 1.45;
 }
 .living-mode-number {
   font-size: 10px;
@@ -325,7 +328,6 @@
 }
 .living-segment button,
 .living-play,
-.living-ai-controls button,
 .living-review-button {
   border: 1px solid var(--home-line-dark);
   color: var(--home-white);
@@ -603,160 +605,11 @@
 .living-build.is-mobile .living-web-footer {
   padding: 12px 15px;
 }
-.living-ai {
-  padding: 22px;
-  border-top: 2px solid var(--stage-accent);
-  background: var(--home-paper);
-  color: var(--home-ink);
-  min-height: 350px;
-  box-shadow: 0 25px 60px color-mix(in srgb, var(--home-night) 65%, transparent);
-}
-.living-ai-topline {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  color: var(--home-muted-light);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-}
-.living-workflow {
-  list-style: none;
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  padding: 0;
-  margin: 28px 0;
-}
-.living-workflow li {
-  position: relative;
-  flex: 1;
-  font-size: 10px;
-  color: var(--home-muted-light);
-}
-.living-workflow li:after {
-  content: "";
-  height: 1px;
-  background: var(--home-line-light);
-  position: absolute;
-  left: 30px;
-  right: -6px;
-  top: 13px;
-}
-.living-workflow li:last-child:after {
-  display: none;
-}
-.living-workflow li > span {
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--home-line-light);
-  border-radius: 50%;
-  width: 27px;
-  height: 27px;
-  margin-bottom: 8px;
-}
-.living-workflow small {
-  overflow-wrap: anywhere;
-  font-size: 10px;
-  line-height: 1.4;
-  display: block;
-  max-width: 8em;
-}
-.living-workflow li.active > span,
-.living-workflow li.complete > span {
-  background: var(--home-ink);
-  color: var(--home-paper);
-  border-color: var(--home-ink);
-}
-.living-workflow li.active {
-  color: var(--home-ink);
-}
-.living-ai-message > span:first-child {
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  color: var(--home-muted-light);
-}
-.living-ai-message h2 {
-  margin: 12px 0;
-  font-size: clamp(25px, 2.5vw, 36px);
-  line-height: 1.05;
-  color: var(--home-ink);
-  letter-spacing: -0.05em;
-}
-.living-ai-message p {
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--home-ink);
-  max-width: 35em;
-  margin: 15px 0;
-}
-.living-ai-message small {
-  font-size: 10px;
-  line-height: 1.6;
-  color: var(--home-muted-light);
-  display: block;
-}
-.living-inquiry-editor summary {
-  font-size: 11px;
-  min-height: 44px;
-  padding: 14px 0;
-  cursor: pointer;
-}
-.living-inquiry-editor label,
-.living-draft-label {
-  font-size: 11px;
-  color: var(--home-muted-light);
-  display: block;
-}
-.living-ai textarea {
-  font: inherit;
-  font-size: 12px;
-  line-height: 1.6;
-  resize: vertical;
-  width: 100%;
-  min-height: 96px;
-  padding: 12px;
-  color: var(--home-ink);
-  background: var(--home-wash);
-  border: 1px solid var(--home-line-light);
-  margin: 10px 0 5px;
-}
-.living-human-check {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--home-violet-ink);
-  font-size: 11px;
-  line-height: 1.5;
-  margin: 20px 0 10px;
-}
-.living-review-button {
-  background: var(--home-ink);
-  color: var(--home-paper);
-  margin-top: 5px;
-}
-.living-review-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-.living-ai-controls {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-.living-ai-controls button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-.living-step-caption {
-  font-size: 11px;
-  color: var(--home-muted-dark);
-}
 .living-showcase :focus-visible {
   outline: 2px solid var(--stage-accent);
   outline-offset: 4px;
 }
-.living-build :focus-visible,
-.living-ai :focus-visible {
+.living-build :focus-visible {
   outline-color: var(--home-ink);
 }
 .living-showcase--study .living-stage {
@@ -779,13 +632,6 @@
 }
 .living-showcase--study .living-web-content > div {
   padding: 35px;
-}
-.living-showcase--study .living-ai {
-  min-height: 420px;
-  padding: 34px;
-}
-.living-showcase--study .living-ai-message p {
-  font-size: 17px;
 }
 @keyframes living-caption-cut {
   from {
@@ -847,10 +693,6 @@
   }
   .living-showcase--study .living-web-content > div {
     padding: 25px;
-  }
-  .living-showcase--study .living-ai {
-    padding: 24px;
-    min-height: 350px;
   }
 }
 @media (max-width: 440px) {
@@ -937,27 +779,6 @@
   .living-build.is-mobile .living-web-content > img {
     height: 110px;
   }
-  .living-ai,
-  .living-showcase--study .living-ai {
-    padding: 20px 17px;
-  }
-  .living-ai-topline {
-    font-size: 10px;
-    gap: 8px;
-    flex-wrap: wrap;
-    line-height: 1.5;
-  }
-  .living-workflow {
-    gap: 7px;
-    margin: 24px 0;
-  }
-  .living-workflow small {
-    font-size: 10px;
-  }
-  .living-ai-message p,
-  .living-showcase--study .living-ai-message p {
-    font-size: 13px;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   .living-showcase *,
@@ -969,4 +790,14 @@
   .living-edit {
     transform: none;
   }
+}
+
+.living-showcase[data-showcase-mode="grow"] {
+  --stage-accent: var(--home-violet-light);
+}
+.living-showcase .campaign-preview {
+  box-shadow: 0 25px 60px color-mix(in srgb, var(--home-night) 65%, transparent);
+}
+.living-stage.mode-grow .living-flat-preview {
+  width: 100%;
 }

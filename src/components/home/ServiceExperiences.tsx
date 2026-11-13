@@ -17,7 +17,7 @@ import {
   Pause,
   Play,
   Smartphone,
-  Workflow,
+  Megaphone,
 } from "lucide-react";
 import "../../home-services.css";
 
@@ -356,7 +356,7 @@ export function ServiceGallery() {
               <span>02</span>
               <div>
                 <h3>BUILD</h3>
-                <p>Websites, Apps & AI Solutions</p>
+                <p>Website Development</p>
               </div>
               <Link to="/studios/build" aria-label="Explore BUILD services">
                 <ArrowUpRight size={25} />
@@ -404,11 +404,11 @@ const transformations = [
     Icon: Monitor,
   },
   {
-    id: "T4",
-    name: "Automate a workflow",
-    from: "An inquiry",
-    to: "A clear next step",
-    Icon: Workflow,
+    id: "M1",
+    name: "Preview a campaign — Beta",
+    from: "A campaign idea",
+    to: "A simulated placement",
+    Icon: Megaphone,
   },
 ];
 class DemoBoundary extends Component<

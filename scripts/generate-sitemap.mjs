@@ -32,11 +32,12 @@ const paths = [
     "T1",
     "T2",
     "T3",
-    "T4",
+    "T6",
     "T5",
     "M1",
     "M2",
     "M3",
+    "M4",
   ].map((id) => `/services/${id}`),
 ];
 writeFileSync(

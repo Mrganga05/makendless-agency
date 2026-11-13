@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
-import type { ShowcaseState } from "../showcase-state";
+import { campaignObjectives, type ShowcaseState } from "../showcase-state";
 import { GLASS_PRISM, PRISM_ATELIER } from "../theme";
 
 export type SceneHandle = {
@@ -211,7 +211,7 @@ export function createLivingScene(
       return group;
     }
     let playhead: THREE.Mesh | undefined;
-    let nodes: THREE.Mesh[] = [];
+    let campaignScreens: THREE.Group[] = [];
     let deviceScreens: THREE.Group[] = [];
     const mountain = new Image(),
       coffee = new Image();
@@ -286,7 +286,7 @@ export function createLivingScene(
       modeResources.forEach((r) => r.dispose());
       modeResources.clear();
       textures.length = 0;
-      nodes = [];
+      campaignScreens = [];
       deviceScreens = [];
       playhead = undefined;
       if (state.mode === "create") {
@@ -331,27 +331,30 @@ export function createLivingScene(
         base.position.set(-0.4, -1.75, 0);
         content.add(base);
       }
-      if (state.mode === "ai") {
-        panel(4.25, 2.1, 0, 0.65, -0.2, 0);
-        for (let i = 0; i < 5; i++) {
-          const node = box(0.78, 0.43, 0.35, C.slate);
-          node.position.set(-2.35 + i * 1.18, -1.1, 0.4);
-          content.add(node);
-          nodes.push(node);
-          if (i < 4) {
-            const wire = box(0.4, 0.025, 0.025, C.aqua, 0.45);
-            wire.position.set(-1.76 + i * 1.18, -1.1, 0.4);
-            content.add(wire);
-          }
-        }
+      if (state.mode === "grow") {
+        if (state.campaign.creative === "story" && !coffee.src)
+          coffee.src = "/images/coffee.jpg";
+        // One campaign, two real placement formats. These are creative surfaces,
+        // not performance charts or a live advertising console.
+        campaignScreens.push(
+          panel(3.55, 2.75, -0.66, 0.15, 0, 0.045),
+          panel(1.48, 2.75, 1.98, -0.02, 0.65, -0.12),
+        );
+        campaignScreens[0].name = "campaign-feed";
+        campaignScreens[1].name = "campaign-story";
+        const campaignPlinth = box(5.1, 0.12, 0.85, C.slate);
+        campaignPlinth.position.set(0, -1.63, 0.2);
+        content.add(campaignPlinth);
       }
       lens.position.set(
         state.mode === "build" ? 2.72 : 2.64,
-        state.mode === "ai" ? 0.6 : 0.16,
+        state.mode === "grow" ? 0.6 : 0.16,
         0.95,
       );
-      lens.scale.y = state.mode === "ai" ? 0.72 : 1;
-      lensMaterial.attenuationColor.set(state.mode === "ai" ? P.aqua : P.paper);
+      lens.scale.y = state.mode === "grow" ? 0.72 : 1;
+      lensMaterial.attenuationColor.set(
+        state.mode === "grow" ? P.aqua : P.paper,
+      );
       fill.color.set(
         state.mode === "create"
           ? P.violetLight
@@ -369,14 +372,13 @@ export function createLivingScene(
         Math.floor(state.progress / 2),
         state.finished,
         state.mobile,
-        state.step,
         state.sitePanel,
         state.comparison,
         state.captions,
         state.crop,
-        state.inquiry,
-        state.workflowCategory,
-        state.draft,
+        state.campaign.objective,
+        state.campaign.creative,
+        state.campaign.placement,
       ].join(":");
       if (signature === lastPaint) return;
       lastPaint = signature;
@@ -563,65 +565,171 @@ export function createLivingScene(
           }
         }
       } else {
-        const a = start(0);
-        const names = [
-          "Customer inquiry",
-          "Classification",
-          "Routing",
-          "Draft response",
-          "Human review",
-        ];
-        const messages = [
-          [
-            "“I need a website for my business.”",
-            "An illustrative inquiry enters the workflow.",
-          ],
-          [
-            "Website project · new inquiry",
-            "Rules identify the type of request.",
-          ],
-          [
-            "Send to the BUILD studio",
-            "A person can change the suggested destination.",
-          ],
-          [
-            "“Tell us a little about your goals.”",
-            "A draft is prepared for review.",
-          ],
-          [
-            "A person makes the final decision.",
-            "This example never sends a message.",
-          ],
-        ];
-        text(
-          a.ctx,
-          `0${state.step + 1} / SIMULATED WORKFLOW`,
-          65,
-          90,
-          24,
-          P.aqua,
-          500,
-        );
-        text(a.ctx, names[state.step], 65, 210, 65);
-        const statement =
-          state.step === 0
-            ? state.inquiry
-            : state.step === 1 || state.step === 2
-              ? state.workflowCategory
-              : state.step === 3
-                ? state.draft
-                : undefined;
-        // The full editable text stays in HTML. The auxiliary texture uses a bounded excerpt.
-        const excerpt = statement
-          ? statement.length > 48
-            ? statement.slice(0, 45) + "…"
-            : statement
-          : messages[state.step][0];
-        text(a.ctx, excerpt, 65, 315, 32);
-        text(a.ctx, messages[state.step][1], 65, 385, 24, P.mutedDark, 400);
-        for (let i = 0; i < 5; i++) {
-          a.ctx.fillStyle = i <= state.step ? P.violet : P.inactive;
-          a.ctx.fillRect(65 + i * 180, a.h - 65, 150, 5);
+        if (state.campaign.creative === "story" && !coffee.src)
+          coffee.src = "/images/coffee.jpg";
+        const objective = campaignObjectives[state.campaign.objective];
+        for (let i = 0; i < campaignScreens.length; i++) {
+          const { ctx, w, h } = start(i);
+          const portrait = i === 1;
+          const selected =
+            state.campaign.placement === (portrait ? "story" : "feed");
+          ctx.fillStyle = P.paper;
+          ctx.fillRect(0, 0, w, h);
+          text(ctx, "still.", 55, 95, portrait ? 80 : 60, P.ink, 700);
+          text(
+            ctx,
+            "FICTIONAL CAFÉ / CONCEPT",
+            55,
+            145,
+            portrait ? 29 : 24,
+            P.mutedLight,
+            500,
+          );
+          const artY = 180;
+          const artH = portrait ? h * 0.58 : h - artY - 270;
+          if (state.campaign.creative === "story") {
+            photo(ctx, coffee, 0, artY, w, artH, portrait ? 1.18 : 1);
+            const shade = ctx.createLinearGradient(0, artY, 0, artY + artH);
+            shade.addColorStop(0, `${P.night}18`);
+            shade.addColorStop(1, `${P.night}E8`);
+            ctx.fillStyle = shade;
+            ctx.fillRect(0, artY, w, artH);
+          } else {
+            ctx.fillStyle = P.violet;
+            ctx.fillRect(0, artY, w, artH);
+            const cupX = portrait ? 300 : 665;
+            const cupY = artY + (portrait ? 180 : 65);
+            const cupWidth = portrait ? 400 : 230;
+            const cupHeight = portrait ? 350 : 210;
+            ctx.strokeStyle = P.paper;
+            ctx.lineWidth = portrait ? 35 : 24;
+            ctx.beginPath();
+            ctx.ellipse(
+              cupX + cupWidth,
+              cupY + cupHeight * 0.52,
+              cupWidth * 0.19,
+              cupHeight * 0.29,
+              0,
+              0,
+              Math.PI * 2,
+            );
+            ctx.stroke();
+            ctx.fillStyle = P.paper;
+            ctx.fillRect(cupX, cupY, cupWidth, cupHeight);
+            ctx.beginPath();
+            ctx.ellipse(
+              cupX + cupWidth / 2,
+              cupY + cupHeight,
+              cupWidth / 2,
+              cupWidth * 0.12,
+              0,
+              0,
+              Math.PI * 2,
+            );
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(
+              cupX + cupWidth / 2,
+              cupY,
+              cupWidth / 2,
+              cupWidth * 0.12,
+              0,
+              0,
+              Math.PI * 2,
+            );
+            ctx.fill();
+            ctx.fillStyle = P.ink;
+            ctx.beginPath();
+            ctx.ellipse(
+              cupX + cupWidth / 2,
+              cupY,
+              cupWidth * 0.41,
+              cupWidth * 0.07,
+              0,
+              0,
+              Math.PI * 2,
+            );
+            ctx.fill();
+            text(
+              ctx,
+              "still.",
+              cupX + cupWidth * 0.2,
+              cupY + cupHeight * 0.65,
+              portrait ? 80 : 47,
+              P.violetInk,
+              700,
+            );
+          }
+          // Source copy is shared with the semantic HTML campaign, not invented metrics.
+          const words = objective.headline.split(" ");
+          const lines: string[] = [];
+          for (const word of words) {
+            const current = lines[lines.length - 1];
+            if (!current || current.length + word.length > (portrait ? 18 : 20))
+              lines.push(word);
+            else lines[lines.length - 1] += ` ${word}`;
+          }
+          const titleY = portrait
+            ? artY + artH - lines.length * 105 - 30
+            : artY + 100;
+          // An opaque ink panel keeps labels readable over both visual treatments.
+          ctx.fillStyle = P.night;
+          ctx.fillRect(
+            36,
+            titleY - 76,
+            portrait ? w - 72 : 570,
+            lines.length * (portrait ? 105 : 76) + 50,
+          );
+          lines.forEach((line, index) =>
+            text(
+              ctx,
+              line,
+              60,
+              titleY + index * (portrait ? 105 : 76),
+              portrait ? 88 : 66,
+            ),
+          );
+          const contentY = artY + artH + (portrait ? 90 : 62);
+          text(
+            ctx,
+            `${objective.label.toUpperCase()} / ${portrait ? "STORY" : "FEED"}`,
+            55,
+            contentY,
+            portrait ? 34 : 26,
+            P.mutedLight,
+            500,
+          );
+          ctx.fillStyle = P.ink;
+          ctx.fillRect(55, contentY + 35, w - 110, portrait ? 110 : 68);
+          text(
+            ctx,
+            objective.action,
+            80,
+            contentY + (portrait ? 107 : 80),
+            portrait ? 45 : 31,
+            P.white,
+            600,
+          );
+          text(
+            ctx,
+            "GROW — BETA / COMING SOON",
+            55,
+            h - 74,
+            portrait ? 35 : 28,
+            P.violetInk,
+            600,
+          );
+          text(
+            ctx,
+            selected
+              ? "SELECTED PLACEMENT · ILLUSTRATIVE ONLY"
+              : "ILLUSTRATIVE CAMPAIGN · NOT PUBLISHED",
+            55,
+            h - 28,
+            portrait ? 25 : 22,
+            P.mutedLight,
+            500,
+          );
         }
       }
       textures.forEach((t) => (t.texture.needsUpdate = true));
@@ -653,13 +761,21 @@ export function createLivingScene(
           deviceScreens[1].position.x = state.mobile ? 1.65 : 2.05;
         }
         if (playhead) playhead.position.x = -2.2 + (4.4 * state.progress) / 100;
-        nodes.forEach((n, i) => {
-          const m = n.material as THREE.MeshStandardMaterial;
-          m.color.setHex(
-            i === state.step ? C.aqua : i < state.step ? C.violet : C.slate,
+        if (campaignScreens.length) {
+          const story = state.campaign.placement === "story";
+          campaignScreens[0].scale.setScalar(story ? 0.86 : 1);
+          campaignScreens[0].position.set(
+            story ? -0.95 : -0.66,
+            0.15,
+            story ? -0.25 : 0,
           );
-          n.position.y = i === state.step ? -0.98 : -1.1;
-        });
+          campaignScreens[1].scale.setScalar(story ? 1.15 : 0.92);
+          campaignScreens[1].position.set(
+            story ? 1.68 : 1.98,
+            story ? 0.05 : -0.02,
+            story ? 0.85 : 0.65,
+          );
+        }
         const reducedMotion = reducedPreference.matches;
         // A bounded entrance is the only automatic camera motion. The renderer
         // settles completely after it and after user-driven pointer transitions.
@@ -673,7 +789,7 @@ export function createLivingScene(
         const cameraTargetX =
           state.mode === "create" ? 0.18 : state.mode === "build" ? -0.2 : 0;
         const cameraTargetY =
-          state.mode === "ai" ? 0.22 : state.mode === "build" ? 0.56 : 0.4;
+          state.mode === "grow" ? 0.22 : state.mode === "build" ? 0.56 : 0.4;
         camera.position.x =
           cameraStartX + (cameraTargetX - cameraStartX) * eased;
         camera.position.y =
@@ -738,7 +854,7 @@ export function createLivingScene(
       if (e.pointerType !== "mouse" || reducedPreference.matches) return;
       const rect = host.getBoundingClientRect();
       const restingYaw =
-        state.mode === "build" ? 0.06 : state.mode === "ai" ? 0 : -0.1;
+        state.mode === "build" ? 0.06 : state.mode === "grow" ? 0 : -0.1;
       targetY =
         restingYaw +
         ((e.clientX - rect.left - rect.width / 2) / rect.width) * 0.13;
@@ -750,7 +866,8 @@ export function createLivingScene(
       requestRender();
     }
     function leave() {
-      targetY = state.mode === "build" ? 0.06 : state.mode === "ai" ? 0 : -0.1;
+      targetY =
+        state.mode === "build" ? 0.06 : state.mode === "grow" ? 0 : -0.1;
       targetX = -0.04;
       lightTargetX = 4;
       lightTargetY = 2;
@@ -793,7 +910,7 @@ export function createLivingScene(
     const preferenceChanged = () => {
       if (reducedPreference.matches) {
         targetY =
-          state.mode === "build" ? 0.06 : state.mode === "ai" ? 0 : -0.1;
+          state.mode === "build" ? 0.06 : state.mode === "grow" ? 0 : -0.1;
         targetX = -0.04;
         lightTargetX = 4;
         lightTargetY = 2;
@@ -838,7 +955,8 @@ export function createLivingScene(
       update(next) {
         if (dead) return;
         state = next;
-        targetY = next.mode === "build" ? 0.06 : next.mode === "ai" ? 0 : -0.1;
+        targetY =
+          next.mode === "build" ? 0.06 : next.mode === "grow" ? 0 : -0.1;
         settlingUntil = performance.now() + 650;
         requestRender();
       },

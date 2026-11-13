@@ -17,10 +17,25 @@ import "../flows.css";
 const goals = [
   "Establish my online presence",
   "Tell my story through content",
-  "Simplify everyday work",
+  "Make booking easier",
+  "Launch a focused campaign page",
+  "Explore digital marketing beta",
   "Sell products online",
 ];
-const discoveryServices = ["V1", "V3", "T1", "T2", "T3", "T4"];
+const discoveryServices = [
+  "V1",
+  "V2",
+  "V3",
+  "V4",
+  "T1",
+  "T2",
+  "T3",
+  "T6",
+  "M1",
+  "M2",
+  "M3",
+  "M4",
+];
 const questions = [
   {
     eyebrow: "A LITTLE ABOUT YOU",
@@ -235,6 +250,7 @@ export default function FindSolution() {
                       }
                     >
                       {service.short}
+                      {service.world === "grow" ? " · Beta / Coming Soon" : ""}
                       {interests.includes(service.id) ? (
                         <Check size={18} />
                       ) : (

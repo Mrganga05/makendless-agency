@@ -12,7 +12,8 @@ const journeys = [
     title: "Your voice. In more places.",
     description:
       "From one recording to a world of stories. Give your ideas the rhythm, framing and consistency they deserve.",
-    services: ["V1", "V4"],
+    services: ["V1", "V2", "V4"],
+    optional: [],
     goal: "Create a cohesive set of short-form and repurposed content.",
   },
   {
@@ -22,6 +23,7 @@ const journeys = [
     description:
       "A place to discover your business, find the details and take the next step. Thoughtful from the first visit to the next booking.",
     services: ["T1", "T3", "V3"],
+    optional: [],
     goal: "Build a welcoming business website with booking and promotional content.",
   },
   {
@@ -29,9 +31,10 @@ const journeys = [
     label: "Startup",
     title: "Give the next big idea a clear beginning.",
     description:
-      "Make your offering easy to understand. Connect a distinctive website with practical workflows that support the people behind it.",
-    services: ["T1", "T4"],
-    goal: "Introduce a startup with a clear website and human-reviewed automation.",
+      "Make your offering easy to understand. Connect a distinctive website, a focused landing page and a promotional story around your launch.",
+    services: ["T1", "T6", "V3"],
+    optional: ["M1"],
+    goal: "Introduce a startup with a business website, landing page and promotional video.",
   },
   {
     id: "store",
@@ -40,6 +43,7 @@ const journeys = [
     description:
       "Let the details do the talking. Bring your products, their stories and a useful shopping experience together.",
     services: ["T2", "V3"],
+    optional: ["M1"],
     goal: "Build an e-commerce experience with considered product content.",
   },
 ] as const;
@@ -118,7 +122,9 @@ function ProductObject({ finish = "violet" }: { finish?: "violet" | "ink" }) {
 function JourneyPreview({ id }: { id: string }) {
   const [format, setFormat] = useState("Reel");
   const [time, setTime] = useState("");
-  const [stage, setStage] = useState(0);
+  const [landingPanel, setLandingPanel] = useState<"story" | "details">(
+    "story",
+  );
   const [finish, setFinish] = useState<"violet" | "ink">("violet");
   const [bag, setBag] = useState(false);
   return (
@@ -209,62 +215,76 @@ function JourneyPreview({ id }: { id: string }) {
         </>
       )}
       {id === "startup" && (
-        <>
-          <div className="bj-startup-preview">
-            <span>FORM / PRODUCT CONCEPT</span>
-            <strong>
-              Make space
-              <br />
-              for the idea.
-            </strong>
-            <p>
-              A clear introduction.
-              <br />A useful next step.
-            </p>
-            <div className="bj-startup-pages" aria-hidden="true">
+        <div className="bj-startup-preview">
+          <div className="bj-landing-nav">
+            <strong>FORM.</strong>
+            <span>FICTIONAL PRODUCT / LANDING PAGE</span>
+          </div>
+          <div
+            className="bj-landing-layout"
+            data-motion="editorial"
+            data-motion-key={landingPanel}
+          >
+            <div>
               <span>
-                THE IDEA
-                <i />
+                {landingPanel === "story"
+                  ? "A PLACE FOR THE NEXT IDEA"
+                  : "DESIGNED AROUND THE DAY"}
               </span>
+              <h3>
+                {landingPanel === "story" ? (
+                  <>
+                    Make space
+                    <br />
+                    for the idea.
+                  </>
+                ) : (
+                  <>
+                    One space.
+                    <br />
+                    More possibility.
+                  </>
+                )}
+              </h3>
+              {landingPanel === "story" ? (
+                <p>
+                  A focused place to introduce a product and make the next step
+                  clear.
+                </p>
+              ) : (
+                <ul>
+                  <li>Flexible working spaces</li>
+                  <li>Considered shared areas</li>
+                  <li>A simple way to plan a visit</li>
+                </ul>
+              )}
+              <button
+                onClick={() =>
+                  setLandingPanel((value) =>
+                    value === "story" ? "details" : "story",
+                  )
+                }
+              >
+                {landingPanel === "story"
+                  ? "Explore the concept"
+                  : "Back to the introduction"}
+                <ArrowRight size={17} />
+              </button>
+            </div>
+            <div className="bj-landing-art" aria-hidden="true">
+              <i />
+              <i />
               <span>
-                THE EXPERIENCE
-                <i />
-              </span>
-              <span>
-                THE CONNECTION
-                <i />
+                ROOM
+                <br />
+                FOR MORE.
               </span>
             </div>
           </div>
-          <div className="bj-startup-progress">
-            <ol aria-label="Sample startup workflow">
-              {["Inquiry", "Organize", "Human review"].map((item, index) => (
-                <li
-                  key={item}
-                  aria-current={stage === index ? "step" : undefined}
-                >
-                  <span>
-                    {index < stage ? <Check size={14} /> : `0${index + 1}`}
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ol>
-            <p role="status">
-              {
-                [
-                  "A sample request arrives.",
-                  "The request is organized for a relevant conversation.",
-                  "A person reviews the next step. Nothing is sent.",
-                ][stage]
-              }
-            </p>
-            <button onClick={() => setStage((value) => (value + 1) % 3)}>
-              {stage === 2 ? "Reset sample flow" : "Follow the request"}
-              <ArrowRight size={15} />
-            </button>
-          </div>
-        </>
+          <p className="bj-landing-note">
+            A working page preview. No visit is booked or inquiry sent.
+          </p>
+        </div>
       )}
       {id === "store" && (
         <>
@@ -388,7 +408,7 @@ export function AudienceSection() {
                 <span className="bj-kicker">
                   A STARTING POINT, NOT A FIXED PACKAGE
                 </span>
-                {journey.services.map((id) => (
+                {[...journey.services, ...journey.optional].map((id) => (
                   <label key={id}>
                     <input
                       type="checkbox"
@@ -402,14 +422,19 @@ export function AudienceSection() {
                       }
                     />
                     {services.find((service) => service.id === id)?.short}
+                    {id.startsWith("M") && (
+                      <small className="bj-beta-label">
+                        Optional · BETA / COMING SOON
+                      </small>
+                    )}
                   </label>
                 ))}
                 <button className="bj-action" onClick={continueJourney}>
-                  Shape my project
+                  Start a Project
                   <ArrowRight size={17} />
                 </button>
-                <Link to="/project-lab">
-                  Make my own choices <ArrowUpRight size={14} />
+                <Link to="/studios">
+                  Explore Services <ArrowUpRight size={14} />
                 </Link>
               </div>
             </div>
@@ -605,7 +630,7 @@ export function WorkSection() {
 
 const packages = [
   {
-    title: "Video content",
+    title: "Video Editing",
     subtitle: "Give your story its rhythm.",
     scope:
       "For creators and businesses turning existing footage into a considered set of edits.",
@@ -620,7 +645,7 @@ const packages = [
     additions: ["V2", "V5"],
   },
   {
-    title: "Websites & digital products",
+    title: "Website Development",
     subtitle: "Build a useful digital home.",
     scope:
       "For businesses that need a clear website, or a more tailored customer experience.",
@@ -632,22 +657,22 @@ const packages = [
     ],
     factors:
       "Page count, content readiness, features, integrations, hosting and ongoing support.",
-    additions: ["T2", "T3", "T5"],
+    additions: ["T2", "T6", "T3", "T5"],
   },
   {
-    title: "AI & automation",
-    subtitle: "Connect the work behind the work.",
+    title: "Digital Marketing — Beta",
+    subtitle: "The next chapter, taking shape.",
     scope:
-      "For a defined repetitive task, useful assistant or workflow with clear human oversight.",
-    ids: ["T4"],
+      "For businesses exploring future campaign creative, social content, local visibility and clear reporting. These services are not launched.",
+    ids: ["M1"],
     deliverables: [
-      "Workflow mapping and boundaries",
-      "Scoped integration or assistant setup",
-      "Review, exceptions and handoff planning",
+      "Illustrative campaign and creative direction",
+      "Social content and local presence planning",
+      "Proposed analytics and reporting approach",
     ],
     factors:
-      "Systems involved, available access, workflow branches, knowledge preparation and provider costs.",
-    additions: ["T1", "T3"],
+      "Audience, channels, creative needs, reporting requirements and confirmed future availability. No campaign launches or paid-service commitments are made here.",
+    additions: ["M2", "M3", "M4"],
   },
 ];
 export function PackagesSection() {
@@ -656,6 +681,7 @@ export function PackagesSection() {
   const { setProject } = useProject();
   const navigate = useNavigate();
   const selected = packages[active];
+  const beta = active === 2;
   function requestQuote() {
     const line = `Project starting point: ${selected.title}. Optional additions: ${additions.map((id) => services.find((service) => service.id === id)?.short).join(", ") || "none selected"}. Scope and costs to be discussed.`;
     setProject((project) => ({
@@ -679,7 +705,7 @@ export function PackagesSection() {
     >
       <div className="bj-wrap">
         <header className="bj-heading">
-          <span className="bj-kicker">06 / PROJECTS & PRICING</span>
+          <span className="bj-kicker">05 / PROJECTS & PRICING</span>
           <h2 id="v14-packages-title" data-motion="typography">
             Find your
             <br />
@@ -719,10 +745,16 @@ export function PackagesSection() {
             data-motion="editorial"
             data-motion-key={active}
           >
-            <span className="bj-kicker">A SCOPE TO SHAPE TOGETHER</span>
+            <span className="bj-kicker">
+              {beta ? "BETA / COMING SOON" : "A SCOPE TO SHAPE TOGETHER"}
+            </span>
             <h3>{selected.subtitle}</h3>
             <p>{selected.scope}</p>
-            <h4>Typical deliverables</h4>
+            <h4>
+              {beta
+                ? "Planned scope — subject to availability"
+                : "Typical deliverables"}
+            </h4>
             <ul>
               {selected.deliverables.map((item) => (
                 <li key={item}>
@@ -731,37 +763,63 @@ export function PackagesSection() {
                 </li>
               ))}
             </ul>
-            <details className="bj-package-additions">
-              <summary>
-                Optional additions <Plus size={18} />
-              </summary>
-              <div>
+            {!beta && (
+              <details className="bj-package-additions">
+                <summary>
+                  Optional additions <Plus size={18} />
+                </summary>
+                <div>
+                  {selected.additions.map((id) => (
+                    <label key={id}>
+                      <input
+                        type="checkbox"
+                        checked={additions.includes(id)}
+                        onChange={() =>
+                          setAdditions((previous) =>
+                            previous.includes(id)
+                              ? previous.filter((value) => value !== id)
+                              : [...previous, id],
+                          )
+                        }
+                      />
+                      {services.find((service) => service.id === id)?.short}
+                    </label>
+                  ))}
+                </div>
+              </details>
+            )}
+            {beta && (
+              <ul className="bj-beta-scope">
                 {selected.additions.map((id) => (
-                  <label key={id}>
-                    <input
-                      type="checkbox"
-                      checked={additions.includes(id)}
-                      onChange={() =>
-                        setAdditions((previous) =>
-                          previous.includes(id)
-                            ? previous.filter((value) => value !== id)
-                            : [...previous, id],
-                        )
-                      }
-                    />
-                    {services.find((service) => service.id === id)?.short}
-                  </label>
+                  <li key={id}>
+                    {services.find((service) => service.id === id)?.name} · Beta
+                  </li>
                 ))}
-              </div>
-            </details>
+              </ul>
+            )}
             <div className="bj-package-factors">
-              <h4>What shapes your quote</h4>
+              <h4>
+                {beta ? "What we are considering" : "What shapes your quote"}
+              </h4>
               <p>{selected.factors}</p>
             </div>
-            <button className="bj-action" onClick={requestQuote}>
-              Request a quote
-              <ArrowRight size={18} />
-            </button>
+            {beta ? (
+              <Link className="bj-action" to="/studios/grow">
+                Explore Beta
+                <ArrowRight size={18} />
+              </Link>
+            ) : (
+              <button className="bj-action" onClick={requestQuote}>
+                Request Quote
+                <ArrowRight size={18} />
+              </button>
+            )}
+            {beta && (
+              <p className="bj-beta-notice">
+                BETA / COMING SOON. Explore illustrative concepts only. No
+                service is purchased, campaign launched or interest submitted.
+              </p>
+            )}
           </div>
         </div>
         <div className="bj-package-note">
@@ -807,9 +865,10 @@ export function AboutSection() {
           </p>
           <div>
             <p>
-              MAKENDLESS brings video editing, digital experiences and practical
-              AI solutions into one creative conversation. A strong idea
-              deserves both a distinctive expression and thoughtful execution.
+              MAKENDLESS brings video editing and website development into one
+              creative conversation, with digital marketing in Beta / Coming
+              Soon. A strong idea deserves both a distinctive expression and
+              thoughtful execution.
             </p>
             <dl>
               <div>
@@ -843,7 +902,7 @@ const process = [
   {
     name: "Design",
     title: "Give the idea a direction.",
-    text: "Shape the story, interface or workflow. Agree what the project needs to do.",
+    text: "Shape the story, interface or campaign concept. Agree what the project needs to do.",
   },
   {
     name: "Create",
@@ -880,12 +939,12 @@ const faqs = [
   {
     question: "What happens at delivery?",
     answer:
-      "Handover follows the agreed outputs: edited files, website access or workflow documentation, for example. Confirm formats, responsibilities, hosting and any training as part of the scope.",
+      "Handover follows the agreed outputs: edited files, website access or agreed creative materials, for example. Confirm formats, responsibilities, hosting and any training as part of the scope.",
   },
   {
     question: "Can we discuss ongoing support?",
     answer:
-      "Yes. Website Maintenance & Optimization is part of the service catalogue. Updates and support requirements can be scoped for your website; an ongoing plan is not added automatically.",
+      "Yes. Website Redesign & Maintenance is part of the service catalogue. Updates and support requirements can be scoped for your website; an ongoing plan is not added automatically.",
   },
 ];
 export function ProcessSection() {
@@ -898,7 +957,7 @@ export function ProcessSection() {
     >
       <div className="bj-wrap">
         <header className="bj-heading">
-          <span className="bj-kicker">09 / A CLEAR WAY FORWARD</span>
+          <span className="bj-kicker">06 / A CLEAR WAY FORWARD</span>
           <h2 id="v14-process-title" data-motion="typography">
             From idea
             <br />

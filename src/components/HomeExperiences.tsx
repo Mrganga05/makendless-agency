@@ -20,10 +20,11 @@ import {
   Plus,
   RotateCcw,
   Sparkles,
-  Workflow,
+  Megaphone,
 } from "lucide-react";
 import { businesses } from "../data";
 import { useProject } from "../project";
+import CampaignPreview from "./CampaignPreview";
 import "../home-experiences.css";
 
 const ServiceDemo = lazy(() => import("./ServiceDemo"));
@@ -41,10 +42,10 @@ const workshops = [
     icon: Monitor,
   },
   {
-    id: "T4",
-    title: "Automate a Workflow",
-    note: "Follow an inquiry from first message to human review.",
-    icon: Workflow,
+    id: "M1",
+    title: "Preview a Campaign — Beta",
+    note: "Explore illustrative creative and placement choices. No campaign launches.",
+    icon: Megaphone,
   },
 ] as const;
 class WorkshopBoundary extends Component<
@@ -175,7 +176,7 @@ const ingredients = [
   { id: "T1", name: "Website", Icon: Monitor },
   { id: "T3", name: "Booking System", Icon: CalendarDays },
   { id: "V3", name: "Promotional Video", Icon: Film },
-  { id: "T4", name: "AI Assistant", Icon: Sparkles },
+  { id: "M1", name: "Digital Marketing Beta", Icon: Sparkles },
 ];
 const businessScenes: Record<
   string,
@@ -213,7 +214,6 @@ export function LabIntro() {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const film = useRef<HTMLElement>(null);
-  const [reply, setReply] = useState("");
   const business = businessScenes[project.business] || businessScenes.Salon;
   const businessStyle =
     project.business === "Café / Restaurant"
@@ -256,7 +256,6 @@ export function LabIntro() {
       setPlaying(false);
       setProgress(0);
     }
-    if (id === "T4") setReply("");
   }
   function reset() {
     setProject((p) => ({
@@ -269,7 +268,6 @@ export function LabIntro() {
     setConfirmed(false);
     setPlaying(false);
     setProgress(0);
-    setReply("");
   }
   return (
     <section
@@ -304,7 +302,6 @@ export function LabIntro() {
                 brief: "",
               }));
               setConfirmed(false);
-              setReply("");
             }}
           >
             {businesses.map((name) => (
@@ -523,29 +520,13 @@ export function LabIntro() {
                   </div>
                 </section>
               )}
-              {active("T4") && (
-                <section className="home-business-chat" data-motion="spatial">
-                  <span className="home-module-label">
-                    <Sparkles size={15} /> ASSISTANT · SCRIPTED EXAMPLE
-                  </span>
-                  <p
-                    aria-live="polite"
-                    data-motion="media"
-                    data-motion-key={reply || business.name}
-                  >
-                    {reply ||
-                      `Welcome to ${business.name}. How can we help you explore?`}
-                  </p>
-                  <button
-                    onClick={() =>
-                      setReply(
-                        `This example offers ${business.service.toLowerCase()}. A real assistant would use your approved business information.`,
-                      )
-                    }
-                  >
-                    What can I book? <ArrowRight size={14} />
-                  </button>
-                  <small>No AI service is connected.</small>
+              {active("M1") && (
+                <section
+                  className="home-campaign-concept"
+                  aria-label="Digital Marketing Beta concept"
+                  data-motion="spatial"
+                >
+                  <CampaignPreview key={project.business} compact />
                 </section>
               )}
             </div>

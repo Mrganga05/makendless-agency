@@ -47,7 +47,7 @@ export const services: Service[] = [
   {
     id: "V4",
     world: "create",
-    name: "Content Repurposing & Creator Packages",
+    name: "Content Repurposing",
     short: "Content repurposing",
     description:
       "Make one recording work in more places. Shape your source into a cohesive set of shareable formats.",
@@ -56,16 +56,20 @@ export const services: Service[] = [
   {
     id: "V5",
     world: "create",
-    name: "Motion Graphics & AI-Assisted Editing",
-    short: "Motion & AI-assisted edits",
+    name: "Motion Graphics",
+    short: "Motion graphics",
     description:
-      "Add character with purposeful typography, graphic motion and carefully reviewed AI-assisted workflows.",
-    deliverables: ["Motion titles", "Graphic overlays", "Human-reviewed edits"],
+      "Add character with purposeful typography, graphic motion and considered visual storytelling.",
+    deliverables: [
+      "Motion titles",
+      "Graphic overlays",
+      "Animated compositions",
+    ],
   },
   {
     id: "T1",
     world: "build",
-    name: "Business Website Design & Development",
+    name: "Business Website Development",
     short: "Business websites",
     description:
       "A digital home that makes your business clear, distinctive and easy to connect with.",
@@ -89,40 +93,40 @@ export const services: Service[] = [
     ],
   },
   {
-    id: "T3",
+    id: "T6",
     world: "build",
-    name: "Booking Systems & Custom Web Applications",
-    short: "Booking & web apps",
+    name: "Landing Page Development",
+    short: "Landing pages",
     description:
-      "Turn complex business tasks into simple digital experiences, from scheduling to custom workflows.",
+      "Give one offering a focused destination, with a clear message, responsive composition and useful next step.",
     deliverables: [
-      "Booking interface",
-      "Custom workflows",
-      "Application development",
+      "Focused page design",
+      "Responsive development",
+      "Form and CTA integration planning",
     ],
   },
   {
-    id: "T4",
+    id: "T3",
     world: "build",
-    name: "Business Automation & AI Assistants",
-    short: "Automation & AI assistants",
+    name: "Booking Websites & Web Applications",
+    short: "Booking & web apps",
     description:
-      "Connect repetitive tasks and build useful assistants with clear boundaries and human oversight.",
+      "Turn complex business tasks into simple digital experiences, from appointment scheduling to useful web applications.",
     deliverables: [
-      "Workflow mapping",
-      "Automation integrations",
-      "Assistant configuration",
+      "Booking interface",
+      "Application interface design",
+      "Application development",
     ],
   },
   {
     id: "T5",
     world: "build",
-    name: "Website Maintenance & Optimization",
-    short: "Maintenance & optimization",
+    name: "Website Redesign & Maintenance",
+    short: "Redesign & maintenance",
     description:
       "Keep your website considered, current and usable as your business evolves.",
     deliverables: [
-      "Website updates",
+      "Website redesign and updates",
       "Responsive improvements",
       "Performance review",
     ],
@@ -143,8 +147,8 @@ export const services: Service[] = [
   {
     id: "M2",
     world: "grow",
-    name: "Social Media Content Management",
-    short: "Social media content",
+    name: "Social Media Management",
+    short: "Social media management",
     description:
       "A planned approach to a consistent social presence. Join the conversation while we shape this service.",
     deliverables: [
@@ -156,14 +160,27 @@ export const services: Service[] = [
   {
     id: "M3",
     world: "grow",
-    name: "Local Digital Presence & Analytics",
-    short: "Local presence & analytics",
+    name: "Local Business Digital Marketing",
+    short: "Local business marketing",
     description:
-      "A clearer local presence and a practical view of your digital activity. Coming soon.",
+      "A clearer local presence through useful business information, considered content and consistent profiles. Beta / Coming Soon.",
     deliverables: [
       "Local profile review",
       "Presence planning",
-      "Analytics approach",
+      "Local content direction",
+    ],
+  },
+  {
+    id: "M4",
+    world: "grow",
+    name: "Marketing Analytics & Reporting",
+    short: "Analytics & reporting",
+    description:
+      "A planned way to organize marketing activity into clear reports. Beta / Coming Soon; no live reporting service is connected.",
+    deliverables: [
+      "Measurement planning",
+      "Reporting structure",
+      "Marketing activity summaries",
     ],
   },
 ];
@@ -171,13 +188,13 @@ export const worldInfo = {
   create: {
     label: "CREATE",
     title: "Video editing with feeling.",
-    subtitle: "Video Editing & Creative Production",
+    subtitle: "Video Editing",
     intro: "A little rhythm. A fresh perspective. A story they feel.",
   },
   build: {
     label: "BUILD",
-    title: "Websites & AI that work.",
-    subtitle: "Websites, IT & AI Solutions",
+    title: "Websites made for your next chapter.",
+    subtitle: "Website Development",
     intro: "Beautiful on the surface. Thoughtful in every interaction.",
   },
   grow: {

@@ -28,9 +28,12 @@ describe("SpatialScene React lifecycle (renderer mocked; no GPU verification)", 
     );
     const next = {
       ...initialShowcaseState,
-      mode: "build" as const,
-      mobile: true,
-      sitePanel: "menu" as const,
+      mode: "grow" as const,
+      campaign: {
+        objective: "visits" as const,
+        creative: "story" as const,
+        placement: "story" as const,
+      },
     };
     rerender(<SpatialScene state={next} onReady={onReady} onError={onError} />);
     expect(createScene).toHaveBeenCalledTimes(1);

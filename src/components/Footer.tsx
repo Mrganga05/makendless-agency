@@ -15,9 +15,9 @@ export default function Footer() {
             MAKENDLESS<span>✳</span>
           </Link>
           <p>
-            Video. Websites. AI.
+            Video editing. Websites.
             <br />
-            Good ideas, brought to life.
+            Digital Marketing — Beta / Coming Soon.
           </p>
           <Link className="footer-project-link" to="/contact">
             Let’s make something <ArrowUpRight size={18} />
@@ -26,9 +26,11 @@ export default function Footer() {
         <nav className="footer-links" aria-label="Footer">
           <div>
             <span>THE STUDIOS</span>
-            <Link to="/studios/create">CREATE / Video editing</Link>
-            <Link to="/studios/build">BUILD / Websites & AI</Link>
-            <Link to="/studios/grow">GROW / Beta · Coming soon</Link>
+            <Link to="/studios/create">CREATE / Video Editing</Link>
+            <Link to="/studios/build">BUILD / Website Development</Link>
+            <Link to="/studios/grow">
+              GROW / Digital Marketing — Beta / Coming Soon
+            </Link>
           </div>
           <div>
             <span>GET TO KNOW US</span>

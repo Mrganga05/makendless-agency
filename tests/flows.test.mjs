@@ -12,7 +12,7 @@ const project = {
 };
 test("brief preserves chosen services, business context and beta availability", () => {
   const brief = generateBrief(project);
-  assert.match(brief, /Business Website Design & Development/);
+  assert.match(brief, /Business Website Development/);
   assert.match(brief, /Meta & Google Ads Management \(Beta \/ Coming Soon/);
   assert.match(brief, /Sal[o]n/);
   assert.match(brief, /1–3 months/);
@@ -31,13 +31,13 @@ test("recommendations combine goal and interests without duplicates", () => {
   );
   assert.ok(result.every((r) => r.reason));
 });
-test("automation goal selects the relevant capabilities", () =>
+test("booking goal selects only the booking capability", () =>
   assert.deepEqual(
-    recommendServices("Simplify everyday work", []).map((r) => r.id),
-    ["T3", "T4"],
+    recommendServices("Make booking easier", []).map((r) => r.id),
+    ["T3"],
   ));
 test("pairings stay optional and exclude selected capabilities", () => {
-  const selections = ["T1", "T3", "T4"];
+  const selections = ["T1", "T3", "V1"];
   const before = [...selections];
   assert.deepEqual(
     getPairings(selections).map((r) => r.id),

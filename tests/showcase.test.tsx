@@ -152,8 +152,12 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
         screen.getByRole("status", { name: "Showcase feedback" }).textContent,
       ).toContain("Flat preview active"),
     );
-    await user.click(screen.getByRole("button", { name: "AI Automation" }));
-    expect(screen.getByRole("button", { name: "Next step" })).toBeTruthy();
+    await user.click(
+      screen.getByRole("button", { name: /^DIGITAL MARKETING/ }),
+    );
+    expect(
+      screen.getByRole("combobox", { name: "Campaign objective" }),
+    ).toBeTruthy();
     errorLog.mockRestore();
   });
 
@@ -162,7 +166,7 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
     mount();
     expect(
       screen
-        .getByRole("button", { name: "CREATE Video editing" })
+        .getByRole("button", { name: "VIDEO EDITING CREATE" })
         .getAttribute("aria-pressed"),
     ).toBe("true");
     await waitFor(() =>
@@ -210,7 +214,7 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
   it("changes website structure, viewport and actual sample menu content", async () => {
     const user = userEvent.setup();
     mount();
-    await user.click(screen.getByRole("button", { name: "BUILD Websites" }));
+    await user.click(screen.getByRole("button", { name: "WEBSITES BUILD" }));
     await user.click(
       screen.getByRole("button", { name: "Wireframe", exact: true }),
     );
@@ -231,25 +235,56 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
     );
     expect(screen.queryByText("Flat white")).toBeNull();
   });
-  it("steps an inquiry through human review and can restart", async () => {
+  it("changes the campaign objective, creative and placement independently and can reset", async () => {
     const user = userEvent.setup();
-    mount();
-    await user.click(screen.getByRole("button", { name: "AI Automation" }));
+    const { container } = mount();
+    await user.click(
+      screen.getByRole("button", { name: /^DIGITAL MARKETING/ }),
+    );
+    expect(screen.getByText("BETA / COMING SOON")).toBeTruthy();
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Campaign objective" }),
+      "visits",
+    );
     expect(
-      screen.getByText("“Hello, I’d like a website with appointment booking.”"),
+      screen.getByRole("heading", { name: "Make room for a daily ritual." }),
     ).toBeTruthy();
-    for (let i = 0; i < 4; i++)
-      await user.click(screen.getByRole("button", { name: "Next step" }));
-    expect(screen.getByText("Human decision required")).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "People & story" }));
     expect(
-      screen.getByRole("status", { name: "Showcase feedback" }).textContent,
-    ).toContain("Nothing is sent");
-    await user.click(screen.getByRole("button", { name: "Restart" }));
+      screen.getByRole("img", { name: /Friends sharing coffee/ }),
+    ).toBeTruthy();
+    expect(container.querySelector(".campaign-ad")?.className).toContain(
+      "campaign-ad--placement-feed",
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Story", exact: true }),
+    );
+    expect(container.querySelector(".campaign-ad")?.className).toContain(
+      "campaign-ad--placement-story",
+    );
+    await user.click(screen.getByRole("button", { name: "Product focus" }));
+    expect(container.querySelector(".campaign-ad")?.className).toContain(
+      "campaign-ad--placement-story",
+    );
     expect(
-      screen
-        .getByRole("button", { name: "Previous workflow step" })
-        .hasAttribute("disabled"),
-    ).toBe(true);
+      screen.getByRole("img", { name: /Original coffee cup artwork/ }),
+    ).toBeTruthy();
+    await user.click(
+      screen.getByRole("button", { name: "Reset campaign preview" }),
+    );
+    expect(
+      (
+        screen.getByRole("combobox", {
+          name: "Campaign objective",
+        }) as HTMLSelectElement
+      ).value,
+    ).toBe("awareness");
+    expect(container.querySelector(".campaign-ad")?.className).toContain(
+      "campaign-ad--placement-feed",
+    );
+    expect(
+      screen.getByText(/No campaign is running and no results are claimed/),
+    ).toBeTruthy();
   });
   it("adds the relevant service to the shared project and links to its detail route", async () => {
     const user = userEvent.setup();
@@ -259,7 +294,7 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
       screen.getByRole("status", { name: "Project service selections" })
         .textContent,
     ).toBe("V1");
-    await user.click(screen.getByRole("button", { name: "BUILD Websites" }));
+    await user.click(screen.getByRole("button", { name: "WEBSITES BUILD" }));
     await user.click(screen.getByRole("button", { name: "Add to my project" }));
     expect(
       screen.getByRole("status", { name: "Project service selections" })
@@ -305,7 +340,7 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
     const user = userEvent.setup();
     mount();
     await screen.findByText("SPATIAL PREVIEW");
-    await user.click(screen.getByRole("button", { name: "BUILD Websites" }));
+    await user.click(screen.getByRole("button", { name: "WEBSITES BUILD" }));
     await user.click(
       screen.getByRole("button", { name: "Mobile", exact: true }),
     );
@@ -355,53 +390,59 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
       "crop-tight",
     );
   });
-  it("routes edited inquiries and invalidates downstream drafts and review", async () => {
+  it("retains campaign choices across mode changes and treats marketing only as future interest", async () => {
     const user = userEvent.setup();
-    mount({ initialMode: "ai" });
-    await user.click(screen.getByText("Try your own inquiry"));
-    const inquiry = screen.getByRole("textbox", { name: "Example inquiry" });
-    await user.clear(inquiry);
-    expect(
-      screen
-        .getByRole("button", { name: "Next step" })
-        .hasAttribute("disabled"),
-    ).toBe(true);
-    await user.type(inquiry, "I need a product video.");
-    await user.click(screen.getByRole("button", { name: "Next step" }));
-    expect(screen.getByText("Video & creative production")).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: "Next step" }));
-    expect(screen.getByText("Routed to CREATE.")).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: "Next step" }));
-    const draft = screen.getByRole("textbox", {
-      name: "Editable response draft",
-    });
-    await user.clear(draft);
-    expect(
-      screen
-        .getByRole("button", { name: "Next step" })
-        .hasAttribute("disabled"),
-    ).toBe(true);
-    await user.type(draft, "Custom local draft");
-    await user.click(screen.getByRole("button", { name: "Next step" }));
-    await user.click(screen.getByRole("button", { name: "Mark as reviewed" }));
-    expect(
-      screen.getByText("Reviewed locally. Nothing was sent."),
-    ).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: "Restart" }));
-    await user.click(screen.getByText("Try your own inquiry"));
-    const next = screen.getByRole("textbox", { name: "Example inquiry" });
-    await user.clear(next);
-    await user.type(next, "I want an online store.");
-    for (let i = 0; i < 3; i++)
-      await user.click(screen.getByRole("button", { name: "Next step" }));
+    mount({ initialMode: "grow", showServiceActions: true });
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Campaign objective" }),
+      "inquiries",
+    );
+    await user.click(
+      screen.getByRole("button", { name: "Story", exact: true }),
+    );
+    await user.click(screen.getByRole("button", { name: "WEBSITES BUILD" }));
+    await user.click(
+      screen.getByRole("button", { name: /^DIGITAL MARKETING/ }),
+    );
     expect(
       (
-        screen.getByRole("textbox", {
-          name: "Editable response draft",
-        }) as HTMLTextAreaElement
+        screen.getByRole("combobox", {
+          name: "Campaign objective",
+        }) as HTMLSelectElement
       ).value,
-    ).toContain("e-commerce website");
-    expect(screen.queryByText("Custom local draft")).toBeNull();
+    ).toBe("inquiries");
+    expect(
+      screen
+        .getByRole("button", { name: "Story", exact: true })
+        .getAttribute("aria-pressed"),
+    ).toBe("true");
+    expect(
+      screen.getByRole("status", { name: "Project service selections" })
+        .textContent,
+    ).toBe("");
+    expect(
+      screen.queryByRole("button", { name: "Add to my project" }),
+    ).toBeNull();
+    expect(
+      screen.getByRole("link", { name: "Explore Beta" }).getAttribute("href"),
+    ).toBe("/services/M1");
+    await user.click(
+      screen.getByRole("button", { name: "Add future interest" }),
+    );
+    expect(
+      screen.getByRole("status", { name: "Project service selections" })
+        .textContent,
+    ).toBe("M1");
+    await user.click(
+      screen.getByRole("button", { name: "Interest noted · remove" }),
+    );
+    expect(
+      screen.getByRole("status", { name: "Project service selections" })
+        .textContent,
+    ).toBe("");
+    expect(
+      screen.getByRole("status", { name: "Showcase feedback" }).textContent,
+    ).toContain("no ads are launched");
   });
   it("uses still stepping under reduced motion and bounds requested playback", async () => {
     media((q) => q.includes("prefers-reduced-motion"));
