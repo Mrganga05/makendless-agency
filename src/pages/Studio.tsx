@@ -5,6 +5,7 @@ import { services, worldInfo, type World } from "../data";
 import { useProject } from "../project";
 import ServiceDemo from "../components/ServiceDemo";
 import "../studios.css";
+import "../studio-worlds.css";
 function StudioWorld({ world }: { world: World }) {
   const list = services.filter((s) => s.world === world);
   const [selected, setSelected] = useState(list[0].id);
@@ -83,7 +84,15 @@ function StudioWorld({ world }: { world: World }) {
           </div>
           <ServiceDemo key={selected} id={selected} />
           <div className="studio-demo-footer">
-            <p>{service.description}</p>
+            <details className="world-service-context">
+              <summary>What we can make together</summary>
+              <p>{service.description}</p>
+              <ul>
+                {service.deliverables.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </details>
             <button
               className={`button ${added ? "button-secondary" : "button-primary"}`}
               onClick={() => toggleService(selected)}
@@ -98,6 +107,27 @@ function StudioWorld({ world }: { world: World }) {
           </div>
         </div>
       </section>
+      <div className="world-direct-inquiry">
+        <span>
+          {world === "grow"
+            ? "Interested in what’s coming?"
+            : "Have a project in mind?"}
+        </span>
+        <Link
+          to="/contact"
+          className="text-link"
+          onClick={() => {
+            if (!added) toggleService(selected);
+          }}
+        >
+          {world === "create"
+            ? "Start a Video Project"
+            : world === "build"
+              ? "Start a Build Project"
+              : "Share your interest"}{" "}
+          <ArrowUpRight size={17} />
+        </Link>
+      </div>
       <section className="studio-next">
         <div>
           <span className="eyebrow">GOOD IDEAS WORK BETTER TOGETHER</span>

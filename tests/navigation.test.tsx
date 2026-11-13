@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 import App from "../src/App";
@@ -22,9 +22,10 @@ describe("navigation and routing", () => {
     ...services.map((s) => `/services/${s.id}`),
     "/not-found",
   ]) {
-    it(`renders ${path} with one main heading and working main landmark`, () => {
+    it(`renders ${path} with one main heading and working main landmark`, async () => {
       window.history.replaceState({}, "", path);
       render(<App />);
+      await screen.findByRole("heading", { level: 1 });
       expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
       expect(screen.getByRole("main")).toBeTruthy();
       expect(
@@ -34,17 +35,45 @@ describe("navigation and routing", () => {
       ).toBe("/");
     });
   }
-  it("offers direct Services, Work and About links without a nested menu", () => {
+  it("opens the compact Studios disclosure and restores focus on Escape", async () => {
+    const user = userEvent.setup();
     window.history.replaceState({}, "", "/");
     render(<App />);
     const nav = screen.getByRole("navigation", { name: "Main navigation" });
     expect(
-      Array.from(nav.querySelectorAll("a")).map((a) => a.textContent),
-    ).toEqual(["Services", "Work", "About"]);
-    expect(nav.querySelector("button")).toBeNull();
+      within(nav)
+        .getByRole("link", { name: "Project Lab" })
+        .getAttribute("href"),
+    ).toBe("/project-lab");
+    const opener = within(nav).getByRole("button", { name: "Studios" });
+    await user.click(opener);
+    const grow = within(nav).getByRole("link", {
+      name: /GROW Marketing Beta \/ Coming Soon/,
+    });
+    expect(grow.getAttribute("href")).toBe("/studios/grow");
+    const first = within(nav).getByRole("link", {
+      name: "CREATE Video Editing",
+    });
+    first.focus();
+    await user.keyboard("{Escape}");
+    expect(document.activeElement).toBe(opener);
+    expect(opener.getAttribute("aria-expanded")).toBe("false");
     expect(
-      screen.getByRole("link", { name: "Services" }).getAttribute("href"),
-    ).toBe("/studios");
+      within(nav).queryByRole("link", { name: "CREATE Video Editing" }),
+    ).toBeNull();
+  });
+  it("closes the studio disclosure on outside interaction and destination navigation", async () => {
+    const user = userEvent.setup();
+    window.history.replaceState({}, "", "/");
+    render(<App />);
+    const opener = screen.getByRole("button", { name: "Studios" });
+    await user.click(opener);
+    await user.click(screen.getByRole("heading", { level: 1 }));
+    expect(opener.getAttribute("aria-expanded")).toBe("false");
+    await user.click(opener);
+    await user.click(screen.getByRole("link", { name: "BUILD Websites & AI" }));
+    expect(window.location.pathname).toBe("/studios/build");
+    expect(opener.getAttribute("aria-expanded")).toBe("false");
   });
   it("opens mobile navigation, contains focus and closes after navigation", async () => {
     const user = userEvent.setup();
@@ -67,6 +96,20 @@ describe("navigation and routing", () => {
     expect(document.activeElement).toBe(
       screen.getByRole("button", { name: "Open navigation" }),
     );
+  });
+  it("navigates from mobile studios and releases the page scroll lock", async () => {
+    const user = userEvent.setup();
+    window.history.replaceState({}, "", "/");
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: "Open navigation" }));
+    const dialog = screen.getByRole("dialog", { name: "Navigation" });
+    expect(document.body.style.overflow).toBe("hidden");
+    await user.click(
+      within(dialog).getByRole("link", { name: "CREATE Video Editing" }),
+    );
+    expect(window.location.pathname).toBe("/studios/create");
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(document.body.style.overflow).toBe("");
   });
   it("keeps GROW availability visible and all 13 categories intact", () => {
     expect(services).toHaveLength(13);

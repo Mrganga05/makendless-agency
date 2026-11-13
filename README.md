@@ -1,4 +1,4 @@
-# MAKENDLESS — Glass Prism
+# MAKENDLESS — The Living Experience
 
 A responsive creative and technology studio website built with React, TypeScript and Vite. The visual identity uses the official Glass Prism palette, self-hosted Syne (400–800), photo-led concepts, original CSS illustrations, and restrained motion.
 
@@ -22,8 +22,9 @@ The compiled website is in `dist/`. Configure your static host to serve `index.h
 
 ## What is implemented
 
-- Redesigned homepage with direct navigation, a working café/booking and video-edit hero showcase, clear service presentations, photographic concept work, process and inquiry actions.
+- Seven-part homepage with the Living Showcase, three studio worlds, lazy Live Workshop, shared-state Project Lab introduction, concept work, interactive process and inquiry CTA. Compact Studios / Work / Project Lab / About navigation.
 - CREATE, BUILD and GROW studio pages with all **13 approved service categories** and a detail route for each.
+- Lazy Three.js spatial workbench: default CREATE editing frame/timeline, BUILD wireframe/device/menu states, AI workflow. Accessible HTML controls/fallbacks, reduced-motion/data-saving/mobile handling, on-demand rendering and resource cleanup. Real GPU appearance remains unverified.
 - Thirteen functional demonstrations: before/after editing with captions/framing, podcast highlights, ad treatments, content formats, motion typography, website transformation, mock storefront/cart/checkout, mock bookings, stepped automation, illustrative optimization, campaign planning, content planning and local presence.
 - Living Project Lab: four business types; website, booking, promotional video and assistant modules; add/remove/reset; optional dismissible pairings; editable brief generation, copy and inquiry handoff.
 - Five-step rule-based discovery with editable recommendations. No paid AI or hidden API calls.
@@ -60,7 +61,7 @@ npm test
 npm run build
 ```
 
-Latest verification: typecheck, lint and production build pass; **58 tests pass** (5 helper tests and 53 DOM integration tests). See `docs/REDESIGN.md` for the latest design changes and verification, and `docs/VERIFICATION.md` for the original implementation checks.
+Latest verification: typecheck, lint and production build pass; **74 tests pass** (5 helper tests and 69 DOM integration tests). See `docs/QA_LOG.md` for current evidence and limits. `AGENTS.md` and `docs/CREATIVE_BRIEF.md` contain the active V9 project instructions; historical reports remain for context.
 
 **Browser visual review is outstanding.** The managed preview relay timed out and the cloud browser tool failed to initialize. Desktop/mobile screenshots, real viewport overflow checks, browser console review and performance measurements could not be collected. This is not a claim of WCAG compliance or achieved Core Web Vitals.
 
@@ -72,7 +73,10 @@ Latest verification: typecheck, lint and production build pass; **58 tests pass*
 - `src/brief.ts`: brief generation, deterministic recommendations and optional pairings.
 - `src/components/ServiceDemo.tsx`: the 13 demonstrations.
 - `src/pages/`: routed homepage, studio, Project Lab, discovery, inquiry and supporting content.
-- `src/components/LiveShowcase.tsx`: functional hero café and motion examples.
+- `src/components/LiveShowcase.tsx`, `src/showcase-state.ts`: accessible hero controls, capability fallback and typed shared state.
+- `src/components/SpatialScene.tsx`, `src/three/living-scene.ts`: lazily loaded Three.js presentation and lifecycle.
+- `src/components/HomeExperiences.tsx`: deferred Workshop and shared homepage Lab.
+- `src/navigation.ts`: centralized primary navigation and studio destinations.
 - `src/refinements.css`: shared visual hierarchy for service, project and supporting pages.
 - `public/images/`: locally bundled concept photography; sources and licensing in `docs/REDESIGN.md`.
 - `tests/`: behavioral, routing, keyboard and state-transfer regression coverage.
@@ -80,7 +84,7 @@ Latest verification: typecheck, lint and production build pass; **58 tests pass*
 
 ## Data, assets and production setup
 
-Visitor state is held in React memory and resets on refresh. The demo does not persist inquiries, use analytics, call an AI service or process payments. Clipboard copy is initiated by the visitor and includes a manual fallback message. Fonts are served locally through the build. Syne is licensed under SIL OFL 1.1; Lucide uses ISC. Original visual compositions are implemented in this repository. Unsplash photography is bundled locally for fictional concept projects; source/license links are recorded in `docs/REDESIGN.md`.
+Visitor state is held in React memory and resets on refresh. The demo does not persist inquiries, use analytics, call an AI service or process payments. Clipboard copy is initiated by the visitor and includes a manual fallback message. Fonts are served locally through the build. Syne is licensed under SIL OFL 1.1; Lucide uses ISC; Three.js uses MIT. License notices ship in `public/licenses/`. Original visual compositions are implemented in this repository. Unsplash photography is bundled locally for fictional concept projects; source/license links are recorded in `docs/REDESIGN.md`.
 
 Before a real launch, connect and test a delivery backend, provide verified business contact information, review legal documents, replace or supplement concept work with approved real work, and complete browser QA. Service scope, timelines and prices remain subject to discussion.
 

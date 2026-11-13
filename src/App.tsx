@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -9,19 +9,31 @@ import {
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import Home, { Studios } from "./pages/Home";
-import Studio from "./pages/Studio";
-import ProjectLab from "./pages/ProjectLab";
-import FindSolution from "./pages/FindSolution";
-import Contact from "./pages/Contact";
-import {
-  Work,
-  About,
-  FAQ,
-  Privacy,
-  Terms,
-  ServiceDetail,
-  NotFound,
-} from "./pages/Supporting";
+const Studio = lazy(() => import("./pages/Studio"));
+const ProjectLab = lazy(() => import("./pages/ProjectLab"));
+const FindSolution = lazy(() => import("./pages/FindSolution"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Work = lazy(() =>
+  import("./pages/Supporting").then((m) => ({ default: m.Work })),
+);
+const About = lazy(() =>
+  import("./pages/Supporting").then((m) => ({ default: m.About })),
+);
+const FAQ = lazy(() =>
+  import("./pages/Supporting").then((m) => ({ default: m.FAQ })),
+);
+const Privacy = lazy(() =>
+  import("./pages/Supporting").then((m) => ({ default: m.Privacy })),
+);
+const Terms = lazy(() =>
+  import("./pages/Supporting").then((m) => ({ default: m.Terms })),
+);
+const ServiceDetail = lazy(() =>
+  import("./pages/Supporting").then((m) => ({ default: m.ServiceDetail })),
+);
+const NotFound = lazy(() =>
+  import("./pages/Supporting").then((m) => ({ default: m.NotFound })),
+);
 import { ProjectProvider } from "./project";
 import { services } from "./data";
 const titles: Record<string, string> = {
@@ -77,39 +89,47 @@ export default function App() {
         <RouteEffects />
         <Navigation />
         <main id="main" tabIndex={-1}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/studios" element={<Studios />} />
-            <Route
-              path="/studios/create"
-              element={<Studio key="create" world="create" />}
-            />
-            <Route
-              path="/studios/build"
-              element={<Studio key="build" world="build" />}
-            />
-            <Route
-              path="/studios/grow"
-              element={<Studio key="grow" world="grow" />}
-            />
-            <Route path="/services/:id" element={<ServiceDetail />} />
-            <Route path="/project-lab" element={<ProjectLab />} />
-            <Route path="/find-solution" element={<FindSolution />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/work" element={<Work />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            {["create", "build", "grow"].map((w) => (
+          <Suspense
+            fallback={
+              <div className="route-loading" role="status">
+                Opening the studio…
+              </div>
+            }
+          >
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/studios" element={<Studios />} />
               <Route
-                key={w}
-                path={`/${w}`}
-                element={<Navigate to={`/studios/${w}`} replace />}
+                path="/studios/create"
+                element={<Studio key="create" world="create" />}
               />
-            ))}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+              <Route
+                path="/studios/build"
+                element={<Studio key="build" world="build" />}
+              />
+              <Route
+                path="/studios/grow"
+                element={<Studio key="grow" world="grow" />}
+              />
+              <Route path="/services/:id" element={<ServiceDetail />} />
+              <Route path="/project-lab" element={<ProjectLab />} />
+              <Route path="/find-solution" element={<FindSolution />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/work" element={<Work />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              {["create", "build", "grow"].map((w) => (
+                <Route
+                  key={w}
+                  path={`/${w}`}
+                  element={<Navigate to={`/studios/${w}`} replace />}
+                />
+              ))}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </main>
         <Footer />
       </ProjectProvider>

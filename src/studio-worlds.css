@@ -1,0 +1,253 @@
+/* The service stage is the destination; navigation is a compact control strip. */
+.studio-page .studio-header {
+  padding-bottom: 35px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 35px;
+}
+.studio-page .studio-experience {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+.studio-page .studio-service-selector {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  gap: 0;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+}
+.studio-page .studio-service-selector button {
+  margin: 0;
+  border-radius: 0 !important;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 13px;
+  min-height: 112px;
+  padding: 17px 16px !important;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent !important;
+  text-align: left;
+}
+.studio-page .studio-service-selector button > span {
+  font-size: 10px;
+  color: var(--brand-muted);
+}
+.studio-page .studio-service-selector button > strong {
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.studio-page .studio-service-selector button > svg {
+  display: none;
+}
+.studio-page .studio-service-selector button.selected {
+  background: #8b5cf60c !important;
+  color: var(--brand-text) !important;
+  border-bottom-color: #22d3ee !important;
+}
+.studio-page .studio-service-selector button.selected > span {
+  color: #c7a6ff !important;
+}
+.studio-grow .studio-service-selector {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.studio-page .studio-demo-main {
+  width: 100%;
+  max-width: 1050px;
+  margin: auto;
+}
+.studio-page .studio-demo-title {
+  margin-bottom: 25px;
+}
+.studio-page .studio-demo-title h2 {
+  font-size: 32px !important;
+}
+.studio-page .service-demo {
+  border: 1px solid #a4aac733;
+  border-radius: 9px;
+}
+.studio-page .shortform-stage {
+  min-height: 440px;
+  gap: 90px;
+}
+.studio-page .comparison-scene {
+  width: 220px;
+  height: 360px;
+}
+.studio-page .shortform-copy h3 {
+  font-size: 52px;
+}
+.studio-page .website-stage {
+  min-height: 450px;
+}
+.studio-page .mini-site {
+  max-width: 710px;
+}
+.studio-page .store-stage,
+.studio-page .booking-stage,
+.studio-page .automation-stage {
+  min-height: 430px;
+}
+.studio-page .demo-controls {
+  padding: 24px 30px;
+}
+.studio-page .demo-control-row {
+  gap: 20px;
+}
+.world-service-context {
+  max-width: 600px;
+  flex: 1;
+}
+.world-service-context summary {
+  font-size: 14px;
+  cursor: pointer;
+  min-height: 44px;
+  display: list-item;
+  padding: 12px 0;
+  list-style-position: inside;
+}
+.world-service-context p {
+  font-size: 14px;
+  color: var(--brand-muted);
+  line-height: 1.8;
+  margin-top: 14px;
+}
+.world-service-context ul {
+  display: flex;
+  gap: 9px 23px;
+  flex-wrap: wrap;
+  padding: 0 0 0 18px;
+  color: #c7a6ff;
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 15px 0;
+}
+.studio-page .studio-demo-footer {
+  align-items: flex-start;
+  gap: 35px;
+  padding-top: 16px;
+}
+.world-direct-inquiry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding: 25px 0;
+  margin-top: 35px;
+}
+.world-direct-inquiry > span {
+  font-size: 14px;
+  color: var(--brand-muted);
+}
+.studio-page .studio-next {
+  margin-top: 20px;
+  padding: 40px 0;
+}
+.studio-page .studio-other-worlds strong {
+  font-size: 20px;
+}
+@media (max-width: 900px) {
+  .studio-page .studio-service-selector button {
+    min-height: 125px;
+    padding: 15px 10px !important;
+  }
+  .studio-page .studio-service-selector button > strong {
+    font-size: 11px;
+  }
+  .studio-page .shortform-stage {
+    gap: 45px;
+  }
+  .studio-page .shortform-copy h3 {
+    font-size: 40px;
+  }
+  .studio-page .studio-demo-footer {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+@media (max-width: 600px) {
+  .studio-page .studio-header {
+    padding-bottom: 22px;
+    margin-bottom: 24px;
+  }
+  .studio-page .studio-service-selector {
+    grid-template-columns: 1fr !important;
+  }
+  .studio-page .studio-service-selector button {
+    min-height: 54px !important;
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    padding: 13px 10px !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  .studio-page .studio-service-selector button > strong {
+    font-size: 13px;
+  }
+  .studio-page .studio-service-selector button > span {
+    font-size: 9px;
+  }
+  .studio-page .studio-service-selector button.selected {
+    border-left: 2px solid #22d3ee !important;
+  }
+  .studio-page .studio-experience {
+    gap: 26px;
+  }
+  .studio-page .studio-demo-title h2 {
+    font-size: 26px !important;
+  }
+  .studio-page .shortform-stage {
+    min-height: 330px;
+    gap: 17px;
+    padding: 25px 15px;
+  }
+  .studio-page .comparison-scene {
+    width: 130px;
+    height: 260px;
+  }
+  .studio-page .shortform-copy h3 {
+    font-size: 25px;
+  }
+  .studio-page .shortform-copy p {
+    font-size: 11px;
+  }
+  .studio-page .website-stage {
+    min-height: 330px;
+    padding: 25px 15px;
+  }
+  .studio-page .store-stage,
+  .studio-page .booking-stage,
+  .studio-page .automation-stage {
+    min-height: 330px;
+  }
+  .studio-page .demo-controls {
+    padding: 18px;
+  }
+  .studio-page .studio-demo-footer {
+    gap: 10px;
+  }
+  .world-direct-inquiry {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    padding: 23px 0;
+  }
+  .world-direct-inquiry > span {
+    font-size: 12px;
+  }
+  .world-service-context p {
+    font-size: 13px;
+  }
+  .world-service-context summary {
+    font-size: 13px;
+  }
+  .studio-page .studio-other-worlds strong {
+    font-size: 17px;
+  }
+}
