@@ -1,0 +1,42 @@
+{
+  "name": "makendless-agency",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "node --test tests/*.test.mjs",
+    "test:integration": "vitest run",
+    "format": "prettier --write src tests *.ts *.js *.json index.html docs README.md",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@fontsource-variable/syne": "^5.2.6",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.6.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.10",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.27.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.2.0",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.10.1",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.32.0",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.7"
+  }
+}
