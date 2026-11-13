@@ -34,14 +34,14 @@ export default function Footer() {
             <span>GET TO KNOW US</span>
             <Link to="/work">Work & concepts</Link>
             <Link to="/about">About</Link>
-            <Link to="/faq">Questions & answers</Link>
+            <Link to="/faq">FAQ</Link>
           </div>
           <div>
             <span>YOUR NEXT STEP</span>
             <Link to="/contact">
               Start a Project <ArrowUpRight size={14} />
             </Link>
-            <Link to="/project-lab">Project planner</Link>
+            <Link to="/project-lab">Project Lab</Link>
             <Link to="/find-solution">Help me choose</Link>
           </div>
         </nav>

@@ -38,6 +38,7 @@ const NotFound = lazy(() =>
   import("./pages/Supporting").then((m) => ({ default: m.NotFound })),
 );
 import { ProjectProvider } from "./project";
+import { SiteThemeProvider } from "./theme-context";
 import { services } from "./data";
 const titles: Record<string, string> = {
   "/": "Creative & Technology Studio",
@@ -117,56 +118,58 @@ function RouteEffects() {
 export default function App() {
   return (
     <BrowserRouter>
-      <ProjectProvider>
-        <RouteTheme />
-        <RouteEffects />
-        <MotionSystem />
-        <Navigation />
-        <main id="main" tabIndex={-1}>
-          <Suspense
-            fallback={
-              <div className="route-loading" role="status">
-                Opening the studio…
-              </div>
-            }
-          >
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/studios" element={<Studios />} />
-              <Route
-                path="/studios/create"
-                element={<Studio key="create" world="create" />}
-              />
-              <Route
-                path="/studios/build"
-                element={<Studio key="build" world="build" />}
-              />
-              <Route
-                path="/studios/grow"
-                element={<Studio key="grow" world="grow" />}
-              />
-              <Route path="/services/:id" element={<ServiceDetail />} />
-              <Route path="/project-lab" element={<ProjectLab />} />
-              <Route path="/find-solution" element={<FindSolution />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/work" element={<Work />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/terms" element={<Terms />} />
-              {["create", "build", "grow"].map((w) => (
+      <SiteThemeProvider>
+        <ProjectProvider>
+          <RouteTheme />
+          <RouteEffects />
+          <MotionSystem />
+          <Navigation />
+          <main id="main" tabIndex={-1}>
+            <Suspense
+              fallback={
+                <div className="route-loading" role="status">
+                  Opening the studio…
+                </div>
+              }
+            >
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/studios" element={<Studios />} />
                 <Route
-                  key={w}
-                  path={`/${w}`}
-                  element={<Navigate to={`/studios/${w}`} replace />}
+                  path="/studios/create"
+                  element={<Studio key="create" world="create" />}
                 />
-              ))}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </main>
-        <Footer />
-      </ProjectProvider>
+                <Route
+                  path="/studios/build"
+                  element={<Studio key="build" world="build" />}
+                />
+                <Route
+                  path="/studios/grow"
+                  element={<Studio key="grow" world="grow" />}
+                />
+                <Route path="/services/:id" element={<ServiceDetail />} />
+                <Route path="/project-lab" element={<ProjectLab />} />
+                <Route path="/find-solution" element={<FindSolution />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/work" element={<Work />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/terms" element={<Terms />} />
+                {["create", "build", "grow"].map((w) => (
+                  <Route
+                    key={w}
+                    path={`/${w}`}
+                    element={<Navigate to={`/studios/${w}`} replace />}
+                  />
+                ))}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </main>
+          <Footer />
+        </ProjectProvider>
+      </SiteThemeProvider>
     </BrowserRouter>
   );
 }

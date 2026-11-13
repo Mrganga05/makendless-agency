@@ -1,33 +1,42 @@
 import { useLayoutEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { HOME_THEME, homePalettes, homeThemeVariables } from "../theme";
+import { homePalettes, homeThemeVariables } from "../theme";
+import { useSiteTheme } from "../theme-context";
 import "../atelier-theme.css";
 
 export default function RouteTheme() {
-  const { pathname } = useLocation();
+  const { theme } = useSiteTheme();
   useLayoutEffect(() => {
     const root = document.documentElement;
-    for (const [name, value] of Object.entries(homeThemeVariables(HOME_THEME)))
-      root.style.setProperty(name, value);
-    root.dataset.theme = pathname === "/" ? HOME_THEME : "glass";
-    const palette = homePalettes[HOME_THEME];
-    const aliases: Record<string, string> = {
+    const palette = homePalettes[theme];
+    const variables = {
+      ...homeThemeVariables(theme),
       "--brand-bg": palette.night,
       "--brand-surface": palette.surface,
       "--brand-violet": palette.violet,
       "--brand-aqua": palette.aqua,
       "--brand-text": palette.white,
       "--brand-muted": palette.mutedDark,
+      "--border": palette.lineDark,
       "--brand-gradient": `linear-gradient(115deg, ${palette.aqua}, ${palette.violet} 52%, ${palette.violetLight})`,
     };
-    for (const [name, value] of Object.entries(aliases)) {
-      if (pathname === "/") root.style.setProperty(name, value);
-      else root.style.removeProperty(name);
-    }
+    const previous = Object.fromEntries(
+      Object.keys(variables).map((name) => [
+        name,
+        root.style.getPropertyValue(name),
+      ]),
+    );
+    const previousTheme = root.dataset.theme;
+    for (const [name, value] of Object.entries(variables))
+      root.style.setProperty(name, value);
+    root.dataset.theme = theme;
     return () => {
-      for (const name of Object.keys(aliases)) root.style.removeProperty(name);
-      delete root.dataset.theme;
+      for (const [name, value] of Object.entries(previous)) {
+        if (value) root.style.setProperty(name, value);
+        else root.style.removeProperty(name);
+      }
+      if (previousTheme) root.dataset.theme = previousTheme;
+      else delete root.dataset.theme;
     };
-  }, [pathname]);
+  }, [theme]);
   return null;
 }

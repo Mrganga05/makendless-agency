@@ -1,4 +1,4 @@
-/** Centralized homepage palettes. Internal routes retain their approved Glass Prism. */
+/** V14 reviewable site palettes. Both families remain recoverable. */
 export const PRISM_ATELIER = {
   night: "#0C1024",
   surface: "#202342",
@@ -36,7 +36,7 @@ export const GLASS_PRISM = {
   action: "#6035CE",
 } as const;
 export type HomeTheme = "atelier" | "glass";
-/** Change this one setting to recover the prior brand palette on the homepage. */
+/** Change this one setting to recover the prior brand palette site-wide. */
 export const HOME_THEME: HomeTheme = "atelier";
 export const homePalettes = { atelier: PRISM_ATELIER, glass: GLASS_PRISM };
 export function homeThemeVariables(theme: HomeTheme): Record<string, string> {

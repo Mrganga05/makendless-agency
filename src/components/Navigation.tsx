@@ -9,7 +9,7 @@ export default function Navigation() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [studiosOpen, setStudiosOpen] = useState(false);
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const panel = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const studioDisclosure = useRef<HTMLDivElement>(null);
@@ -24,7 +24,7 @@ export default function Navigation() {
   useEffect(() => {
     setOpen(false);
     setStudiosOpen(false);
-  }, [pathname]);
+  }, [pathname, hash]);
   useEffect(() => {
     if (!studiosOpen) return;
     const outside = (event: PointerEvent) => {
@@ -77,7 +77,14 @@ export default function Navigation() {
 
   return (
     <>
-      <a className="skip-link" href="#main">
+      <a
+        className="skip-link"
+        href="#main"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById("main")?.focus();
+        }}
+      >
         Skip to content
       </a>
       <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>

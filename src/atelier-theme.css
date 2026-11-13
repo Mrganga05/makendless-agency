@@ -1,81 +1,309 @@
-/* Values live in theme.ts. This layer changes only the V12 homepage shell. */
-html[data-theme="atelier"] body {
+/* V14 site theme; palette values are exclusively owned by theme.ts. */
+html[data-theme] body {
   background: var(--home-night);
+  color: var(--home-white);
 }
-html[data-theme="atelier"] .site-header {
-  background: var(--home-night);
-  border-bottom-color: var(--home-line-dark);
+html[data-theme] ::selection {
+  background: var(--home-violet-light);
+  color: var(--home-ink);
 }
-html[data-theme="atelier"] .site-header.is-scrolled {
+html[data-theme] .button-primary {
+  background: var(--home-action);
+  color: var(--home-white);
+  border-color: transparent;
+}
+html[data-theme] .button-primary:hover {
+  background: var(--home-violet-ink);
+}
+html[data-theme] .site-header {
+  height: 82px;
   background: var(--home-night);
+  border-bottom: 1px solid var(--home-line-dark);
+  backdrop-filter: none;
   box-shadow: none;
 }
-html[data-theme="atelier"] .site-header .nav-cta {
-  color: var(--home-white);
-  background: var(--home-action);
-  border-color: transparent;
+html[data-theme] .nav-inner {
+  max-width: 1440px;
+  padding-inline: 56px;
 }
-html[data-theme="atelier"] .desktop-nav > a:hover,
-html[data-theme="atelier"] .studio-disclosure-trigger:hover,
-html[data-theme="atelier"] .studio-disclosure-trigger.is-active {
-  color: var(--home-white);
+html[data-theme] .site-header .nav-cta {
+  background: var(--home-paper);
+  color: var(--home-ink);
+  border: 0;
+  border-radius: 3px;
+  min-height: 46px;
 }
-html[data-theme="atelier"] .studio-disclosure-panel,
-html[data-theme="atelier"] .studio-mobile-menu {
+html[data-theme] .site-header .nav-cta:hover {
+  background: var(--home-violet-light);
+}
+html[data-theme] .wordmark > span {
+  color: var(--home-violet-light);
+}
+html[data-theme] .studio-disclosure-panel {
   background: var(--home-surface);
   border-color: var(--home-line-dark);
+  border-radius: 4px;
+  box-shadow: 0 20px 50px color-mix(in srgb, var(--home-night) 60%, transparent);
 }
-html[data-theme="atelier"] .studio-menu-name,
-html[data-theme="atelier"] .mobile-studio-links > a > span {
+html[data-theme] .studio-disclosure-panel > a {
+  border-radius: 2px;
+}
+html[data-theme] .studio-disclosure-panel > a:hover {
+  background: color-mix(in srgb, var(--home-white) 7%, transparent);
+}
+html[data-theme] .studio-menu-name,
+html[data-theme] .mobile-studio-links > a > span {
   color: var(--home-violet-light);
 }
-html[data-theme="atelier"] .site-footer.universe-footer {
+html[data-theme] .desktop-nav > a.active::after {
+  background: var(--home-violet-light);
+}
+html[data-theme] .studio-mobile-menu {
+  background: var(--home-night);
+}
+html[data-theme] .studio-mobile-menu .mobile-studio-links > a {
+  border-radius: 0;
+}
+html[data-theme] .studio-mobile-menu .mobile-studio-links > a:hover {
+  background: var(--home-surface);
+}
+html[data-theme] .site-footer.universe-footer {
   background: var(--home-night);
   color: var(--home-white);
+  border-top: 1px solid var(--home-line-dark);
+  padding-inline: 56px;
 }
-html[data-theme="atelier"] .universe-footer .footer-links > div > span {
-  color: var(--home-violet-light);
-}
-html[data-theme="atelier"] .universe-footer .footer-identity > p,
-html[data-theme="atelier"] .universe-footer .footer-thread {
+html[data-theme] .universe-footer .footer-thread {
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: 0.07em;
   color: var(--home-muted-dark);
+  padding-block: 28px 46px;
 }
-.atelier-home .button-primary,
-html[data-theme="atelier"] .studio-mobile-menu .button-primary {
-  background: var(--home-action);
-  color: var(--home-white);
-  border-color: transparent;
+html[data-theme] .universe-footer .footer-thread i {
+  background: var(--home-line-dark);
+  opacity: 1;
 }
-.atelier-home .button-primary:hover {
-  background: var(--home-violet-ink);
-  transform: translateY(-2px);
+html[data-theme] .universe-footer .footer-thread i::after {
+  background: var(--home-violet-light);
 }
-.atelier-home .button {
-  min-height: 48px;
-  border-radius: 3px;
+html[data-theme] .universe-footer .footer-links > div > span {
+  font-size: 10px;
+  color: var(--home-muted-dark);
+  letter-spacing: 0.08em;
 }
-.atelier-home .text-link {
+html[data-theme] .universe-footer .footer-links a {
+  font-size: 13px;
   min-height: 44px;
 }
-.atelier-home :is(button, a, input, select, textarea, summary):focus-visible {
-  outline-color: var(--home-aqua);
+html[data-theme] .universe-footer .footer-project-link {
+  font-size: 14px;
 }
-.atelier-home
-  [data-surface="light"]
-  :is(button, a, input, select, textarea, summary):focus-visible {
-  outline-color: var(--home-violet-ink);
+html[data-theme] .universe-footer .footer-bottom {
+  font-size: 11px;
+  color: var(--home-muted-dark);
+  border-top-color: var(--home-line-dark);
 }
-.atelier-home [data-motion="prism"][data-motion-active]::after {
-  background-image: linear-gradient(
-    115deg,
-    transparent 41%,
-    color-mix(in srgb, var(--home-aqua) 8%, transparent) 48%,
-    color-mix(in srgb, var(--home-violet-light) 15%, transparent) 51%,
-    transparent 59%
-  );
+html[data-theme] .universe-footer .footer-identity > p {
+  color: var(--home-muted-dark);
+  font-size: 15px;
+}
+html[data-theme] .universe-footer .footer-bottom a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+html[data-theme] .flow-accent,
+html[data-theme] .supporting-soft {
+  color: var(--home-violet-light);
+}
+html[data-theme] .supporting-page .supporting-heading {
+  max-width: 1100px;
+  padding-block: 24px 30px;
+}
+html[data-theme] .supporting-page .supporting-heading h1 {
+  font-size: clamp(43px, 6vw, 84px);
+  line-height: 1.04;
+  letter-spacing: -0.055em;
+  max-width: 1000px;
+}
+html[data-theme] .work-page .concept-projects {
+  margin-top: 40px;
+}
+html[data-theme] .work-page .concept-project {
+  padding-block: 64px;
+  gap: 6%;
+  border-color: var(--home-line-dark);
+}
+html[data-theme] .work-page .concept-art {
+  border-radius: 2px;
+  min-height: 420px;
+}
+html[data-theme] .work-page .concept-project-info h2 {
+  font-size: clamp(32px, 3.4vw, 48px);
+}
+html[data-theme] .work-page .concept-project-info > p {
+  font-size: 15px;
+}
+html[data-theme] .about-page .about-manifesto {
+  background: var(--home-paper);
+  color: var(--home-ink);
+  border: 0;
+  padding: 54px 40px;
+  border-radius: 0;
+  --brand-muted: var(--home-muted-light);
+  --brand-text: var(--home-ink);
+}
+html[data-theme] .about-page .about-manifesto :is(p, .eyebrow) {
+  color: var(--home-muted-light);
+}
+html[data-theme] .about-page .about-word-art {
+  color: var(--home-violet-ink);
+}
+html[data-theme] .about-page .about-word-line {
+  background: var(--home-violet-ink);
+}
+html[data-theme] .about-page .about-dot {
+  color: var(--home-aqua-ink);
+}
+html[data-theme] .about-page .about-divisions > a {
+  border-radius: 0;
+  border-top: 1px solid var(--home-line-dark);
+  background: transparent;
+  box-shadow: none;
+}
+html[data-theme] .supporting-end-cta {
+  background: var(--home-surface);
+  border: 0;
+  border-radius: 0;
+}
+html[data-theme] .contact-page .contact-form-panel {
+  --brand-text: var(--home-ink);
+  --brand-muted: var(--home-muted-light);
+  --brand-aqua: var(--home-aqua-ink);
+  --brand-surface: var(--home-paper);
+  background: var(--home-paper);
+  color: var(--home-ink);
+  border: 0;
+  border-radius: 3px;
+  box-shadow: none;
+  color-scheme: light;
+  padding: 36px;
+}
+html[data-theme] .contact-page .contact-form-panel::before {
+  display: none;
+}
+html[data-theme] .contact-page .contact-sheet-title {
+  color: var(--home-muted-light);
+  font-size: 10px;
+}
+html[data-theme] .contact-page .demo-notice {
+  border-color: var(--home-aqua-ink);
+  margin-bottom: 30px;
+}
+html[data-theme] .contact-page .demo-notice p {
+  font-size: 13px;
+}
+html[data-theme] .contact-page .field {
+  color: var(--home-ink);
+  font-size: 13px;
+}
+html[data-theme] .contact-page :is(input, textarea, select) {
+  background: var(--home-paper);
+  border-color: var(--home-line-light);
+  color: var(--home-ink);
+  border-radius: 2px;
+}
+html[data-theme] .contact-page :is(input, textarea)::placeholder {
+  color: var(--home-muted-light);
+}
+html[data-theme] .contact-page .inquiry-services > button {
+  min-height: 44px;
+  font-size: 11px;
+  border: 1px solid var(--home-line-light);
+  color: var(--home-muted-light);
+  background: transparent;
+}
+html[data-theme] .contact-page .inquiry-services > button.selected {
+  color: var(--home-violet-ink);
+  border-color: var(--home-violet-ink);
+  background: var(--home-wash);
+}
+html[data-theme] .contact-page .privacy-note {
+  font-size: 12px;
+}
+html[data-theme] .contact-page .privacy-note a,
+html[data-theme] .contact-page .field-error {
+  color: var(--home-violet-ink);
+}
+html[data-theme] .contact-page [aria-invalid="true"] {
+  border-color: var(--home-violet-ink);
+}
+html[data-theme]
+  .contact-form-panel
+  :is(button, a, input, textarea, select, summary):focus-visible {
+  outline: 2px solid var(--home-violet-ink);
+  outline-offset: 4px;
+}
+html[data-theme] .contact-page .inquiry-draft-content {
+  border-color: var(--home-line-light);
+}
+html[data-theme] .contact-page .inquiry-preview {
+  border-color: var(--home-aqua-ink);
+}
+html[data-theme] .contact-page .inquiry-preview .button-secondary {
+  border-color: var(--home-ink);
+  color: var(--home-ink);
+}
+@media (max-width: 1024px) {
+  html[data-theme] .nav-inner,
+  html[data-theme] .site-footer.universe-footer {
+    padding-inline: 32px;
+  }
+  html[data-theme] .contact-page .contact-form-panel {
+    padding: 26px;
+  }
+  html[data-theme] .about-page .about-manifesto {
+    padding: 35px 28px;
+  }
+}
+@media (max-width: 600px) {
+  html[data-theme] .site-header {
+    height: 72px;
+  }
+  html[data-theme] .nav-inner,
+  html[data-theme] .site-footer.universe-footer {
+    padding-inline: 20px;
+  }
+  html[data-theme] .universe-footer .footer-thread {
+    font-size: 9px;
+    gap: 10px;
+    padding-bottom: 28px;
+  }
+  html[data-theme] .universe-footer .footer-links a {
+    font-size: 12px;
+  }
+  html[data-theme] .universe-footer .footer-bottom {
+    font-size: 10px;
+  }
+  html[data-theme] .supporting-page .supporting-heading {
+    padding-block: 10px 0;
+  }
+  html[data-theme] .work-page .concept-project {
+    padding-block: 38px;
+  }
+  html[data-theme] .work-page .concept-art {
+    min-height: 320px;
+  }
+  html[data-theme] .about-page .about-manifesto {
+    padding: 28px 20px;
+  }
+  html[data-theme] .contact-page .contact-form-panel {
+    padding: 24px 18px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .atelier-home .button-primary:hover {
+  html[data-theme] .button-primary:hover {
     transform: none;
   }
 }
