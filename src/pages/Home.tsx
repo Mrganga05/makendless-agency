@@ -25,9 +25,6 @@ export default function Home() {
         <div className="v14-wrap">
           <header className="v14-transformation-heading">
             <div>
-              <span className="v14-eyebrow">
-                03 / FROM POSSIBILITY TO PROOF
-              </span>
               <h2 id="transformation-title" data-motion="typography">
                 See the difference<span>.</span>
               </h2>
