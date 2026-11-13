@@ -976,7 +976,7 @@ export function ServiceDetail() {
   const selected = project.services.includes(service.id);
   return (
     <div
-      className={`page-shell supporting-page service-detail service-world-${service.world}`}
+      className={`page-shell supporting-page service-detail v14-service-detail service-world-${service.world}`}
       data-service={service.id}
     >
       <header
@@ -1066,7 +1066,13 @@ export function ServiceDetail() {
       </section>
       <aside className="supporting-end-cta">
         <h2>Let’s make it yours.</h2>
-        <Link className="button button-primary" to="/contact">
+        <Link
+          className="button button-primary"
+          to="/contact"
+          onClick={() => {
+            if (!selected) toggleService(service.id);
+          }}
+        >
           Start a project <ArrowUpRight size={18} />
         </Link>
       </aside>

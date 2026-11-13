@@ -34,7 +34,9 @@ describe("project exploration and inquiry", () => {
     const user = userEvent.setup();
     renderFlows();
     await user.click(
-      screen.getByRole("button", { name: /^AI assistant A little help/ }),
+      screen.getByRole("button", {
+        name: /^AI assistant A useful first response/,
+      }),
     );
     await user.click(screen.getByRole("button", { name: "Opening hours?" }));
     expect(screen.getByText(/In this example, FORME STUDIO/)).toBeTruthy();
@@ -54,17 +56,19 @@ describe("project exploration and inquiry", () => {
     expect(
       screen.getByText("Hello! Explore a sample customer conversation."),
     ).toBeTruthy();
-    expect(screen.getByText("Find your pace.")).toBeTruthy();
+    expect(
+      screen.getByRole("heading", { name: "START SOMEWHERE." }),
+    ).toBeTruthy();
     expect(
       screen.getByRole("button", { name: "Play illustrative animation" }),
     ).toBeTruthy();
     await user.click(screen.getByRole("button", { name: "Can I book?" }));
     expect(screen.getByText(/I can help with intro session/)).toBeTruthy();
-    const map = screen.getByLabelText("Preview components");
-    expect(within(map).getAllByText("Added")).toHaveLength(2);
+    const choices = screen.getByLabelText("Selected services");
+    expect(within(choices).getAllByRole("button")).toHaveLength(2);
   });
 
-  it("suspends the film while out of view or in a hidden tab and disconnects its observer", async () => {
+  it("stops the film outside the viewport and requires explicit replay", async () => {
     let onVisibility: IntersectionObserverCallback = () => {};
     const disconnect = vi.fn();
     vi.stubGlobal(
@@ -106,25 +110,28 @@ describe("project exploration and inquiry", () => {
           {} as IntersectionObserver,
         ),
       );
-      expect(film.classList.contains("is-playing")).toBe(true);
+      expect(film.classList.contains("is-playing")).toBe(false);
+      await user.click(
+        screen.getByRole("button", { name: "Play illustrative animation" }),
+      );
       hidden.mockReturnValue(true);
       act(() => document.dispatchEvent(new Event("visibilitychange")));
       expect(film.classList.contains("is-playing")).toBe(false);
       hidden.mockReturnValue(false);
       act(() => document.dispatchEvent(new Event("visibilitychange")));
-      expect(film.classList.contains("is-playing")).toBe(true);
+      expect(film.classList.contains("is-playing")).toBe(false);
       unmount();
-      expect(disconnect).toHaveBeenCalledOnce();
+      expect(disconnect).toHaveBeenCalledTimes(2);
     } finally {
       hidden.mockRestore();
       vi.unstubAllGlobals();
     }
   });
 
-  it("adds and removes working preview modules, then resets choices and context", async () => {
+  it("adds and removes working preview modules, then resets only Lab choices", async () => {
     const user = userEvent.setup();
     renderFlows();
-    expect(screen.getByText("A space for your next idea.")).toBeTruthy();
+    expect(screen.getByText("EXAMPLE PROJECT")).toBeTruthy();
     await user.selectOptions(
       screen.getByLabelText("Your business"),
       "Café / Restaurant",
@@ -140,7 +147,9 @@ describe("project exploration and inquiry", () => {
     await user.click(screen.getByRole("button", { name: "1:30 PM" }));
     await user.click(screen.getByRole("button", { name: "Preview booking" }));
     expect(
-      screen.getByText("Sample confirmation: 1:30 PM. No real booking made."),
+      screen.getByText(
+        "Sample confirmation: 2030-06-18 at 1:30 PM. No real booking made.",
+      ),
     ).toBeTruthy();
     await user.click(
       screen.getByRole("button", {
@@ -148,12 +157,12 @@ describe("project exploration and inquiry", () => {
       }),
     );
     expect(screen.queryByRole("heading", { name: "Table for two" })).toBeNull();
-    await user.click(screen.getByRole("button", { name: "Reset your canvas" }));
+    await user.click(screen.getByRole("button", { name: "Reset Lab choices" }));
     expect(
       (screen.getByLabelText("Your business") as HTMLSelectElement).value,
-    ).toBe("Salon");
+    ).toBe("Café / Restaurant");
     expect(screen.getByText("0 solutions selected")).toBeTruthy();
-    expect(screen.getByText("A space for your next idea.")).toBeTruthy();
+    expect(screen.getByText("EXAMPLE PROJECT")).toBeTruthy();
   });
 
   it("transfers an edited brief and selected services from Lab to inquiry", async () => {
@@ -176,9 +185,7 @@ describe("project exploration and inquiry", () => {
     expect(brief.value).toContain("Build a welcoming online home");
     await user.clear(brief);
     await user.type(brief, "My edited brief: a welcoming salon website.");
-    await user.click(
-      screen.getByRole("link", { name: "Continue to Start a Project" }),
-    );
+    await user.click(screen.getByRole("link", { name: "Continue to inquiry" }));
     expect(
       (
         screen.getByLabelText(

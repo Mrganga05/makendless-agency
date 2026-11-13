@@ -20,20 +20,28 @@ export default function SpatialScene({
   callbacks.current = { onReady, onError };
   useEffect(() => {
     if (!host.current) return;
+    let active = true;
+    let handle: SceneHandle | null = null;
     try {
-      scene.current = createLivingScene(
+      handle = createLivingScene(
         host.current,
         latest.current,
-        () => callbacks.current.onReady(),
-        () => callbacks.current.onError(),
+        () => {
+          if (active) callbacks.current.onReady();
+        },
+        () => {
+          if (active) callbacks.current.onError();
+        },
         theme,
       );
+      scene.current = handle;
     } catch {
       callbacks.current.onError();
     }
     return () => {
-      scene.current?.dispose();
-      scene.current = null;
+      active = false;
+      handle?.dispose();
+      if (scene.current === handle) scene.current = null;
     };
   }, [theme]);
   useEffect(() => scene.current?.update(state), [state]);

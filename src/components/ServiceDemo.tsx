@@ -30,6 +30,7 @@ import {
   MapPin,
 } from "lucide-react";
 import "../studios.css";
+import "../v14-studios.css";
 
 function Switcher({
   items,
@@ -867,16 +868,15 @@ function Website() {
   );
 }
 const products = [
-  { name: "The everyday vessel", price: 28, variant: "clear" },
-  { name: "The evening ritual", price: 36, variant: "violet" },
-  { name: "The morning reset", price: 24, variant: "aqua" },
+  { name: "The everyday vessel", variant: "clear" },
+  { name: "The evening ritual", variant: "violet" },
+  { name: "The morning reset", variant: "aqua" },
 ];
 function Store() {
   const [selected, setSelected] = useState(0);
   const [cart, setCart] = useState([0, 0, 0]);
   const [checkout, setCheckout] = useState(false);
   const [added, setAdded] = useState("");
-  const total = cart.reduce((a, q, i) => a + q * products[i].price, 0);
   const count = cart.reduce((a, q) => a + q, 0);
   function change(i: number, delta: number) {
     setCart((p) =>
@@ -903,7 +903,7 @@ function Store() {
           <div>
             <span className="demo-kicker">THE EVERYDAY COLLECTION</span>
             <h3>{products[selected].name}</h3>
-            <p>Illustrative product · ${products[selected].price}.00</p>
+            <p>Illustrative product · no pricing or payment</p>
             <button
               className="demo-primary-button"
               disabled={cart[selected] >= 9}
@@ -967,13 +967,13 @@ function Store() {
                           <Plus size={13} />
                         </button>
                       </div>
-                      <strong>${q * products[i].price}</strong>
+                      <small>{q} selected</small>
                     </div>
                   ),
               )}
             </div>
             <div className="demo-control-row">
-              <strong>Demo total: ${total}.00</strong>
+              <strong>Demo cart: {count} items</strong>
               <button
                 className="demo-small-button"
                 onClick={() => setCheckout(true)}
@@ -994,8 +994,8 @@ function Store() {
             <div>
               <strong>Mock checkout ready</strong>
               <p>
-                {count} item{count === 1 ? "" : "s"} · ${total}.00. This is a
-                demonstration. No order or payment has been created.
+                {count} item{count === 1 ? "" : "s"} in this demonstration. No
+                order or payment has been created.
               </p>
             </div>
           </div>
@@ -1147,19 +1147,45 @@ const workflowSteps = [
 function Automation() {
   const [step, setStep] = useState(0);
   const [inquiry, setInquiry] = useState("Website project");
+  const [message, setMessage] = useState(
+    "Hello, I’d like a website for my business with an appointment booking form.",
+  );
+  const [draft, setDraft] = useState<string | null>(null);
+  const [reviewed, setReviewed] = useState(false);
+  const classification = /video|editing|reel|podcast/i.test(message)
+    ? "Video editing"
+    : /marketing|campaign|advertis|social media/i.test(message)
+      ? "Digital marketing"
+      : /website|booking|shop|automation|assistant|app\b/i.test(message)
+        ? "Website project"
+        : "General inquiry";
   const route =
-    inquiry === "Website project"
-      ? "BUILD studio"
-      : inquiry === "Video editing"
-        ? "CREATE studio"
-        : "GROW interest list";
+    classification === "Video editing"
+      ? "CREATE studio"
+      : classification === "Digital marketing"
+        ? "GROW interest list"
+        : classification === "Website project"
+          ? "BUILD studio"
+          : "Human triage";
+  const defaultDraft =
+    classification === "Digital marketing"
+      ? "Thanks for sharing your interest. Our GROW services are still in development. A person should confirm availability before discussing a project."
+      : `Thanks for reaching out. We’d love to understand your ${classification.toLowerCase()} goals. Could you share your priorities and preferred timeline?`;
   const content = [
-    `“Hello, I’d like to discuss ${inquiry.toLowerCase()} for my business.”`,
-    `Intent detected: ${inquiry}. Priority: standard inquiry.`,
+    message.trim()
+      ? `“${message.trim()}”`
+      : "Write an example inquiry to begin.",
+    `Rule match: ${classification}. This is keyword matching, not an AI model.`,
     `Suggested destination: ${route}. A human can change this routing.`,
-    `“Thanks for reaching out. We’d love to understand your ${inquiry.toLowerCase()} goals. Could you share a little more about your project?”`,
+    "A suggested response, ready for a person to edit.",
     "A team member reviews the draft, checks the details and chooses whether to send. Nothing is sent by this demo.",
   ];
+  function reviseMessage(value: string) {
+    setMessage(value);
+    setStep(0);
+    setDraft(null);
+    setReviewed(false);
+  }
   return (
     <Shell
       identity="T4"
@@ -1173,7 +1199,11 @@ function Automation() {
           {workflowSteps.map((name, i) => (
             <button
               key={name}
-              onClick={() => setStep(i)}
+              disabled={i > step}
+              onClick={() => {
+                setStep(i);
+                setReviewed(false);
+              }}
               aria-pressed={step === i}
               className={`${step === i ? "active" : ""} ${step > i ? "complete" : ""}`}
             >
@@ -1197,6 +1227,35 @@ function Automation() {
           )}
           <h3>{workflowSteps[step]}</h3>
           <p>{content[step]}</p>
+          {step === 3 && (
+            <label className="v14-workflow-draft">
+              Response draft
+              <textarea
+                value={draft ?? defaultDraft}
+                onChange={(event) => {
+                  setDraft(event.target.value);
+                  setReviewed(false);
+                }}
+                rows={4}
+              />
+            </label>
+          )}
+          {step === 4 && (
+            <div className="v14-human-review">
+              <blockquote>{draft ?? defaultDraft}</blockquote>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={reviewed}
+                  onChange={(event) => setReviewed(event.target.checked)}
+                />{" "}
+                I have reviewed this example
+              </label>
+              {reviewed && (
+                <p role="status">Reviewed locally. No message was sent.</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <div className="demo-controls">
@@ -1205,9 +1264,15 @@ function Automation() {
             Example inquiry
             <select
               value={inquiry}
-              onChange={(e) => {
-                setInquiry(e.target.value);
-                setStep(0);
+              onChange={(event) => {
+                setInquiry(event.target.value);
+                reviseMessage(
+                  event.target.value === "Video editing"
+                    ? "I need video editing for a short-form reel."
+                    : event.target.value === "Digital marketing"
+                      ? "I’m interested in digital marketing and campaign planning."
+                      : "I need a website with a booking form.",
+                );
               }}
             >
               <option>Website project</option>
@@ -1219,19 +1284,42 @@ function Automation() {
             <button
               className="demo-small-button"
               disabled={step === 0}
-              onClick={() => setStep((p) => p - 1)}
+              onClick={() => {
+                setStep((value) => value - 1);
+                setReviewed(false);
+              }}
             >
               <ArrowLeft size={14} /> Back
             </button>
             <button
               className="demo-primary-button"
-              onClick={() => setStep((p) => (p === 4 ? 0 : p + 1))}
+              disabled={
+                !message.trim() ||
+                (step === 3 && !(draft ?? defaultDraft).trim())
+              }
+              onClick={() => {
+                setStep((value) => (value === 4 ? 0 : value + 1));
+                setReviewed(false);
+              }}
             >
               {step === 4 ? "Restart" : "Next step"}
               <ArrowRight size={14} />
             </button>
           </div>
         </div>
+        <label className="v14-inquiry-input">
+          Your sample inquiry
+          <textarea
+            value={message}
+            maxLength={500}
+            rows={2}
+            onChange={(event) => reviseMessage(event.target.value)}
+          />
+          <small>
+            Editing the inquiry resets downstream work. Use fictional
+            information.
+          </small>
+        </label>
       </div>
     </Shell>
   );

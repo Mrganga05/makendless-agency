@@ -180,6 +180,7 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
       screen.getByRole("button", { name: "Edited", exact: true }),
     );
     expect(screen.getByText("Go somewhere.")).toBeTruthy();
+    await user.click(screen.getByText("Make it yours"));
     fireEvent.change(screen.getByRole("slider", { name: "Edit timeline" }), {
       target: { value: "80" },
     });
@@ -197,6 +198,7 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
     await user.click(
       screen.getByRole("button", { name: "Pause motion preview" }),
     );
+    await user.click(screen.getByText("Make it yours"));
     fireEvent.change(screen.getByRole("slider", { name: "Edit timeline" }), {
       target: { value: "50" },
     });
@@ -251,7 +253,7 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
   });
   it("adds the relevant service to the shared project and links to its detail route", async () => {
     const user = userEvent.setup();
-    mount();
+    mount({ showServiceActions: true });
     await user.click(screen.getByRole("button", { name: "Add to my project" }));
     expect(
       screen.getByRole("status", { name: "Project service selections" })
@@ -323,5 +325,106 @@ describe("Living Showcase: service-led interactions and fallbacks", () => {
       screen.getByRole("button", { name: "Open the café menu" }),
     );
     expect(screen.getByText("Espresso")).toBeTruthy();
+  });
+  it("changes the actual comparison, caption and crop independently", async () => {
+    const user = userEvent.setup();
+    const { container } = mount({ variant: "study" });
+    await user.click(
+      screen.getByRole("button", { name: "Compare", exact: true }),
+    );
+    expect(
+      container.querySelector(".living-edit")?.getAttribute("data-comparison"),
+    ).toBe("50");
+    fireEvent.change(
+      screen.getByRole("slider", { name: "Before and after comparison" }),
+      { target: { value: "25" } },
+    );
+    expect(
+      container.querySelector(".living-edit")?.getAttribute("data-comparison"),
+    ).toBe("25");
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Caption style" }),
+      "none",
+    );
+    expect(screen.queryByText("Go somewhere.")).toBeNull();
+    await user.selectOptions(
+      screen.getByRole("combobox", { name: "Framing" }),
+      "tight",
+    );
+    expect(container.querySelector(".living-edit")?.className).toContain(
+      "crop-tight",
+    );
+  });
+  it("routes edited inquiries and invalidates downstream drafts and review", async () => {
+    const user = userEvent.setup();
+    mount({ initialMode: "ai" });
+    await user.click(screen.getByText("Try your own inquiry"));
+    const inquiry = screen.getByRole("textbox", { name: "Example inquiry" });
+    await user.clear(inquiry);
+    expect(
+      screen
+        .getByRole("button", { name: "Next step" })
+        .hasAttribute("disabled"),
+    ).toBe(true);
+    await user.type(inquiry, "I need a product video.");
+    await user.click(screen.getByRole("button", { name: "Next step" }));
+    expect(screen.getByText("Video & creative production")).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Next step" }));
+    expect(screen.getByText("Routed to CREATE.")).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Next step" }));
+    const draft = screen.getByRole("textbox", {
+      name: "Editable response draft",
+    });
+    await user.clear(draft);
+    expect(
+      screen
+        .getByRole("button", { name: "Next step" })
+        .hasAttribute("disabled"),
+    ).toBe(true);
+    await user.type(draft, "Custom local draft");
+    await user.click(screen.getByRole("button", { name: "Next step" }));
+    await user.click(screen.getByRole("button", { name: "Mark as reviewed" }));
+    expect(
+      screen.getByText("Reviewed locally. Nothing was sent."),
+    ).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Restart" }));
+    await user.click(screen.getByText("Try your own inquiry"));
+    const next = screen.getByRole("textbox", { name: "Example inquiry" });
+    await user.clear(next);
+    await user.type(next, "I want an online store.");
+    for (let i = 0; i < 3; i++)
+      await user.click(screen.getByRole("button", { name: "Next step" }));
+    expect(
+      (
+        screen.getByRole("textbox", {
+          name: "Editable response draft",
+        }) as HTMLTextAreaElement
+      ).value,
+    ).toContain("e-commerce website");
+    expect(screen.queryByText("Custom local draft")).toBeNull();
+  });
+  it("uses still stepping under reduced motion and bounds requested playback", async () => {
+    media((q) => q.includes("prefers-reduced-motion"));
+    const user = userEvent.setup();
+    const first = mount();
+    expect(
+      screen.queryByRole("button", { name: "Play motion preview" }),
+    ).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Next still" }));
+    expect(screen.getByText("Feel something.")).toBeTruthy();
+    first.unmount();
+    media(() => false);
+    vi.useFakeTimers();
+    const second = mount();
+    fireEvent.click(
+      screen.getByRole("button", { name: "Play motion preview" }),
+    );
+    act(() => vi.advanceTimersByTime(6200));
+    expect(
+      screen.getByRole("button", { name: "Play motion preview" }),
+    ).toBeTruthy();
+    expect(screen.getByText("Make it matter.")).toBeTruthy();
+    second.unmount();
+    expect(vi.getTimerCount()).toBe(0);
   });
 });

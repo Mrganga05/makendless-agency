@@ -4,6 +4,7 @@ import {
   lazy,
   useCallback,
   useEffect,
+  useId,
   useRef,
   useState,
   type ReactNode,
@@ -12,23 +13,20 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
-  Film,
   Layers3,
-  Monitor,
   Pause,
   Play,
   RotateCcw,
-  Sparkles,
-  Smartphone,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
+  classifyInquiry,
   initialShowcaseState,
-  workflowMessages,
   workflowSteps,
   type ShowcaseMode,
 } from "../showcase-state";
-import { Link } from "react-router-dom";
 import { useProject } from "../project";
+import { useSiteTheme } from "../theme-context";
 import "../showcase.css";
 const SpatialScene = lazy(() => import("./SpatialScene"));
 class SceneBoundary extends Component<
@@ -62,10 +60,9 @@ function useMedia(query: string) {
 function availableWebGL() {
   if (typeof window.WebGL2RenderingContext === "undefined") return false;
   try {
-    const canvas = document.createElement("canvas");
-    const gl = canvas.getContext("webgl2", {
-      failIfMajorPerformanceCaveat: true,
-    });
+    const gl = document
+      .createElement("canvas")
+      .getContext("webgl2", { failIfMajorPerformanceCaveat: true });
     if (!gl) return false;
     gl.getExtension("WEBGL_lose_context")?.loseContext();
     return true;
@@ -73,32 +70,44 @@ function availableWebGL() {
     return false;
   }
 }
-const modes: {
-  id: ShowcaseMode;
-  label: string;
-  description: string;
-  Icon: typeof Film;
-}[] = [
-  { id: "create", label: "CREATE", description: "Video editing", Icon: Film },
-  { id: "build", label: "BUILD", description: "Websites", Icon: Monitor },
-  { id: "ai", label: "AI", description: "Automation", Icon: Sparkles },
+const modes = [
+  {
+    id: "create" as const,
+    label: "CREATE",
+    description: "Video editing",
+    number: "01",
+  },
+  {
+    id: "build" as const,
+    label: "BUILD",
+    description: "Websites",
+    number: "02",
+  },
+  { id: "ai" as const, label: "AI", description: "Automation", number: "03" },
 ];
 export default function LiveShowcase({
   initialMode = "create",
   variant = "hero",
   showModeSwitch = true,
-  theme = "glass",
+  theme: providedTheme,
+  showServiceActions = false,
+  onModeChange,
 }: {
   initialMode?: ShowcaseMode;
   variant?: "hero" | "study";
   showModeSwitch?: boolean;
   theme?: "glass" | "atelier";
+  showServiceActions?: boolean;
+  onModeChange?: (mode: ShowcaseMode) => void;
 } = {}) {
   const { project, toggleService } = useProject();
+  const { theme: siteTheme } = useSiteTheme();
+  const theme = providedTheme ?? siteTheme;
   const [state, setState] = useState(() => ({
     ...initialShowcaseState,
     mode: initialMode,
   }));
+  const [reviewed, setReviewed] = useState(false);
   const [view, setView] = useState<"auto" | "flat" | "spatial">("auto");
   const [supported, setSupported] = useState<boolean | null>(null);
   const [failed, setFailed] = useState(false);
@@ -106,6 +115,7 @@ export default function LiveShowcase({
   const [visible, setVisible] = useState(false);
   const [pageVisible, setPageVisible] = useState(!document.hidden);
   const host = useRef<HTMLDivElement>(null);
+  const id = useId();
   const reduced = useMedia("(prefers-reduced-motion: reduce)");
   const compact = useMedia("(max-width: 767px)");
   const saveData = Boolean(
@@ -123,9 +133,9 @@ export default function LiveShowcase({
     setReady(false);
   }, []);
   useEffect(() => {
-    const show = () => setPageVisible(!document.hidden);
-    document.addEventListener("visibilitychange", show);
-    return () => document.removeEventListener("visibilitychange", show);
+    const update = () => setPageVisible(!document.hidden);
+    document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
   }, []);
   useEffect(() => {
     if (!host.current) return;
@@ -135,7 +145,7 @@ export default function LiveShowcase({
     }
     const observer = new IntersectionObserver(
       ([entry]) => setVisible(entry.isIntersecting),
-      { rootMargin: "100px" },
+      { rootMargin: "0px" },
     );
     observer.observe(host.current);
     return () => observer.disconnect();
@@ -154,30 +164,51 @@ export default function LiveShowcase({
     return () => clearTimeout(timeout);
   }, [enhance, ready, onError]);
   useEffect(() => {
-    if (!state.playing || state.mode !== "create" || !visible || !pageVisible)
+    if (reduced || !visible || !pageVisible) {
+      setState((s) => (s.playing ? { ...s, playing: false } : s));
       return;
+    }
+    if (!state.playing || state.mode !== "create") return;
     const timer = window.setInterval(
       () =>
         setState((s) => {
           const progress = Math.min(100, s.progress + 2);
           return { ...s, progress, playing: progress < 100 };
         }),
-      200,
+      120,
     );
     return () => clearInterval(timer);
-  }, [state.playing, state.mode, visible, pageVisible]);
-  const chooseMode = (mode: ShowcaseMode) =>
-    setState((s) => ({ ...s, mode, playing: false }));
+  }, [state.playing, state.mode, visible, pageVisible, reduced]);
   const phrase =
     state.progress < 35
       ? "Go somewhere."
       : state.progress < 70
         ? "Feel something."
         : "Make it matter.";
+  const comparison = state.comparison ?? 100;
+  const classification = classifyInquiry(state.inquiry || "");
+  const generatedDraft = `Thanks for reaching out. Let’s explore your ${classification.category.toLowerCase()} goals. What are you hoping to create, and what timeline do you have in mind?`;
   const spatialActive = enhance && ready;
   const serviceId =
     state.mode === "create" ? "V1" : state.mode === "build" ? "T1" : "T4";
   const added = project.services.includes(serviceId);
+  const editComparison = (value: number) =>
+    setState((s) => ({
+      ...s,
+      comparison: value,
+      edited: value > 0,
+      playing: false,
+    }));
+  const changeInquiry = (inquiry: string) => {
+    setReviewed(false);
+    setState((s) => ({
+      ...s,
+      inquiry,
+      workflowCategory: classifyInquiry(inquiry).category,
+      draft: undefined,
+      step: 0,
+    }));
+  };
   return (
     <section
       className={`living-showcase living-showcase--${variant}`}
@@ -192,17 +223,23 @@ export default function LiveShowcase({
           role="group"
           aria-label="Choose a service showcase"
         >
-          {modes.map(({ id, label, description, Icon }) => (
+          {modes.map(({ id, label, description, number }) => (
             <button
               key={id}
               aria-pressed={state.mode === id}
-              onClick={() => chooseMode(id)}
+              onClick={() => {
+                setState((s) => ({ ...s, mode: id, playing: false }));
+                onModeChange?.(id);
+              }}
             >
-              <Icon size={16} />
+              <span className="living-mode-number" aria-hidden="true">
+                {number}
+              </span>
               <span>
                 <strong>{label}</strong>
                 <small>{description}</small>
               </span>
+              <ArrowRight size={15} aria-hidden="true" />
             </button>
           ))}
         </div>
@@ -210,6 +247,24 @@ export default function LiveShowcase({
       <div
         className={`living-stage mode-${state.mode} ${spatialActive ? "spatial-active" : ""}`}
       >
+        {enhance && (
+          <div className="living-spatial-layer" aria-hidden="true">
+            <SceneBoundary onError={onError}>
+              <Suspense fallback={null}>
+                <SpatialScene
+                  theme={theme}
+                  state={{
+                    ...state,
+                    workflowCategory: classification.category,
+                    draft: state.draft ?? generatedDraft,
+                  }}
+                  onReady={onReady}
+                  onError={onError}
+                />
+              </Suspense>
+            </SceneBoundary>
+          </div>
+        )}
         <div
           className="living-flat-preview"
           key={state.mode}
@@ -218,153 +273,173 @@ export default function LiveShowcase({
         >
           {state.mode === "create" ? (
             <div
-              className={`living-edit ${state.edited ? "is-edited" : "is-original"} ${state.playing ? "is-playing" : ""}`}
+              className={`living-edit ${state.edited ? "is-edited" : "is-original"} crop-${state.crop} captions-${state.captions}`}
+              data-comparison={comparison}
             >
-              <div className="living-source">
-                <span>SOURCE FRAME</span>
+              <div className="living-edit-surface">
                 <img
                   src="/images/mountain.jpg"
                   alt="Mountain valley source photograph"
                   width="1400"
                   height="933"
-                />
-                <small>01 / ORIGINAL PHOTO</small>
-              </div>
-              <div className="living-edit-surface">
-                <img
-                  src="/images/mountain.jpg"
-                  alt="Mountain valley used in an illustrative motion edit"
-                  width="1400"
-                  height="933"
                   fetchPriority={variant === "hero" ? "high" : "auto"}
-                  style={{
-                    transform: state.edited
-                      ? `scale(${1.06 + state.progress * 0.0012}) translateY(${-state.progress * 0.025}%)`
-                      : "none",
-                  }}
                 />
+                <div
+                  className="living-edited-layer"
+                  style={{ clipPath: `inset(0 ${100 - comparison}% 0 0)` }}
+                >
+                  <img
+                    src="/images/mountain.jpg"
+                    alt=""
+                    width="1400"
+                    height="933"
+                    style={{
+                      transform: `scale(${state.crop === "tight" ? 1.4 : 1.06 + state.progress * 0.0012}) translateY(${-state.progress * 0.02}%)`,
+                    }}
+                  />
+                  {state.edited && state.captions !== "none" && (
+                    <div
+                      className="living-film-title"
+                      key={Math.floor(state.progress / 35)}
+                    >
+                      <span>OUTSIDE THE ORDINARY</span>
+                      <h2>{phrase}</h2>
+                      <small>A MAKENDLESS MOTION CONCEPT</small>
+                    </div>
+                  )}
+                  <span className="living-frame-count" aria-hidden="true">
+                    0{Math.min(5, Math.floor(state.progress / 17)) + 1} / 06
+                  </span>
+                </div>
+                {comparison > 0 && comparison < 100 && (
+                  <div
+                    className="living-comparison-line"
+                    style={{ left: `${comparison}%` }}
+                    aria-hidden="true"
+                  >
+                    <span>↔</span>
+                  </div>
+                )}
                 <span className="living-frame-label">
                   {state.edited ? "THE EDIT" : "SOURCE VIEW"}
                 </span>
-                {state.edited && (
-                  <div
-                    className="living-film-title"
-                    key={Math.floor(state.progress / 35)}
-                  >
-                    <span>OUTSIDE THE ORDINARY</span>
-                    <h2>{phrase}</h2>
-                    <small>A MAKENDLESS MOTION CONCEPT</small>
-                  </div>
-                )}
-                <span className="living-frame-count">
-                  00:{String(Math.floor(state.progress / 10)).padStart(2, "0")}{" "}
-                  / 00:10
-                </span>
-              </div>
-              <div className="living-timeline">
-                <span>EDIT TIMELINE</span>
-                <div className="living-timeline-tracks">
-                  <i />
-                  <i />
-                  <i />
-                  <b style={{ left: `${state.progress}%` }} />
+                <div className="living-media-credit">
+                  <span>FIELD NOTES</span>
+                  <span>PHOTO / MOTION STUDY</span>
                 </div>
-                <small>
-                  {state.edited
-                    ? "Image · Typography · Motion"
-                    : "Original photograph"}
-                </small>
+              </div>
+              <div className="living-film-strip" aria-hidden="true">
+                <span>01 / THE OPENING</span>
+                <i />
+                <span>02 / THE FEELING</span>
+                <i />
+                <span>03 / THE RESOLVE</span>
               </div>
             </div>
           ) : state.mode === "build" ? (
             <div
               className={`living-build ${state.finished ? "is-finished" : "is-wireframe"} ${state.mobile ? "is-mobile" : "is-desktop"}`}
             >
-              <span className="living-build-label">
-                {state.finished
-                  ? "FROM STRUCTURE TO CHARACTER"
-                  : "START WITH THE STRUCTURE"}
-              </span>
-              <div className="living-website">
-                <div className="living-browser">
-                  <i />
-                  <i />
-                  <i />
-                  <span>still / a fictional café</span>
-                </div>
-                <div className="living-web-nav">
-                  <strong>still.</strong>
-                  <span>COFFEE & COMPANY</span>
-                </div>
-                <div
-                  className={`living-web-content ${state.sitePanel === "menu" ? "showing-menu" : ""}`}
-                >
-                  <div>
+              <div className="living-browser">
+                <span>still.</span>
+                <span>INDEPENDENT COFFEE / CONCEPT</span>
+                <i aria-hidden="true">↗</i>
+              </div>
+              <div className="living-web-content">
+                <div>
+                  <small>
+                    {state.sitePanel === "menu"
+                      ? "THE SAMPLE MENU"
+                      : "A SMALL PAUSE. A BETTER DAY."}
+                  </small>
+                  <h2>
                     {state.sitePanel === "menu" ? (
                       <>
-                        <small>THE SAMPLE MENU</small>
-                        <h2>
-                          A little
-                          <br />
-                          daily ritual.
-                        </h2>
-                        <ul>
-                          <li>Espresso</li>
-                          <li>Flat white</li>
-                          <li>Filter coffee</li>
-                        </ul>
+                        A little
+                        <br />
+                        daily ritual.
                       </>
                     ) : (
                       <>
-                        <small>YOUR DAILY MOMENT OF GOOD</small>
-                        <h2>
-                          Good coffee.
-                          <br />
-                          Better company.
-                        </h2>
-                        <p>A little pause. A place to come together.</p>
-                        <span className="living-web-cta">
-                          Find your moment ↗
-                        </span>
+                        Good coffee.
+                        <br />
+                        Better company.
                       </>
                     )}
-                  </div>
-                  <img
-                    src="/images/coffee.jpg"
-                    alt="Friends sharing coffee in a website design concept"
-                    width="1200"
-                    height="800"
-                  />
+                  </h2>
+                  {state.sitePanel === "menu" ? (
+                    <ul className="living-menu">
+                      <li>
+                        Espresso <span>Bold & balanced</span>
+                      </li>
+                      <li>
+                        Flat white <span>Soft & smooth</span>
+                      </li>
+                      <li>
+                        Filter coffee <span>Slow & thoughtful</span>
+                      </li>
+                    </ul>
+                  ) : (
+                    <p>Your everyday place for something thoughtfully made.</p>
+                  )}
+                  <button
+                    className="living-sample-action"
+                    onClick={() =>
+                      setState((s) => ({
+                        ...s,
+                        sitePanel: s.sitePanel === "home" ? "menu" : "home",
+                      }))
+                    }
+                  >
+                    {state.sitePanel === "menu"
+                      ? "Back to sample homepage"
+                      : "Open the café menu"}
+                    <ArrowRight size={15} />
+                  </button>
                 </div>
-                <div className="living-web-footer">
-                  <span>THOUGHTFULLY MADE</span>
-                  <span>DESIGNED AROUND YOU</span>
-                </div>
+                <img
+                  src="/images/coffee.jpg"
+                  alt="Friends sharing coffee in a fictional café website"
+                  width="1200"
+                  height="800"
+                  loading="lazy"
+                />
               </div>
-              <span className="living-build-foot">
-                {state.mobile ? "Mobile layout" : "Desktop layout"} ·{" "}
-                {state.finished ? "Finished design" : "Wireframe structure"}
-              </span>
+              <div className="living-web-footer">
+                <span>
+                  {state.finished
+                    ? "FROM STRUCTURE TO CHARACTER"
+                    : "START WITH THE STRUCTURE"}
+                </span>
+                <span>
+                  {state.mobile ? "Mobile layout" : "Desktop layout"} ·{" "}
+                  {state.finished ? "Finished design" : "Wireframe structure"}
+                </span>
+              </div>
             </div>
           ) : (
             <div className="living-ai">
-              <span className="living-ai-eyebrow">
-                A REQUEST. A CLEAR NEXT STEP.
-              </span>
+              <div className="living-ai-topline">
+                <span>ONE REQUEST. A CLEAR NEXT STEP.</span>
+                <span>LOCAL SIMULATION</span>
+              </div>
               <ol className="living-workflow" aria-label="Workflow stages">
                 {workflowSteps.map((name, i) => (
                   <li
                     key={name}
                     className={`${i === state.step ? "active" : ""} ${i < state.step ? "complete" : ""}`}
+                    aria-current={i === state.step ? "step" : undefined}
                   >
                     <span>
                       {i < state.step ? (
-                        <Check size={14} />
+                        <Check size={13} />
                       ) : (
                         String(i + 1).padStart(2, "0")
                       )}
                     </span>
-                    <small>{name}</small>
+                    <small>
+                      {["Inquiry", "Classify", "Route", "Draft", "Review"][i]}
+                    </small>
                   </li>
                 ))}
               </ol>
@@ -375,30 +450,78 @@ export default function LiveShowcase({
               >
                 <span>STEP {state.step + 1} / 5</span>
                 <h2>{workflowSteps[state.step]}</h2>
-                <p>{workflowMessages[state.step]}</p>
+                {state.step === 0 && (
+                  <>
+                    <p>“{state.inquiry}”</p>
+                    <details className="living-inquiry-editor">
+                      <summary>Try your own inquiry</summary>
+                      <label htmlFor={`${id}-inquiry`}>Example inquiry</label>
+                      <textarea
+                        id={`${id}-inquiry`}
+                        maxLength={360}
+                        rows={3}
+                        value={state.inquiry}
+                        onChange={(event) => changeInquiry(event.target.value)}
+                      />
+                      {!state.inquiry?.trim() && (
+                        <small>Write a request to begin.</small>
+                      )}
+                    </details>
+                  </>
+                )}
+                {state.step === 1 && (
+                  <>
+                    <p>{classification.category}</p>
+                    <small>
+                      Classified by local keyword rules. No AI request is made.
+                    </small>
+                  </>
+                )}
+                {state.step === 2 && (
+                  <>
+                    <p>Routed to {classification.studio}.</p>
+                    <small>
+                      The request stays available for a person to check.
+                    </small>
+                  </>
+                )}
+                {state.step === 3 && (
+                  <label className="living-draft-label">
+                    Editable response draft
+                    <textarea
+                      rows={4}
+                      value={state.draft ?? generatedDraft}
+                      onChange={(event) => {
+                        setReviewed(false);
+                        setState((s) => ({ ...s, draft: event.target.value }));
+                      }}
+                    />
+                  </label>
+                )}
                 {state.step === 4 && (
-                  <div className="living-human-check">
-                    <Check size={16} /> Human decision required
-                  </div>
+                  <>
+                    <p>{state.draft ?? generatedDraft}</p>
+                    <span className="living-human-check">
+                      <Check size={15} />
+                      {reviewed
+                        ? "Reviewed locally. Nothing was sent."
+                        : "Human decision required"}
+                    </span>
+                    <button
+                      className="living-review-button"
+                      disabled={
+                        reviewed || !(state.draft ?? generatedDraft).trim()
+                      }
+                      onClick={() => setReviewed(true)}
+                    >
+                      {reviewed ? "Review recorded" : "Mark as reviewed"}
+                    </button>
+                  </>
                 )}
               </div>
             </div>
           )}
         </div>
-        {enhance && (
-          <div className="living-spatial-layer" aria-hidden="true">
-            <SceneBoundary onError={onError}>
-              <Suspense fallback={null}>
-                <SpatialScene
-                  theme={theme}
-                  state={state}
-                  onReady={onReady}
-                  onError={onError}
-                />
-              </Suspense>
-            </SceneBoundary>
-          </div>
-        )}
         <div className="living-view-bar">
           <span>
             {spatialActive
@@ -419,7 +542,7 @@ export default function LiveShowcase({
                 : "Use spatial preview"
             }
           >
-            <Layers3 size={13} />
+            <Layers3 size={14} />
             {wantsSpatial && supported !== false && !failed
               ? "Flat view"
               : "Spatial view"}
@@ -437,13 +560,19 @@ export default function LiveShowcase({
               >
                 <button
                   aria-pressed={!state.edited}
-                  onClick={() => setState((s) => ({ ...s, edited: false }))}
+                  onClick={() => editComparison(0)}
                 >
                   Original
                 </button>
                 <button
-                  aria-pressed={state.edited}
-                  onClick={() => setState((s) => ({ ...s, edited: true }))}
+                  aria-pressed={comparison === 50}
+                  onClick={() => editComparison(50)}
+                >
+                  Compare
+                </button>
+                <button
+                  aria-pressed={comparison === 100}
+                  onClick={() => editComparison(100)}
                 >
                   Edited
                 </button>
@@ -451,97 +580,158 @@ export default function LiveShowcase({
               <button
                 className="living-play"
                 aria-label={
-                  state.playing ? "Pause motion preview" : "Play motion preview"
+                  reduced
+                    ? "Next still"
+                    : state.playing
+                      ? "Pause motion preview"
+                      : "Play motion preview"
                 }
                 onClick={() =>
-                  setState((s) => ({
-                    ...s,
-                    playing: !s.playing,
-                    progress: s.progress >= 100 ? 0 : s.progress,
-                  }))
+                  setState((s) =>
+                    reduced
+                      ? {
+                          ...s,
+                          edited: true,
+                          comparison: 100,
+                          progress: s.progress >= 70 ? 0 : s.progress + 35,
+                          playing: false,
+                        }
+                      : {
+                          ...s,
+                          edited: true,
+                          comparison: 100,
+                          playing: !s.playing,
+                          progress: s.progress >= 100 ? 0 : s.progress,
+                        },
+                  )
                 }
               >
                 {state.playing ? <Pause size={15} /> : <Play size={15} />}
-                <span>{state.playing ? "Pause" : "Play the edit"}</span>
+                <span>
+                  {reduced
+                    ? "Next still"
+                    : state.playing
+                      ? "Pause"
+                      : "Play the edit"}
+                </span>
               </button>
             </div>
             <label className="living-scrubber">
-              <span>Scrub the edit</span>
+              <span>Compare the edit</span>
               <input
-                aria-label="Edit timeline"
+                aria-label="Before and after comparison"
                 type="range"
                 min="0"
                 max="100"
-                value={state.progress}
-                onChange={(e) =>
-                  setState((s) => ({
-                    ...s,
-                    progress: Number(e.target.value),
-                    playing: false,
-                  }))
-                }
+                value={comparison}
+                aria-valuetext={`${comparison}% edited composition`}
+                onChange={(e) => editComparison(Number(e.target.value))}
               />
-              <output aria-live="off">
-                {String(Math.floor(state.progress / 10)).padStart(2, "0")}s
-              </output>
+              <span>{comparison}%</span>
             </label>
+            <details
+              className="living-refinements"
+              open={variant === "study" || undefined}
+            >
+              <summary>
+                Make it yours <span>Caption, framing & timing</span>
+              </summary>
+              <div className="living-refinement-grid">
+                <label>
+                  Caption style
+                  <select
+                    value={state.captions}
+                    onChange={(e) =>
+                      setState((s) => ({
+                        ...s,
+                        captions: e.target.value as
+                          "editorial" | "bold" | "none",
+                      }))
+                    }
+                  >
+                    <option value="editorial">Editorial</option>
+                    <option value="bold">Bold statement</option>
+                    <option value="none">No caption</option>
+                  </select>
+                </label>
+                <label>
+                  Framing
+                  <select
+                    value={state.crop}
+                    onChange={(e) =>
+                      setState((s) => ({
+                        ...s,
+                        crop: e.target.value as "wide" | "tight",
+                      }))
+                    }
+                  >
+                    <option value="wide">Wide view</option>
+                    <option value="tight">Closer crop</option>
+                  </select>
+                </label>
+              </div>
+              <label className="living-scrubber">
+                <span>Scrub the edit</span>
+                <input
+                  aria-label="Edit timeline"
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={state.progress}
+                  aria-valuetext={`${Math.round(state.progress * 0.06)} seconds of six`}
+                  onChange={(e) =>
+                    setState((s) => ({
+                      ...s,
+                      progress: Number(e.target.value),
+                      playing: false,
+                    }))
+                  }
+                />
+                <span aria-hidden="true">
+                  {Math.round(state.progress * 0.06)}s
+                </span>
+              </label>
+            </details>
           </>
         ) : state.mode === "build" ? (
-          <>
-            <div className="living-control-row">
-              <div
-                className="living-segment"
-                role="group"
-                aria-label="Website design treatment"
-              >
-                <button
-                  aria-pressed={!state.finished}
-                  onClick={() => setState((s) => ({ ...s, finished: false }))}
-                >
-                  Wireframe
-                </button>
-                <button
-                  aria-pressed={state.finished}
-                  onClick={() => setState((s) => ({ ...s, finished: true }))}
-                >
-                  Finished
-                </button>
-              </div>
-              <div
-                className="living-segment living-device-controls"
-                role="group"
-                aria-label="Website viewport"
-              >
-                <button
-                  aria-pressed={!state.mobile}
-                  onClick={() => setState((s) => ({ ...s, mobile: false }))}
-                >
-                  <Monitor size={15} /> Desktop
-                </button>
-                <button
-                  aria-pressed={state.mobile}
-                  onClick={() => setState((s) => ({ ...s, mobile: true }))}
-                >
-                  <Smartphone size={15} /> Mobile
-                </button>
-              </div>
-            </div>
-            <button
-              className="living-sample-action"
-              aria-pressed={state.sitePanel === "menu"}
-              onClick={() =>
-                setState((s) => ({
-                  ...s,
-                  sitePanel: s.sitePanel === "home" ? "menu" : "home",
-                }))
-              }
+          <div className="living-control-row">
+            <div
+              className="living-segment"
+              role="group"
+              aria-label="Website design treatment"
             >
-              {state.sitePanel === "menu"
-                ? "Back to sample homepage"
-                : "Open the café menu"}{" "}
-              <ArrowRight size={14} />
-            </button>
-          </>
+              <button
+                aria-pressed={!state.finished}
+                onClick={() => setState((s) => ({ ...s, finished: false }))}
+              >
+                Wireframe
+              </button>
+              <button
+                aria-pressed={state.finished}
+                onClick={() => setState((s) => ({ ...s, finished: true }))}
+              >
+                Finished
+              </button>
+            </div>
+            <div
+              className="living-segment"
+              role="group"
+              aria-label="Website viewport"
+            >
+              <button
+                aria-pressed={!state.mobile}
+                onClick={() => setState((s) => ({ ...s, mobile: false }))}
+              >
+                Desktop
+              </button>
+              <button
+                aria-pressed={state.mobile}
+                onClick={() => setState((s) => ({ ...s, mobile: true }))}
+              >
+                Mobile
+              </button>
+            </div>
+          </div>
         ) : (
           <div className="living-control-row">
             <span className="living-step-caption">
@@ -556,20 +746,27 @@ export default function LiveShowcase({
                 <ArrowLeft size={16} />
               </button>
               <button
-                onClick={() =>
+                disabled={
+                  !state.inquiry?.trim() ||
+                  (state.step === 3 && !(state.draft ?? generatedDraft).trim())
+                }
+                onClick={() => {
+                  setReviewed(false);
                   setState((s) => ({
                     ...s,
                     step: s.step === 4 ? 0 : s.step + 1,
-                  }))
-                }
+                  }));
+                }}
               >
                 {state.step === 4 ? (
                   <>
-                    <RotateCcw size={15} /> Restart
+                    <RotateCcw size={15} />
+                    Restart
                   </>
                 ) : (
                   <>
-                    Next step <ArrowRight size={16} />
+                    Next step
+                    <ArrowRight size={15} />
                   </>
                 )}
               </button>
@@ -585,15 +782,16 @@ export default function LiveShowcase({
             ? `${state.edited ? "Edited concept" : "Original photo"} · Photo-to-motion illustration, not client footage.`
             : state.mode === "build"
               ? `${state.mobile ? "Mobile" : "Desktop"} · ${state.finished ? "Finished" : "Wireframe"} website concept. No live business or booking.`
-              : `${workflowSteps[state.step]} · Scripted workflow. Nothing is sent.`}
+              : `${workflowSteps[state.step]} · Rule-based simulation. Nothing is sent.`}
           {failed || supported === false
             ? " Flat preview active; all controls still work."
             : ""}
         </p>
-        {variant === "hero" && theme === "glass" && (
+        {showServiceActions && (
           <div className="living-service-actions">
             <Link to={`/services/${serviceId}`}>
-              Explore this service <ArrowRight size={14} />
+              Explore this service
+              <ArrowRight size={14} />
             </Link>
             <button
               aria-pressed={added}
@@ -601,11 +799,13 @@ export default function LiveShowcase({
             >
               {added ? (
                 <>
-                  <Check size={14} /> Added · remove
+                  <Check size={14} />
+                  Added · remove
                 </>
               ) : (
                 <>
-                  Add to my project <ArrowRight size={14} />
+                  Add to my project
+                  <ArrowRight size={14} />
                 </>
               )}
             </button>

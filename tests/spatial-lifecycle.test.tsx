@@ -109,6 +109,38 @@ describe("SpatialScene React lifecycle (renderer mocked; no GPU verification)", 
     expect(createScene).toHaveBeenCalledTimes(1);
   });
 
+  it("ignores a disposed renderer's late callbacks after changing palette or unmounting", () => {
+    createScene.mockReturnValue({ update: vi.fn(), dispose: vi.fn() });
+    const onReady = vi.fn(),
+      onError = vi.fn();
+    const { rerender, unmount } = render(
+      <SpatialScene
+        state={initialShowcaseState}
+        onReady={onReady}
+        onError={onError}
+      />,
+    );
+    const first = createScene.mock.calls[0];
+    rerender(
+      <SpatialScene
+        state={initialShowcaseState}
+        onReady={onReady}
+        onError={onError}
+        theme="atelier"
+      />,
+    );
+    first[2]();
+    first[3]();
+    expect(onReady).not.toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+    const second = createScene.mock.calls[1];
+    unmount();
+    second[2]();
+    second[3]();
+    expect(onReady).not.toHaveBeenCalled();
+    expect(onError).not.toHaveBeenCalled();
+  });
+
   it("reports initialization failure so the caller can keep the HTML fallback", () => {
     createScene.mockImplementation(() => {
       throw new Error("WebGL initialization failed");

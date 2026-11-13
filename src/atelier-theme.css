@@ -158,6 +158,7 @@ html[data-theme] .about-page .about-manifesto :is(p, .eyebrow) {
   color: var(--home-muted-light);
 }
 html[data-theme] .about-page .about-word-art {
+  background: var(--home-wash);
   color: var(--home-violet-ink);
 }
 html[data-theme] .about-page .about-word-line {
@@ -244,6 +245,9 @@ html[data-theme]
   :is(button, a, input, textarea, select, summary):focus-visible {
   outline: 2px solid var(--home-violet-ink);
   outline-offset: 4px;
+}
+html[data-theme] .contact-page .inquiry-draft-content p {
+  color: var(--home-muted-light);
 }
 html[data-theme] .contact-page .inquiry-draft-content {
   border-color: var(--home-line-light);

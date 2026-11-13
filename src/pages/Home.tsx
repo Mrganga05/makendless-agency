@@ -1,112 +1,96 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import Hero from "../components/v14/Hero";
+import StudioWorlds from "../components/v14/StudioWorlds";
 import LiveShowcase from "../components/LiveShowcase";
 import {
-  ServiceGallery,
-  TransformationStage,
-} from "../components/home/ServiceExperiences";
-import {
-  AudienceSolutions,
-  PackageGuide,
-  SelectedConcepts,
-} from "../components/home/BusinessSections";
-import { HomepageLab, ProcessFaq } from "../components/home/ProjectExperience";
-import { HOME_THEME } from "../theme";
-import "../homepage-atelier.css";
+  AudienceSection,
+  WorkSection,
+  PackagesSection,
+  AboutSection,
+  ProcessSection,
+} from "../components/v14/BusinessJourney";
+import ProjectLabExperience from "../components/v14/ProjectLabExperience";
+import { useSiteTheme } from "../theme-context";
+import "../v14.css";
 export default function Home() {
+  const { theme } = useSiteTheme();
   return (
-    <div className="atelier-home">
+    <div className="v14-home">
+      <Hero theme={theme} />
+      <StudioWorlds />
       <section
-        className="hp-hero"
-        aria-labelledby="hero-title"
+        className="v14-transformation"
+        id="showcase"
+        aria-labelledby="transformation-title"
         data-surface="dark"
       >
-        <div className="hp-hero-inner">
-          <div className="hp-hero-copy">
-            <span className="hp-kicker">
-              MAKENDLESS / CREATIVE & TECHNOLOGY STUDIO
-            </span>
-            <h1 id="hero-title" data-motion="typography">
-              We make ideas
-              <br />
-              <span>
-                impossible
-                <br />
-                to ignore.
+        <div className="v14-wrap">
+          <header className="v14-transformation-heading">
+            <div>
+              <span className="v14-eyebrow">
+                03 / FROM POSSIBILITY TO PROOF
               </span>
-            </h1>
+              <h2 id="transformation-title" data-motion="typography">
+                See the difference<span>.</span>
+              </h2>
+            </div>
             <p>
-              Premium video editing, websites and AI solutions for creators and
-              ambitious businesses.
+              Move the frame. Change the design. Follow an idea through the
+              workflow. This is where the possibilities become tangible.
             </p>
-            <div className="hp-hero-actions">
-              <a className="button button-primary" href="#services">
-                Explore Services <ArrowRight size={18} />
-              </a>
-              <Link className="text-link" to="/contact">
-                Start a Project <ArrowUpRight size={18} />
-              </Link>
-            </div>
-            <div className="hp-hero-disciplines">
-              <span>CREATE</span>
-              <i />
-              <span>BUILD</span>
-              <i />
-              <Link to="/studios/grow">
-                GROW <small>BETA / COMING SOON</small>
-              </Link>
-            </div>
+          </header>
+          <LiveShowcase variant="study" theme={theme} />
+          <div className="v14-transformation-foot">
+            <span>
+              Original studio concepts. Real controls. Yours to explore.
+            </span>
+            <a href="#solutions">
+              Find your fit <ArrowDown size={16} />
+            </a>
           </div>
-          <div className="hp-hero-media">
-            <div className="hp-stage-label">
-              <span>IDEAS, IN THEIR ELEMENT.</span>
-              <span>TRY THE STUDIO ↓</span>
-            </div>
-            <LiveShowcase theme={HOME_THEME} />
-          </div>
-        </div>
-        <div className="hp-hero-foot">
-          <span>FROM YOUR FIRST FRAME TO YOUR NEXT DIGITAL PRODUCT.</span>
-          <a href="#services">
-            Find your starting point <ArrowRight size={15} />
-          </a>
         </div>
       </section>
-      <ServiceGallery />
-      <TransformationStage />
-      <AudienceSolutions />
-      <PackageGuide />
-      <SelectedConcepts />
-      <HomepageLab />
-      <ProcessFaq />
+      <AudienceSection />
+      <WorkSection />
+      <PackagesSection />
+      <ProjectLabExperience />
+      <AboutSection />
+      <ProcessSection />
       <section
-        className="hp-final"
+        className="v14-finale"
+        id="start"
         aria-labelledby="invitation-title"
         data-surface="dark"
       >
-        <div className="hp-final-inner">
-          <span className="hp-kicker">09 / YOUR NEXT CHAPTER</span>
+        <div className="v14-wrap">
+          <div className="v14-final-index">
+            <span className="v14-eyebrow">10 / THE NEXT CHAPTER IS YOURS</span>
+            <span aria-hidden="true">↗</span>
+          </div>
           <h2 id="invitation-title" data-motion="typography">
             Let's make something
             <br />
-            <span>worth remembering.</span>
+            <em>worth remembering.</em>
           </h2>
-          <p>
-            Tell us what you're creating. We'll help you define the next step.
-          </p>
-          <Link className="button button-primary" to="/contact">
-            Start a Project <ArrowUpRight size={20} />
-          </Link>
+          <div className="v14-final-bottom">
+            <p>
+              Tell us what you're building.
+              <br />
+              We'll help shape the next step.
+            </p>
+            <Link className="v14-final-action" to="/contact">
+              Start a Project <ArrowUpRight size={32} />
+            </Link>
+          </div>
           <div
-            className="hp-final-signature"
-            aria-hidden="true"
+            className="v14-final-mark"
             data-motion="prism"
+            aria-hidden="true"
           >
-            <span>CREATE</span>
+            <span>MAK</span>
             <i />
-            <span>BUILD</span>
-            <i />
-            <span>GROW</span>
+            <span>NDLESS</span>
           </div>
         </div>
       </section>

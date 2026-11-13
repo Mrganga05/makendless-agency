@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import type { ShowcaseState } from "../showcase-state";
 import { GLASS_PRISM, PRISM_ATELIER } from "../theme";
 
@@ -26,9 +28,9 @@ export function createLivingScene(
       : {
           ...GLASS_PRISM,
           highlight: GLASS_PRISM.violetLight,
-          canvas: "#0D1022",
-          wire: "#181B31",
-          inactive: "#272B48",
+          canvas: GLASS_PRISM.night,
+          wire: GLASS_PRISM.surface,
+          inactive: GLASS_PRISM.surface,
         };
   const C = {
     bg: new THREE.Color(P.night).getHex(),
@@ -43,12 +45,8 @@ export function createLivingScene(
     state = initial,
     lastPaint = "",
     currentMode = "";
-  const resources = new Set<
-    THREE.BufferGeometry | THREE.Material | THREE.Texture
-  >();
-  const modeResources = new Set<
-    THREE.BufferGeometry | THREE.Material | THREE.Texture
-  >();
+  const resources = new Set<{ dispose: () => void }>();
+  const modeResources = new Set<{ dispose: () => void }>();
   const cleanups: Array<() => void> = [];
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
@@ -71,20 +69,34 @@ export function createLivingScene(
       Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1 : 1.5),
     );
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.02;
+    renderer.transmissionResolutionScale = 0.55;
     renderer.setClearColor(C.bg, 0);
     renderer.domElement.setAttribute("aria-hidden", "true");
     host.appendChild(renderer.domElement);
     const scene = new THREE.Scene();
     cleanups.push(() => scene.clear());
+    // A generated reflection environment adds material information without an HDR download.
+    const environment = new RoomEnvironment();
+    const generator = new THREE.PMREMGenerator(renderer);
+    try {
+      const reflectedRoom = generator.fromScene(environment, 0.04);
+      resources.add(reflectedRoom);
+      scene.environment = reflectedRoom.texture;
+    } finally {
+      environment.dispose();
+      generator.dispose();
+    }
     const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 40);
     camera.position.set(0, 0.5, 10.5);
     camera.lookAt(0, -0.05, 0);
-    const ambient = new THREE.HemisphereLight(C.white, C.slate, 2.8);
+    const ambient = new THREE.HemisphereLight(C.white, C.slate, 1.8);
     scene.add(ambient);
-    const key = new THREE.DirectionalLight(P.highlight, 4);
+    const key = new THREE.DirectionalLight(P.white, 3.5);
     key.position.set(-3, 5, 4);
     scene.add(key);
-    const fill = new THREE.PointLight(C.aqua, 35, 15, 2);
+    const fill = new THREE.PointLight(C.aqua, 24, 15, 2);
     fill.position.set(4, 2, 3);
     scene.add(fill);
     const world = new THREE.Group();
@@ -110,7 +122,10 @@ export function createLivingScene(
       mode = true,
     ) {
       return new THREE.Mesh(
-        track(new THREE.BoxGeometry(w, h, d), mode),
+        track(
+          new RoundedBoxGeometry(w, h, d, 2, Math.min(0.055, d / 3, h / 4)),
+          mode,
+        ),
         track(
           new THREE.MeshStandardMaterial({
             color,
@@ -133,6 +148,31 @@ export function createLivingScene(
     const edge = box(1.5, 0.012, 0.025, C.aqua, 0.45, false);
     edge.position.set(-2.2, -1.95, 0.9);
     world.add(edge);
+    // A single refractive inspection edge sits beside, never in front of, the real HTML UI.
+    const lensMaterial = track(
+      new THREE.MeshPhysicalMaterial({
+        color: P.white,
+        metalness: 0,
+        roughness: 0.13,
+        transmission: 0.9,
+        thickness: 0.34,
+        ior: 1.46,
+        opacity: 1,
+        clearcoat: 1,
+        clearcoatRoughness: 0.1,
+        envMapIntensity: 1.3,
+        attenuationColor: P.paper,
+        attenuationDistance: 3,
+      }),
+      false,
+    );
+    const lens = new THREE.Mesh(
+      track(new RoundedBoxGeometry(0.68, 2.38, 0.27, 3, 0.12), false),
+      lensMaterial,
+    );
+    lens.position.set(2.64, 0.16, 0.95);
+    lens.rotation.set(0.025, -0.25, -0.06);
+    world.add(lens);
     const textures: {
       canvas: HTMLCanvasElement;
       ctx: CanvasRenderingContext2D;
@@ -150,7 +190,7 @@ export function createLivingScene(
       group.position.set(x, y, z);
       group.rotation.y = angle;
       content.add(group);
-      const backing = box(w + 0.08, h + 0.08, 0.09, C.slate);
+      const backing = box(w + 0.12, h + 0.12, 0.12, C.slate);
       group.add(backing);
       const canvas = document.createElement("canvas");
       canvas.width = w < h ? 512 : 1024;
@@ -165,7 +205,7 @@ export function createLivingScene(
         track(new THREE.PlaneGeometry(w, h)),
         track(new THREE.MeshBasicMaterial({ map: texture, toneMapped: false })),
       );
-      screen.position.z = 0.051;
+      screen.position.z = 0.066;
       group.add(screen);
       textures.push({ canvas, ctx, texture });
       return group;
@@ -236,8 +276,12 @@ export function createLivingScene(
     }
     let introduction = 0;
     let baseDistance = 10.5;
+    let cameraStartX = camera.position.x;
+    let cameraStartY = camera.position.y;
     function rebuild() {
       introduction = performance.now();
+      cameraStartX = camera.position.x;
+      cameraStartY = camera.position.y;
       for (const child of [...content.children]) content.remove(child);
       modeResources.forEach((r) => r.dispose());
       modeResources.clear();
@@ -248,9 +292,9 @@ export function createLivingScene(
       if (state.mode === "create") {
         if (!mountain.src) mountain.src = "/images/mountain.jpg";
         if (theme === "atelier") {
-          panel(2.1, 3.72, 0.36, 0.34, 0.55, -0.06);
-          panel(1.1, 1.46, -1.55, 0.22, -0.16, 0.16);
-          panel(1.0, 0.72, 2.0, -0.5, -0.2, -0.17);
+          panel(2.2, 3.48, 0.2, 0.2, 0.35, -0.06);
+          panel(1.5, 2.2, -2.04, 0.1, -0.25, 0.12);
+          panel(1.05, 1.08, 2.28, -0.45, -0.2, -0.14);
         } else {
           panel(1.85, 3.25, 0.48, 0.19, 0.55, -0.09);
           panel(1.3, 1.75, -1.65, 0.22, -0.12, 0.19);
@@ -301,6 +345,20 @@ export function createLivingScene(
           }
         }
       }
+      lens.position.set(
+        state.mode === "build" ? 2.72 : 2.64,
+        state.mode === "ai" ? 0.6 : 0.16,
+        0.95,
+      );
+      lens.scale.y = state.mode === "ai" ? 0.72 : 1;
+      lensMaterial.attenuationColor.set(state.mode === "ai" ? P.aqua : P.paper);
+      fill.color.set(
+        state.mode === "create"
+          ? P.violetLight
+          : state.mode === "build"
+            ? P.aqua
+            : P.violet,
+      );
       lastPaint = "";
       currentMode = state.mode;
     }
@@ -313,6 +371,12 @@ export function createLivingScene(
         state.mobile,
         state.step,
         state.sitePanel,
+        state.comparison,
+        state.captions,
+        state.crop,
+        state.inquiry,
+        state.workflowCategory,
+        state.draft,
       ].join(":");
       if (signature === lastPaint) return;
       lastPaint = signature;
@@ -325,7 +389,9 @@ export function createLivingScene(
           0,
           a.w,
           a.h,
-          state.edited ? 1.06 + state.progress * 0.0012 : 1,
+          state.edited
+            ? (state.crop === "tight" ? 1.35 : 1.06) + state.progress * 0.0012
+            : 1,
         );
         if (state.edited) {
           const grad = a.ctx.createLinearGradient(0, 0, 0, a.h);
@@ -340,8 +406,24 @@ export function createLivingScene(
               : state.progress < 70
                 ? ["Feel", "something."]
                 : ["Make it", "matter."];
-          text(a.ctx, titles[0], 65, a.h * 0.64, 110);
-          text(a.ctx, titles[1], 65, a.h * 0.64 + 125, 105, P.highlight);
+          if (state.captions !== "none") {
+            const bold = state.captions === "bold";
+            text(
+              a.ctx,
+              bold ? titles[0].toUpperCase() : titles[0],
+              65,
+              a.h * 0.64,
+              bold ? 95 : 110,
+            );
+            text(
+              a.ctx,
+              bold ? titles[1].toUpperCase() : titles[1],
+              65,
+              a.h * 0.64 + 125,
+              bold ? 80 : 105,
+              P.highlight,
+            );
+          }
           a.ctx.fillStyle = P.aqua;
           a.ctx.fillRect(70, a.h - 135, 130, 5);
           text(
@@ -354,6 +436,21 @@ export function createLivingScene(
             500,
           );
         } else text(a.ctx, "ORIGINAL PHOTO", 70, 95, 30, P.white, 500);
+        if (
+          state.edited &&
+          state.comparison !== undefined &&
+          state.comparison < 100
+        ) {
+          const sourceWidth = a.w * (1 - state.comparison / 100);
+          a.ctx.save();
+          a.ctx.beginPath();
+          a.ctx.rect(0, 0, sourceWidth, a.h);
+          a.ctx.clip();
+          photo(a.ctx, mountain, 0, 0, a.w, a.h);
+          a.ctx.restore();
+          a.ctx.fillStyle = P.white;
+          a.ctx.fillRect(sourceWidth - 2, 0, 4, a.h);
+        }
         const b = start(1);
         photo(b.ctx, mountain, 0, 0, b.w, b.h * 0.74);
         text(b.ctx, "01 / SOURCE", 65, b.h * 0.85, 50);
@@ -506,7 +603,21 @@ export function createLivingScene(
           500,
         );
         text(a.ctx, names[state.step], 65, 210, 65);
-        text(a.ctx, messages[state.step][0], 65, 315, 32);
+        const statement =
+          state.step === 0
+            ? state.inquiry
+            : state.step === 1 || state.step === 2
+              ? state.workflowCategory
+              : state.step === 3
+                ? state.draft
+                : undefined;
+        // The full editable text stays in HTML. The auxiliary texture uses a bounded excerpt.
+        const excerpt = statement
+          ? statement.length > 48
+            ? statement.slice(0, 45) + "…"
+            : statement
+          : messages[state.step][0];
+        text(a.ctx, excerpt, 65, 315, 32);
         text(a.ctx, messages[state.step][1], 65, 385, 24, P.mutedDark, 400);
         for (let i = 0; i < 5; i++) {
           a.ctx.fillStyle = i <= state.step ? P.violet : P.inactive;
@@ -520,6 +631,15 @@ export function createLivingScene(
       targetX = -0.04,
       lightTargetX = 4,
       lightTargetY = 2;
+    const reducedPreference = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    let settlingUntil = 0;
+    function failAndDispose() {
+      if (dead) return;
+      cleanup();
+      fail();
+    }
     function render() {
       frame = 0;
       if (dead || !visible || document.hidden) return;
@@ -540,9 +660,7 @@ export function createLivingScene(
           );
           n.position.y = i === state.step ? -0.98 : -1.1;
         });
-        const reducedMotion = window.matchMedia(
-          "(prefers-reduced-motion: reduce)",
-        ).matches;
+        const reducedMotion = reducedPreference.matches;
         // A bounded entrance is the only automatic camera motion. The renderer
         // settles completely after it and after user-driven pointer transitions.
         const progress = reducedMotion
@@ -552,11 +670,20 @@ export function createLivingScene(
         content.position.y = (1 - eased) * -0.12;
         content.position.z = (1 - eased) * -0.28;
         content.scale.setScalar(0.96 + eased * 0.04);
+        const cameraTargetX =
+          state.mode === "create" ? 0.18 : state.mode === "build" ? -0.2 : 0;
+        const cameraTargetY =
+          state.mode === "ai" ? 0.22 : state.mode === "build" ? 0.56 : 0.4;
+        camera.position.x =
+          cameraStartX + (cameraTargetX - cameraStartX) * eased;
+        camera.position.y =
+          cameraStartY + (cameraTargetY - cameraStartY) * eased;
         camera.position.z = baseDistance * (1 + (1 - eased) * 0.025);
         camera.lookAt(0, -0.05, 0);
-        if (reducedMotion) {
+        const settled = performance.now() >= settlingUntil;
+        if (reducedMotion || settled) {
           world.rotation.set(targetX, targetY, 0);
-          fill.position.set(4, 2, 3);
+          fill.position.set(lightTargetX, lightTargetY, 3);
         } else {
           world.rotation.y += (targetY - world.rotation.y) * 0.18;
           world.rotation.x += (targetX - world.rotation.x) * 0.18;
@@ -571,16 +698,17 @@ export function createLivingScene(
         if (
           !reducedMotion &&
           (progress < 1 ||
-            Math.abs(targetY - world.rotation.y) +
-              Math.abs(targetX - world.rotation.x) >
-              0.002 ||
-            Math.abs(lightTargetX - fill.position.x) +
-              Math.abs(lightTargetY - fill.position.y) >
-              0.01)
+            (!settled &&
+              (Math.abs(targetY - world.rotation.y) +
+                Math.abs(targetX - world.rotation.x) >
+                0.002 ||
+                Math.abs(lightTargetX - fill.position.x) +
+                  Math.abs(lightTargetY - fill.position.y) >
+                  0.01)))
         )
           requestRender();
       } catch {
-        fail();
+        failAndDispose();
       }
     }
     function requestRender() {
@@ -593,26 +721,21 @@ export function createLivingScene(
         height = host.clientHeight;
       if (!width || !height) return;
       renderer.setPixelRatio(
-        Math.min(
-          window.devicePixelRatio || 1,
-          window.innerWidth < 768 ? 1 : 1.5,
-        ),
+        Math.min(window.devicePixelRatio || 1, width < 600 ? 1.25 : 1.5),
       );
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
+      // Fit the whole authored 6.8×4.6 composition, including its material edge.
+      // Narrow opt-in views receive more camera distance rather than clipped screens.
       baseDistance =
-        Math.max(4.7, (theme === "atelier" ? 5.7 : 6.5) / camera.aspect) /
+        Math.max(4.6, 6.8 / camera.aspect) /
         (2 * Math.tan(THREE.MathUtils.degToRad(17)));
       camera.position.z = baseDistance;
       camera.updateProjectionMatrix();
       requestRender();
     }
     function pointer(e: PointerEvent) {
-      if (
-        e.pointerType !== "mouse" ||
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      )
-        return;
+      if (e.pointerType !== "mouse" || reducedPreference.matches) return;
       const rect = host.getBoundingClientRect();
       const restingYaw =
         state.mode === "build" ? 0.06 : state.mode === "ai" ? 0 : -0.1;
@@ -623,6 +746,7 @@ export function createLivingScene(
         -0.04 + ((e.clientY - rect.top - rect.height / 2) / rect.height) * 0.07;
       lightTargetX = 4 + ((e.clientX - rect.left) / rect.width - 0.5) * 2;
       lightTargetY = 2 - ((e.clientY - rect.top) / rect.height - 0.5);
+      settlingUntil = performance.now() + 650;
       requestRender();
     }
     function leave() {
@@ -630,11 +754,12 @@ export function createLivingScene(
       targetX = -0.04;
       lightTargetX = 4;
       lightTargetY = 2;
+      settlingUntil = performance.now() + 650;
       requestRender();
     }
     function lost(e: Event) {
       e.preventDefault();
-      fail();
+      failAndDispose();
     }
     function visibility() {
       if (document.hidden) {
@@ -652,7 +777,7 @@ export function createLivingScene(
       typeof IntersectionObserver !== "undefined"
         ? new IntersectionObserver(
             (entries) => {
-              visible = entries[0].isIntersecting;
+              visible = entries.some((entry) => entry.isIntersecting);
               if (visible) requestRender();
               else {
                 cancelAnimationFrame(frame);
@@ -664,9 +789,25 @@ export function createLivingScene(
         : null;
     cleanups.push(() => intersection?.disconnect());
     intersection?.observe(host);
+    const pointerTarget = host.closest(".living-stage") || host;
+    const preferenceChanged = () => {
+      if (reducedPreference.matches) {
+        targetY =
+          state.mode === "build" ? 0.06 : state.mode === "ai" ? 0 : -0.1;
+        targetX = -0.04;
+        lightTargetX = 4;
+        lightTargetY = 2;
+        settlingUntil = 0;
+      }
+      requestRender();
+    };
     cleanups.push(() => {
-      host.removeEventListener("pointermove", pointer);
-      host.removeEventListener("pointerleave", leave);
+      pointerTarget.removeEventListener(
+        "pointermove",
+        pointer as EventListener,
+      );
+      pointerTarget.removeEventListener("pointerleave", leave);
+      reducedPreference.removeEventListener("change", preferenceChanged);
       renderer.domElement.removeEventListener("webglcontextlost", lost);
       document.removeEventListener("visibilitychange", visibility);
       mountain.onload =
@@ -675,15 +816,16 @@ export function createLivingScene(
         coffee.onerror =
           null;
     });
-    host.addEventListener("pointermove", pointer);
-    host.addEventListener("pointerleave", leave);
+    pointerTarget.addEventListener("pointermove", pointer as EventListener);
+    pointerTarget.addEventListener("pointerleave", leave);
+    reducedPreference.addEventListener("change", preferenceChanged);
     renderer.domElement.addEventListener("webglcontextlost", lost);
     document.addEventListener("visibilitychange", visibility);
     mountain.onload = coffee.onload = () => {
       lastPaint = "";
       requestRender();
     };
-    mountain.onerror = coffee.onerror = () => fail();
+    mountain.onerror = coffee.onerror = failAndDispose;
     void document.fonts?.ready.then(() => {
       if (!dead) {
         lastPaint = "";
@@ -694,8 +836,10 @@ export function createLivingScene(
     requestRender();
     return {
       update(next) {
+        if (dead) return;
         state = next;
         targetY = next.mode === "build" ? 0.06 : next.mode === "ai" ? 0 : -0.1;
+        settlingUntil = performance.now() + 650;
         requestRender();
       },
       dispose: cleanup,

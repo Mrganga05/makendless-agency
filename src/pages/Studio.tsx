@@ -7,6 +7,7 @@ import ServiceDemo from "../components/ServiceDemo";
 import LiveShowcase from "../components/LiveShowcase";
 import "../studios.css";
 import "../studio-worlds.css";
+import "../v14-studios.css";
 function StudioWorld({ world }: { world: World }) {
   const list = services.filter((s) => s.world === world);
   const [selected, setSelected] = useState(list[0].id);
@@ -16,7 +17,7 @@ function StudioWorld({ world }: { world: World }) {
   const { project, toggleService } = useProject();
   const added = project.services.includes(selected);
   return (
-    <div className={`page-shell studio-page studio-${world}`}>
+    <div className={`page-shell studio-page v14-service-world studio-${world}`}>
       <div className="studio-breadcrumb">
         <Link to="/studios">All services</Link>
         <span>/</span>

@@ -46,12 +46,16 @@
   display: none;
 }
 .studio-page .studio-service-selector button.selected {
-  background: #8b5cf60c !important;
+  background: color-mix(
+    in srgb,
+    var(--home-violet) 4.71%,
+    transparent
+  ) !important;
   color: var(--brand-text) !important;
-  border-bottom-color: #22d3ee !important;
+  border-bottom-color: var(--home-aqua) !important;
 }
 .studio-page .studio-service-selector button.selected > span {
-  color: #c7a6ff !important;
+  color: var(--home-violet-light) !important;
 }
 .studio-grow .studio-service-selector {
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -68,7 +72,7 @@
   font-size: 32px !important;
 }
 .studio-page .service-demo {
-  border: 1px solid #a4aac733;
+  border: 1px solid color-mix(in srgb, var(--home-muted-dark) 20%, transparent);
   border-radius: 9px;
 }
 .studio-page .shortform-stage {
@@ -122,7 +126,7 @@
   gap: 9px 23px;
   flex-wrap: wrap;
   padding: 0 0 0 18px;
-  color: #c7a6ff;
+  color: var(--home-violet-light);
   font-size: 12px;
   line-height: 1.8;
   margin: 15px 0;
@@ -194,7 +198,7 @@
     font-size: 9px;
   }
   .studio-page .studio-service-selector button.selected {
-    border-left: 2px solid #22d3ee !important;
+    border-left: 2px solid var(--home-aqua) !important;
   }
   .studio-page .studio-experience {
     gap: 26px;
@@ -260,7 +264,11 @@
   padding: 15px 0 50px;
   margin-bottom: 30px;
   align-items: center;
-  border-bottom-color: #a4aac73b;
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--home-muted-dark) 23.14%,
+    transparent
+  );
 }
 .studio-page .studio-header::before {
   content: "";
@@ -271,7 +279,12 @@
   right: -3%;
   width: 65%;
   height: 330px;
-  background: linear-gradient(135deg, transparent, #8b5cf609 45%, #22d3ee05);
+  background: linear-gradient(
+    135deg,
+    transparent,
+    color-mix(in srgb, var(--home-violet) 3.53%, transparent) 45%,
+    color-mix(in srgb, var(--home-aqua) 1.96%, transparent)
+  );
   clip-path: polygon(25% 0, 100% 0, 100% 100%, 0 100%);
 }
 .studio-header-aside {
@@ -290,7 +303,7 @@
   display: block;
   font-size: 7px;
   letter-spacing: 0.16em;
-  color: #a4aac7;
+  color: var(--home-muted-dark);
   margin-bottom: 18px;
 }
 .world-motif > div {
@@ -303,28 +316,34 @@
   position: relative;
   flex: 1;
   height: 65px;
-  border-top: 1px solid #c7a6ff66;
-  background: linear-gradient(135deg, #4c3b693d, #1d1b3a66);
+  border-top: 1px solid
+    color-mix(in srgb, var(--home-violet-light) 40%, transparent);
+  background: linear-gradient(
+    135deg,
+    #4c3b693d,
+    color-mix(in srgb, var(--home-surface) 40%, transparent)
+  );
 }
 .world-motif i > b {
   position: absolute;
   font-size: 6px;
   font-style: normal;
   font-weight: 400;
-  color: #a4aac7;
+  color: var(--home-muted-dark);
   bottom: 6px;
   left: 6px;
 }
 .motif-create i {
-  border-bottom: 6px dotted #a4aac733;
+  border-bottom: 6px dotted
+    color-mix(in srgb, var(--home-muted-dark) 20%, transparent);
 }
 .motif-create i:nth-child(2) {
   height: 50px;
-  background: #8b5cf61f;
+  background: color-mix(in srgb, var(--home-violet) 12.16%, transparent);
 }
 .motif-create i:nth-child(3) {
   height: 58px;
-  background: #22d3ee16;
+  background: color-mix(in srgb, var(--home-aqua) 8.63%, transparent);
 }
 .motif-create i:nth-child(4) {
   height: 43px;
@@ -336,11 +355,11 @@
 }
 .motif-build i {
   height: 100%;
-  border: 1px solid #22d3ee33;
+  border: 1px solid color-mix(in srgb, var(--home-aqua) 20%, transparent);
   background: repeating-linear-gradient(
     0deg,
     transparent 0 12px,
-    #22d3ee11 13px 14px
+    color-mix(in srgb, var(--home-aqua) 6.67%, transparent) 13px 14px
   );
 }
 .motif-build i:nth-child(1) {
@@ -361,12 +380,13 @@
 .motif-grow i {
   height: 50px;
   background: transparent;
-  border: 1px solid #a4aac72d;
+  border: 1px solid
+    color-mix(in srgb, var(--home-muted-dark) 17.65%, transparent);
 }
 .motif-grow i:nth-child(2),
 .motif-grow i:nth-child(5) {
-  background: #8b5cf62b;
-  border-color: #c7a6ff66;
+  background: color-mix(in srgb, var(--home-violet) 16.86%, transparent);
+  border-color: color-mix(in srgb, var(--home-violet-light) 40%, transparent);
   transform: translateY(-9px);
 }
 .studio-page .studio-service-selector {
@@ -394,7 +414,11 @@
 }
 .studio-page .studio-service-selector button.selected {
   border-bottom-color: transparent !important;
-  background: linear-gradient(0deg, #8b5cf612, transparent) !important;
+  background: linear-gradient(
+    0deg,
+    color-mix(in srgb, var(--home-violet) 7.06%, transparent),
+    transparent
+  ) !important;
 }
 .studio-page .studio-service-selector button.selected::after {
   transform: scaleX(1);
@@ -475,13 +499,16 @@
   gap: 45px;
 }
 .studio-page .studio-demo-footer {
-  border-top: 1px solid #a4aac72b;
+  border-top: 1px solid
+    color-mix(in srgb, var(--home-muted-dark) 16.86%, transparent);
   padding-top: 20px;
 }
 .world-spatial-study {
   margin: 15px 0 30px;
-  border-top: 1px solid #a4aac72b;
-  border-bottom: 1px solid #a4aac72b;
+  border-top: 1px solid
+    color-mix(in srgb, var(--home-muted-dark) 16.86%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--home-muted-dark) 16.86%, transparent);
 }
 .world-spatial-study > summary {
   cursor: pointer;
@@ -503,7 +530,7 @@
   font-weight: 500;
 }
 .world-spatial-study > summary > svg {
-  color: #c7a6ff;
+  color: var(--home-violet-light);
   transition: transform 250ms;
 }
 .world-spatial-study[open] > summary > svg {
@@ -515,7 +542,7 @@
 }
 .world-spatial-content > p {
   font-size: 12px;
-  color: #a4aac7;
+  color: var(--home-muted-dark);
   line-height: 1.8;
   max-width: 500px;
   margin: 0 0 25px;

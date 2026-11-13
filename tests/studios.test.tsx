@@ -210,7 +210,7 @@ describe("BUILD studio demonstrations", () => {
     ).toBe("2");
     await user.click(button("The morning reset"));
     await user.click(button("Add to demo cart"));
-    expect(screen.getByText("Demo total: $80.00")).toBeTruthy();
+    expect(screen.getByText("Demo cart: 3 items")).toBeTruthy();
     await user.click(button("Preview checkout"));
     expect(screen.getByText("Mock checkout ready")).toBeTruthy();
     expect(
@@ -218,7 +218,7 @@ describe("BUILD studio demonstrations", () => {
     ).toBeTruthy();
     await user.click(button("Remove one The everyday vessel"));
     expect(screen.queryByText("Mock checkout ready")).toBeNull();
-    expect(screen.getByText("Demo total: $52.00")).toBeTruthy();
+    expect(screen.getByText("Demo cart: 2 items")).toBeTruthy();
     await user.click(button("Remove one The everyday vessel"));
     expect(
       screen.queryByLabelText("Quantity of The everyday vessel"),
