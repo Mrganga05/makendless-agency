@@ -17,9 +17,11 @@ vi.mock("../src/components/SpatialScene", () => ({
   default: function MockSpatialScene({
     onReady,
     onError,
+    theme,
   }: {
     onReady: () => void;
     onError: () => void;
+    theme?: string;
   }) {
     if (sceneSpy.crash) throw new Error("Simulated scene failure");
     useEffect(() => {
@@ -27,7 +29,7 @@ vi.mock("../src/components/SpatialScene", () => ({
       onReady();
     }, [onReady]);
     return (
-      <div data-testid="test-spatial-scene">
+      <div data-testid="test-spatial-scene" data-scene-theme={theme}>
         <button onClick={onError}>Simulate context loss</button>
       </div>
     );
@@ -84,6 +86,28 @@ afterEach(() => {
   sceneSpy.crash = false;
 });
 describe("Living Showcase: service-led interactions and fallbacks", () => {
+  it("uses the homepage palette in the spatial preview and retains a working flat fallback", async () => {
+    webgl();
+    const user = userEvent.setup();
+    mount({ theme: "atelier" });
+    expect(
+      screen.queryByRole("link", { name: "Explore this service" }),
+    ).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: "Add to my project" }),
+    ).toBeNull();
+    const scene = await screen.findByTestId("test-spatial-scene");
+    expect(scene.getAttribute("data-scene-theme")).toBe("atelier");
+    fireEvent.click(screen.getByText("Simulate context loss"));
+    await user.click(
+      screen.getByRole("button", { name: "Original", exact: true }),
+    );
+    expect(screen.getByText("SOURCE VIEW")).toBeTruthy();
+    expect(
+      screen.getByRole("status", { name: "Showcase feedback" }).textContent,
+    ).toContain("Flat preview active");
+  });
+
   it("reuses an explicitly opened BUILD study with working controls and no hero navigation", async () => {
     const user = userEvent.setup();
     mount({ initialMode: "build", variant: "study", showModeSwitch: false });

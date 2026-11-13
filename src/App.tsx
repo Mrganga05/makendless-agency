@@ -9,7 +9,9 @@ import {
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import MotionSystem from "./components/MotionSystem";
-import Home, { Studios } from "./pages/Home";
+import RouteTheme from "./components/RouteTheme";
+import Home from "./pages/Home";
+const Studios = lazy(() => import("./pages/Studios"));
 const Studio = lazy(() => import("./pages/Studio"));
 const ProjectLab = lazy(() => import("./pages/ProjectLab"));
 const FindSolution = lazy(() => import("./pages/FindSolution"));
@@ -116,6 +118,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ProjectProvider>
+        <RouteTheme />
         <RouteEffects />
         <MotionSystem />
         <Navigation />

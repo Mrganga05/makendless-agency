@@ -131,6 +131,7 @@ function ShortForm() {
   const [split, setSplit] = useState(55);
   const [caption, setCaption] = useState("Bold");
   const [framing, setFraming] = useState("Full frame");
+  const [format, setFormat] = useState("9:16");
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const stage = useRef<HTMLDivElement>(null);
@@ -175,8 +176,15 @@ function ShortForm() {
   }, [progress]);
   return (
     <Shell identity="V1">
-      <div className="demo-visual shortform-stage" ref={stage}>
-        <div className="comparison-scene">
+      <div
+        className={`demo-visual shortform-stage format-${format === "9:16" ? "portrait" : format === "1:1" ? "square" : "landscape"}`}
+        ref={stage}
+      >
+        <div
+          className="comparison-scene"
+          role="img"
+          aria-label={`${format} illustrative before-and-after preview`}
+        >
           <CityScene framing={framing} beat={beat} />
           <div
             className="comparison-overlay"
@@ -214,7 +222,7 @@ function ShortForm() {
           </p>
           <div className="demo-readout">
             <Scissors size={16} />
-            <span>9:16 social edit</span>
+            <span>{format} social edit</span>
           </div>
           <div
             className="edit-beat-track"
@@ -287,6 +295,15 @@ function ShortForm() {
             items={["Bold", "Minimal", "Highlight"]}
             value={caption}
             onChange={setCaption}
+          />
+        </div>
+        <div className="demo-control-row">
+          <span>Format</span>
+          <Switcher
+            label="Output format"
+            items={["9:16", "1:1", "16:9"]}
+            value={format}
+            onChange={setFormat}
           />
         </div>
         <div className="demo-control-row">

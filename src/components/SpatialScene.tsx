@@ -5,10 +5,12 @@ export default function SpatialScene({
   state,
   onReady,
   onError,
+  theme = "glass",
 }: {
   state: ShowcaseState;
   onReady: () => void;
   onError: () => void;
+  theme?: "glass" | "atelier";
 }) {
   const host = useRef<HTMLDivElement>(null);
   const scene = useRef<SceneHandle | null>(null);
@@ -24,6 +26,7 @@ export default function SpatialScene({
         latest.current,
         () => callbacks.current.onReady(),
         () => callbacks.current.onError(),
+        theme,
       );
     } catch {
       callbacks.current.onError();
@@ -32,7 +35,7 @@ export default function SpatialScene({
       scene.current?.dispose();
       scene.current = null;
     };
-  }, []);
+  }, [theme]);
   useEffect(() => scene.current?.update(state), [state]);
   return (
     <div

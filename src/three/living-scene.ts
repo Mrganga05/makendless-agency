@@ -1,16 +1,10 @@
 import * as THREE from "three";
 import type { ShowcaseState } from "../showcase-state";
+import { GLASS_PRISM, PRISM_ATELIER } from "../theme";
 
 export type SceneHandle = {
   update: (state: ShowcaseState) => void;
   dispose: () => void;
-};
-const C = {
-  bg: 0x0a0b1b,
-  slate: 0x1d1b3a,
-  violet: 0x8b5cf6,
-  aqua: 0x22d3ee,
-  white: 0xeaf2ff,
 };
 /** A demand-rendered spatial presentation. All controls and business state live in React. */
 export function createLivingScene(
@@ -18,7 +12,31 @@ export function createLivingScene(
   initial: ShowcaseState,
   ready: () => void,
   fail: () => void,
+  theme: "glass" | "atelier" = "glass",
 ): SceneHandle {
+  const P =
+    theme === "atelier"
+      ? {
+          ...PRISM_ATELIER,
+          highlight: PRISM_ATELIER.violetLight,
+          canvas: PRISM_ATELIER.night,
+          wire: PRISM_ATELIER.surface,
+          inactive: PRISM_ATELIER.surface,
+        }
+      : {
+          ...GLASS_PRISM,
+          highlight: GLASS_PRISM.violetLight,
+          canvas: "#0D1022",
+          wire: "#181B31",
+          inactive: "#272B48",
+        };
+  const C = {
+    bg: new THREE.Color(P.night).getHex(),
+    slate: new THREE.Color(P.surface).getHex(),
+    violet: new THREE.Color(P.violet).getHex(),
+    aqua: new THREE.Color(P.aqua).getHex(),
+    white: new THREE.Color(P.white).getHex(),
+  };
   let dead = false,
     frame = 0,
     visible = true,
@@ -61,9 +79,9 @@ export function createLivingScene(
     const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 40);
     camera.position.set(0, 0.5, 10.5);
     camera.lookAt(0, -0.05, 0);
-    const ambient = new THREE.HemisphereLight(0xeaf2ff, 0x1d1b3a, 2.8);
+    const ambient = new THREE.HemisphereLight(C.white, C.slate, 2.8);
     scene.add(ambient);
-    const key = new THREE.DirectionalLight(0xc7a6ff, 4);
+    const key = new THREE.DirectionalLight(P.highlight, 4);
     key.position.set(-3, 5, 4);
     scene.add(key);
     const fill = new THREE.PointLight(C.aqua, 35, 15, 2);
@@ -157,8 +175,6 @@ export function createLivingScene(
     let deviceScreens: THREE.Group[] = [];
     const mountain = new Image(),
       coffee = new Image();
-    mountain.src = "/images/mountain.jpg";
-    coffee.src = "/images/coffee.jpg";
     function photo(
       ctx: CanvasRenderingContext2D,
       img: HTMLImageElement,
@@ -184,9 +200,9 @@ export function createLivingScene(
           h,
         );
       } else {
-        ctx.fillStyle = "#1D1B3A";
+        ctx.fillStyle = P.surface;
         ctx.fillRect(x, y, w, h);
-        ctx.strokeStyle = "#22D3EE55";
+        ctx.strokeStyle = `${P.aqua}55`;
         for (let i = 0; i < 8; i++) {
           ctx.beginPath();
           ctx.moveTo(x, y + h * (i / 8));
@@ -201,7 +217,7 @@ export function createLivingScene(
       x: number,
       y: number,
       size: number,
-      color = "#EAF2FF",
+      color: string = P.white,
       weight = 600,
     ) {
       ctx.fillStyle = color;
@@ -214,7 +230,7 @@ export function createLivingScene(
       const scale = canvas.width / 1024;
       ctx.setTransform(scale, 0, 0, scale, 0, 0);
       ctx.clearRect(0, 0, 1024, canvas.height / scale);
-      ctx.fillStyle = "#0D1022";
+      ctx.fillStyle = P.canvas;
       ctx.fillRect(0, 0, 1024, canvas.height / scale);
       return { ...t, w: 1024, h: canvas.height / scale };
     }
@@ -230,9 +246,16 @@ export function createLivingScene(
       deviceScreens = [];
       playhead = undefined;
       if (state.mode === "create") {
-        panel(1.85, 3.25, 0.48, 0.19, 0.55, -0.09);
-        panel(1.3, 1.75, -1.65, 0.22, -0.12, 0.19);
-        panel(1.22, 0.88, 2.16, -0.42, -0.2, -0.23);
+        if (!mountain.src) mountain.src = "/images/mountain.jpg";
+        if (theme === "atelier") {
+          panel(2.1, 3.72, 0.36, 0.34, 0.55, -0.06);
+          panel(1.1, 1.46, -1.55, 0.22, -0.16, 0.16);
+          panel(1.0, 0.72, 2.0, -0.5, -0.2, -0.17);
+        } else {
+          panel(1.85, 3.25, 0.48, 0.19, 0.55, -0.09);
+          panel(1.3, 1.75, -1.65, 0.22, -0.12, 0.19);
+          panel(1.22, 0.88, 2.16, -0.42, -0.2, -0.23);
+        }
         const timeline = box(4.9, 0.24, 0.5, C.slate);
         timeline.position.set(0, -1.6, 0.4);
         content.add(timeline);
@@ -252,6 +275,7 @@ export function createLivingScene(
         content.add(playhead);
       }
       if (state.mode === "build") {
+        if (!coffee.src) coffee.src = "/images/coffee.jpg";
         deviceScreens.push(
           panel(4.3, 2.6, -0.4, 0.15, 0, -0.07),
           panel(1.13, 2.1, 2.05, -0.35, 0.8, -0.15),
@@ -305,11 +329,11 @@ export function createLivingScene(
         );
         if (state.edited) {
           const grad = a.ctx.createLinearGradient(0, 0, 0, a.h);
-          grad.addColorStop(0, "#0A0B1B11");
-          grad.addColorStop(1, "#0A0B1BEF");
+          grad.addColorStop(0, `${P.night}11`);
+          grad.addColorStop(1, `${P.night}EF`);
           a.ctx.fillStyle = grad;
           a.ctx.fillRect(0, 0, a.w, a.h);
-          text(a.ctx, "OUTSIDE THE ORDINARY", 70, 100, 26, "#EAF2FF", 500);
+          text(a.ctx, "OUTSIDE THE ORDINARY", 70, 100, 26, P.white, 500);
           const titles =
             state.progress < 35
               ? ["Go", "somewhere."]
@@ -317,8 +341,8 @@ export function createLivingScene(
                 ? ["Feel", "something."]
                 : ["Make it", "matter."];
           text(a.ctx, titles[0], 65, a.h * 0.64, 110);
-          text(a.ctx, titles[1], 65, a.h * 0.64 + 125, 105, "#C7A6FF");
-          a.ctx.fillStyle = "#22D3EE";
+          text(a.ctx, titles[1], 65, a.h * 0.64 + 125, 105, P.highlight);
+          a.ctx.fillStyle = P.aqua;
           a.ctx.fillRect(70, a.h - 135, 130, 5);
           text(
             a.ctx,
@@ -326,16 +350,16 @@ export function createLivingScene(
             70,
             a.h - 80,
             23,
-            "#EAF2FF",
+            P.white,
             500,
           );
-        } else text(a.ctx, "ORIGINAL PHOTO", 70, 95, 30, "#EAF2FF", 500);
+        } else text(a.ctx, "ORIGINAL PHOTO", 70, 95, 30, P.white, 500);
         const b = start(1);
         photo(b.ctx, mountain, 0, 0, b.w, b.h * 0.74);
         text(b.ctx, "01 / SOURCE", 65, b.h * 0.85, 50);
-        text(b.ctx, "From a moment", 65, b.h * 0.92, 28, "#A4AAC7", 400);
+        text(b.ctx, "From a moment", 65, b.h * 0.92, 28, P.mutedDark, 400);
         const c = start(2);
-        text(c.ctx, "THE EDIT", 65, 130, 65, "#C7A6FF");
+        text(c.ctx, "THE EDIT", 65, 130, 65, P.highlight);
         text(
           c.ctx,
           state.edited ? "Framing + titles" : "Source only",
@@ -349,7 +373,7 @@ export function createLivingScene(
           65,
           335,
           27,
-          "#A4AAC7",
+          P.mutedDark,
           400,
         );
       } else if (state.mode === "build") {
@@ -357,7 +381,7 @@ export function createLivingScene(
           const a = start(i),
             mobile = i === 1;
           const { ctx, w, h } = a;
-          ctx.fillStyle = state.finished ? "#EAF2FF" : "#181b31";
+          ctx.fillStyle = state.finished ? P.white : P.wire;
           ctx.fillRect(0, 0, w, h);
           if (state.sitePanel === "menu" && state.finished) {
             text(
@@ -366,7 +390,7 @@ export function createLivingScene(
               50,
               110,
               mobile ? 65 : 42,
-              "#1D1B3A",
+              P.surface,
               800,
             );
             [
@@ -382,7 +406,7 @@ export function createLivingScene(
                 50,
                 y,
                 mobile ? 45 : 24,
-                "#8B5CF6",
+                P.violet,
                 500,
               );
               text(
@@ -391,33 +415,33 @@ export function createLivingScene(
                 mobile ? 150 : 115,
                 y,
                 mobile ? 70 : 36,
-                "#1D1B3A",
+                P.surface,
                 600,
               );
-              ctx.fillStyle = "#A4AAC755";
+              ctx.fillStyle = `${P.mutedDark}55`;
               ctx.fillRect(50, y + 35, w - 100, 2);
             });
           } else if (!state.finished) {
-            ctx.strokeStyle = "#A4AAC780";
+            ctx.strokeStyle = `${P.mutedDark}80`;
             ctx.lineWidth = 3;
             ctx.strokeRect(40, 45, w - 80, 65);
             ctx.strokeRect(40, 145, w - 80, h * 0.48);
             ctx.strokeRect(40, h * 0.72, w * 0.55, 40);
             ctx.strokeRect(40, h * 0.82, w * 0.33, 45);
-            text(ctx, "WIREFRAME", 65, 91, mobile ? 44 : 23, "#A4AAC7", 500);
+            text(ctx, "WIREFRAME", 65, 91, mobile ? 44 : 23, P.mutedDark, 500);
           } else {
-            text(ctx, "still.", 50, 95, mobile ? 80 : 54, "#1D1B3A", 800);
+            text(ctx, "still.", 50, 95, mobile ? 80 : 54, P.surface, 800);
             text(
               ctx,
               "coffee & company",
               mobile ? 50 : 710,
               mobile ? 145 : 90,
               mobile ? 32 : 20,
-              "#1D1B3A",
+              P.surface,
               500,
             );
             photo(ctx, coffee, 0, mobile ? 190 : 130, w, h * 0.6);
-            ctx.fillStyle = "#0A0B1B60";
+            ctx.fillStyle = `${P.night}60`;
             ctx.fillRect(0, mobile ? 190 : 130, w, h * 0.6);
             const y = mobile ? h * 0.48 : h * 0.5;
             text(ctx, "Good coffee.", 60, y, mobile ? 98 : 67);
@@ -428,7 +452,7 @@ export function createLivingScene(
               y + (mobile ? 115 : 75),
               mobile ? 83 : 67,
             );
-            ctx.fillStyle = "#1D1B3A";
+            ctx.fillStyle = P.surface;
             ctx.fillRect(50, h - 100, mobile ? w - 100 : 260, 55);
             text(
               ctx,
@@ -436,7 +460,7 @@ export function createLivingScene(
               70,
               h - 64,
               mobile ? 33 : 22,
-              "#EAF2FF",
+              P.white,
               500,
             );
           }
@@ -478,14 +502,14 @@ export function createLivingScene(
           65,
           90,
           24,
-          "#22D3EE",
+          P.aqua,
           500,
         );
         text(a.ctx, names[state.step], 65, 210, 65);
         text(a.ctx, messages[state.step][0], 65, 315, 32);
-        text(a.ctx, messages[state.step][1], 65, 385, 24, "#A4AAC7", 400);
+        text(a.ctx, messages[state.step][1], 65, 385, 24, P.mutedDark, 400);
         for (let i = 0; i < 5; i++) {
-          a.ctx.fillStyle = i <= state.step ? "#8B5CF6" : "#272b48";
+          a.ctx.fillStyle = i <= state.step ? P.violet : P.inactive;
           a.ctx.fillRect(65 + i * 180, a.h - 65, 150, 5);
         }
       }
@@ -577,7 +601,7 @@ export function createLivingScene(
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
       baseDistance =
-        Math.max(4.7, 6.5 / camera.aspect) /
+        Math.max(4.7, (theme === "atelier" ? 5.7 : 6.5) / camera.aspect) /
         (2 * Math.tan(THREE.MathUtils.degToRad(17)));
       camera.position.z = baseDistance;
       camera.updateProjectionMatrix();

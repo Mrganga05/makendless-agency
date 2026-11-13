@@ -3999,3 +3999,76 @@ button.mini-site-cta {
     scroll-behavior: auto !important;
   }
 }
+/* A format choice changes the actual output window, not its label. */
+.service-demo .shortform-stage.format-square .comparison-scene {
+  width: min(330px, 100%);
+  height: auto;
+  aspect-ratio: 1;
+}
+.service-demo .shortform-stage.format-landscape .comparison-scene {
+  width: min(440px, 100%);
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+.service-demo .shortform-stage.format-landscape .scene-caption {
+  max-width: 70%;
+  font-size: 25px;
+}
+.service-demo .shortform-stage.format-landscape .scene-timestamp {
+  top: 17px;
+}
+.service-demo .shortform-stage.format-landscape .scene-bottom {
+  bottom: 14px;
+}
+.hp-transformation .study-v1 .shortform-stage.format-square .comparison-scene {
+  width: min(365px, 100%);
+  height: auto;
+}
+.hp-transformation
+  .study-v1
+  .shortform-stage.format-landscape
+  .comparison-scene {
+  width: min(465px, 100%);
+  height: auto;
+}
+@media (max-width: 600px) {
+  .service-demo .shortform-stage.format-square .comparison-scene {
+    width: min(270px, 100%);
+    height: auto;
+  }
+  .service-demo .shortform-stage.format-landscape .comparison-scene {
+    width: 100%;
+    height: auto;
+  }
+  .service-demo .shortform-stage.format-landscape .scene-caption {
+    font-size: 22px;
+    bottom: 28%;
+  }
+  .hp-transformation
+    .study-v1
+    .shortform-stage.format-square
+    .comparison-scene {
+    width: min(270px, 100%);
+  }
+  .hp-transformation
+    .study-v1
+    .shortform-stage.format-landscape
+    .comparison-scene {
+    width: 100%;
+  }
+}
+.service-demo .shortform-stage.format-square,
+.service-demo .shortform-stage.format-landscape {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+}
+.service-demo .shortform-stage.format-square > .shortform-copy,
+.service-demo .shortform-stage.format-landscape > .shortform-copy {
+  min-width: 0;
+}
+@media (max-width: 600px) {
+  .service-demo .shortform-stage.format-square,
+  .service-demo .shortform-stage.format-landscape {
+    grid-template-columns: 1fr;
+  }
+}

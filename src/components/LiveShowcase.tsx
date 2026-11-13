@@ -87,10 +87,12 @@ export default function LiveShowcase({
   initialMode = "create",
   variant = "hero",
   showModeSwitch = true,
+  theme = "glass",
 }: {
   initialMode?: ShowcaseMode;
   variant?: "hero" | "study";
   showModeSwitch?: boolean;
+  theme?: "glass" | "atelier";
 } = {}) {
   const { project, toggleService } = useProject();
   const [state, setState] = useState(() => ({
@@ -180,6 +182,7 @@ export default function LiveShowcase({
     <section
       className={`living-showcase living-showcase--${variant}`}
       data-showcase-mode={state.mode}
+      data-showcase-theme={theme}
       aria-label="Living service showcase"
       ref={host}
     >
@@ -387,6 +390,7 @@ export default function LiveShowcase({
             <SceneBoundary onError={onError}>
               <Suspense fallback={null}>
                 <SpatialScene
+                  theme={theme}
                   state={state}
                   onReady={onReady}
                   onError={onError}
@@ -586,7 +590,7 @@ export default function LiveShowcase({
             ? " Flat preview active; all controls still work."
             : ""}
         </p>
-        {variant === "hero" && (
+        {variant === "hero" && theme === "glass" && (
           <div className="living-service-actions">
             <Link to={`/services/${serviceId}`}>
               Explore this service <ArrowRight size={14} />

@@ -25,7 +25,8 @@ export default function Contact() {
   );
   const description =
     descriptionOverride ??
-    (project.services.length || project.goal ? generateBrief(project) : "");
+    (project.brief ||
+      (project.services.length || project.goal ? generateBrief(project) : ""));
   const [preference, setPreference] = useState("Email");
   const [details, setDetails] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});

@@ -1143,3 +1143,275 @@
     transform: none !important;
   }
 }
+/* V12 homepage edition. Explicit opt-in keeps internal studies unchanged. */
+.living-showcase[data-showcase-theme="atelier"] {
+  --stage-accent: var(--home-aqua);
+  --stage-highlight: var(--home-violet-light);
+  color: var(--home-white);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-stage {
+  height: 520px;
+  background: linear-gradient(
+    125deg,
+    transparent 20%,
+    color-mix(in srgb, var(--home-violet) 4%, transparent) 62%,
+    transparent 89%
+  );
+}
+.living-showcase[data-showcase-theme="atelier"] .living-stage::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--home-aqua) 25%, transparent),
+    color-mix(in srgb, var(--home-violet) 35%, transparent),
+    transparent
+  );
+}
+.living-showcase[data-showcase-theme="atelier"] .living-mode-tabs {
+  justify-content: flex-start;
+  gap: 30px;
+  padding-inline: 5px;
+}
+.living-showcase[data-showcase-theme="atelier"] .living-mode-tabs > button {
+  min-height: 54px;
+  color: var(--home-muted-dark);
+}
+.living-showcase[data-showcase-theme="atelier"]
+  .living-mode-tabs
+  > button[aria-pressed="true"] {
+  color: var(--home-white);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-mode-tabs strong {
+  font-size: 11px;
+}
+.living-showcase[data-showcase-theme="atelier"] .living-mode-tabs small {
+  font-size: 10px;
+}
+.living-showcase[data-showcase-theme="atelier"] .living-edit {
+  padding: 18px 12px 58px 48px;
+}
+.living-showcase[data-showcase-theme="atelier"] .living-edit-surface {
+  width: 230px;
+  height: 408px;
+  border-color: color-mix(in srgb, var(--home-white) 38%, transparent);
+  background: var(--home-surface);
+  box-shadow: 0 24px 38px color-mix(in srgb, var(--home-night) 65%, transparent);
+  transform: rotateY(-7deg) rotateZ(2deg);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-edit-surface::after {
+  border-color: color-mix(in srgb, var(--home-white) 10%, transparent);
+  background: linear-gradient(
+    130deg,
+    color-mix(in srgb, var(--home-white) 8%, transparent),
+    transparent 35%,
+    transparent 80%,
+    color-mix(in srgb, var(--home-violet) 9%, transparent)
+  );
+}
+.living-showcase[data-showcase-theme="atelier"] .living-film-title {
+  left: 22px;
+  right: 18px;
+}
+.living-showcase[data-showcase-theme="atelier"] .living-film-title h2 {
+  font-size: 43px !important;
+  color: var(--home-white);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-film-title > span,
+.living-showcase[data-showcase-theme="atelier"] .living-film-title > small {
+  color: var(--home-white);
+  font-size: 7px;
+}
+.living-showcase[data-showcase-theme="atelier"] .living-source {
+  width: 120px;
+  top: 123px;
+  left: calc(50% - 205px);
+  padding: 8px;
+  background: var(--home-surface);
+  border-color: color-mix(in srgb, var(--home-white) 15%, transparent);
+  transform: rotateY(14deg) rotateZ(-5deg);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-source > span,
+.living-showcase[data-showcase-theme="atelier"] .living-source > small,
+.living-showcase[data-showcase-theme="atelier"] .living-timeline > span,
+.living-showcase[data-showcase-theme="atelier"] .living-timeline > small {
+  color: var(--home-muted-dark);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-timeline {
+  background: linear-gradient(
+    100deg,
+    transparent,
+    color-mix(in srgb, var(--home-surface) 86%, transparent),
+    transparent
+  );
+  border-color: color-mix(in srgb, var(--home-violet) 30%, transparent);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-timeline-tracks > i {
+  background: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--home-aqua) 45%, transparent) 0 3px,
+    color-mix(in srgb, var(--home-aqua) 12%, transparent) 4px 8px
+  );
+  border-color: color-mix(in srgb, var(--home-aqua) 30%, transparent);
+}
+.living-showcase[data-showcase-theme="atelier"]
+  .living-timeline-tracks
+  > i:nth-child(2) {
+  background: color-mix(in srgb, var(--home-violet) 55%, transparent);
+  border-color: var(--home-violet);
+}
+.living-showcase[data-showcase-theme="atelier"]
+  .living-timeline-tracks
+  > i:nth-child(3) {
+  background: color-mix(in srgb, var(--stage-highlight) 40%, transparent);
+  border-color: var(--stage-highlight);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-controls {
+  border-color: var(--home-line-dark);
+  padding-top: 10px;
+}
+.living-showcase[data-showcase-theme="atelier"] .living-segment > button {
+  color: var(--home-muted-dark);
+  min-height: 44px;
+}
+.living-showcase[data-showcase-theme="atelier"]
+  .living-segment
+  > button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--home-white) 6%, transparent);
+  color: var(--home-white);
+  border-color: var(--home-line-dark);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-scrubber,
+.living-showcase[data-showcase-theme="atelier"] .living-demo-note,
+.living-showcase[data-showcase-theme="atelier"] .living-view-bar > span {
+  color: var(--home-muted-dark);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-demo-note {
+  font-size: 10px;
+  line-height: 1.7;
+}
+.living-showcase[data-showcase-theme="atelier"] .living-scrubber > input {
+  accent-color: var(--home-aqua);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-service-actions {
+  border-color: var(--home-line-dark);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-service-actions > a,
+.living-showcase[data-showcase-theme="atelier"]
+  .living-service-actions
+  > button,
+.living-showcase[data-showcase-theme="atelier"] .living-play {
+  color: var(--home-white);
+}
+.living-showcase[data-showcase-theme="atelier"]
+  .living-service-actions
+  > button[aria-pressed="true"] {
+  color: var(--home-aqua);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-website {
+  background: var(--home-paper);
+  color: var(--home-ink);
+}
+.living-showcase[data-showcase-theme="atelier"]
+  .living-build.is-wireframe
+  .living-website {
+  background: var(--home-surface);
+  color: var(--home-muted-dark);
+  border-color: var(--home-line-dark);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-ai-message {
+  background: linear-gradient(130deg, var(--home-surface), var(--home-night));
+  border-color: var(--home-line-dark);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-ai-message h2 {
+  color: var(--home-white);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-ai-message > p {
+  color: var(--home-muted-dark);
+}
+.living-showcase[data-showcase-theme="atelier"] .living-workflow::before {
+  background: linear-gradient(90deg, var(--home-violet), var(--home-aqua));
+}
+.living-showcase[data-showcase-theme="atelier"]
+  .living-workflow
+  li.active
+  > span {
+  background: var(--home-aqua);
+  color: var(--home-night);
+  box-shadow: none;
+}
+.living-showcase[data-showcase-theme="atelier"]
+  .living-workflow
+  li.complete
+  > span {
+  color: var(--home-aqua);
+  border-color: var(--home-aqua);
+}
+@media (max-width: 1100px) and (min-width: 901px) {
+  .living-showcase[data-showcase-theme="atelier"] .living-stage {
+    height: 480px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-edit-surface {
+    width: 204px;
+    height: 362px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-film-title h2 {
+    font-size: 37px !important;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-source {
+    left: calc(50% - 180px);
+    width: 107px;
+    top: 113px;
+  }
+}
+@media (max-width: 600px) {
+  .living-showcase[data-showcase-theme="atelier"] .living-stage {
+    height: 395px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-mode-tabs {
+    justify-content: space-between;
+    gap: 14px;
+    padding: 0;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-mode-tabs strong {
+    font-size: 10px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-mode-tabs small {
+    font-size: 9px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-edit {
+    padding: 12px 8px 55px 28px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-edit-surface {
+    width: 166px;
+    height: 294px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-source {
+    width: 85px;
+    left: calc(50% - 143px);
+    top: 83px;
+    padding: 5px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-source img {
+    height: 60px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-film-title {
+    left: 15px;
+    right: 13px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-film-title h2 {
+    font-size: 30px !important;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-film-title > span,
+  .living-showcase[data-showcase-theme="atelier"] .living-film-title > small {
+    font-size: 6px;
+  }
+  .living-showcase[data-showcase-theme="atelier"] .living-demo-note {
+    font-size: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .living-showcase[data-showcase-theme="atelier"] .living-edit-surface,
+  .living-showcase[data-showcase-theme="atelier"] .living-source {
+    transform: none;
+  }
+}

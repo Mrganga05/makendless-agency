@@ -2071,3 +2071,17 @@ input[type="radio"] {
     transform: none !important;
   }
 }
+/* Approved hierarchy, shared independently of lazy studio page CSS. */
+h1 {
+  font-weight: 800;
+}
+h2 {
+  font-weight: 700;
+}
+h3,
+h4 {
+  font-weight: 600;
+}
+.desktop-nav > a {
+  font-weight: 500;
+}

@@ -39,6 +39,41 @@ describe("SpatialScene React lifecycle (renderer mocked; no GPU verification)", 
     expect(handle.dispose).toHaveBeenCalledTimes(1);
   });
 
+  it("recreates and disposes the renderer only when its palette changes", () => {
+    const handles: {
+      update: ReturnType<typeof vi.fn>;
+      dispose: ReturnType<typeof vi.fn>;
+    }[] = [];
+    createScene.mockImplementation(() => {
+      const handle = { update: vi.fn(), dispose: vi.fn() };
+      handles.push(handle);
+      return handle;
+    });
+    const onReady = vi.fn(),
+      onError = vi.fn();
+    const { rerender, unmount } = render(
+      <SpatialScene
+        state={initialShowcaseState}
+        onReady={onReady}
+        onError={onError}
+      />,
+    );
+    expect(createScene.mock.calls[0][4]).toBe("glass");
+    rerender(
+      <SpatialScene
+        state={initialShowcaseState}
+        onReady={onReady}
+        onError={onError}
+        theme="atelier"
+      />,
+    );
+    expect(handles[0].dispose).toHaveBeenCalledTimes(1);
+    expect(createScene.mock.calls[1][4]).toBe("atelier");
+    expect(handles[1].dispose).not.toHaveBeenCalled();
+    unmount();
+    expect(handles[1].dispose).toHaveBeenCalledTimes(1);
+  });
+
   it("forwards renderer readiness and failure to the latest callback props", () => {
     createScene.mockReturnValue({ update: vi.fn(), dispose: vi.fn() });
     const firstReady = vi.fn(),
