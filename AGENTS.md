@@ -1,32 +1,28 @@
 # MAKENDLESS creative engineering
 
-Read `docs/CREATIVE_BRIEF.md` before major work; track phases in `docs/IMPLEMENTATION_PLAN.md` and evidence in `docs/QA_LOG.md`. The active creative brief is the owner's V12 Homepage Experience Rebuild; docs/CREATIVE_BRIEF_V11.md and docs/CREATIVE_BRIEF_V9.md archive previous directions; docs/CREATIVE_OPERATING_SYSTEM_V1.md preserves the earlier operating system and its persistent guidance. Historical redesign notes describe earlier choices, not overriding instructions.
+The current task phase is isolated frontend research and practice, governed by [FRONTEND_LAB_BRIEF.md](docs/FRONTEND_LAB_BRIEF.md). The V12 website remains the production baseline; [CREATIVE_BRIEF.md](docs/CREATIVE_BRIEF.md) records that earlier homepage request. Do not treat a new experiment or theme proposal as approval to redesign production.
 
-## Preserve and communicate
+## Persistent guidance
 
-- Inspect existing code/instructions before editing. Preserve working routes, business data, all 13 approved service categories and project/inquiry state.
-- MAKENDLESS is a Creative & Technology Studio: CREATE • BUILD • GROW. GROW is always Beta / Coming Soon. Exact categories live in `src/data.ts`; never rename/combine/remove them without authorization.
-- Preserve the existing wordmark design, Syne typography and expressive headline treatment.
-- V12 homepage uses centralized Prism Atelier tokens in src/theme.ts and src/atelier-theme.css. Preserve the prior Glass Prism as a recoverable option and retain internal-page styling until the homepage direction is visually verified.
-- Legacy Glass Prism tokens: #0A0B1B, #1D1B3A, #8B5CF6, #22D3EE, #EAF2FF, #A4AAC7; signature gradient 115deg aqua 0%, violet 52%, #C7A6FF 100%. Syne only, weights 400–800. Never reintroduce Outfit/Geist.
-- Never invent client work, achievements, metrics, contact details or delivery. Concepts and simulations must be labeled. The inquiry is currently a local preview/download with no backend.
+Read only the guides relevant to the task:
 
-## Design decisions
+- [Design principles](docs/FRONTEND_DESIGN_PRINCIPLES.md), [brand/theme status](docs/BRAND_AND_THEME_STATUS.md), [responsive rules](docs/RESPONSIVE_DESIGN_RULES.md).
+- [3D engineering](docs/THREED_ENGINEERING_GUIDE.md), [motion graphics](docs/MOTION_GRAPHICS_SYSTEM.md), [interactive patterns](docs/INTERACTIVE_COMPONENT_PATTERNS.md).
+- [Experiment results](docs/FRONTEND_EXPERIMENT_RESULTS.md), [visual QA](docs/VISUAL_QA_CHECKLIST.md), [integration roadmap](docs/FRONTEND_IMPLEMENTATION_PLAN.md).
 
-- Journey: Discover → Explore → Experience → Customize → Start a Project. Clarity and functioning controls outrank spectacle.
-- Nav: Studios (compact CREATE / BUILD / GROW menu), Work, Project Lab, About, Start a Project. No mega menu.
-- Hero: an open cinematic Living Stage without a surrounding dashboard frame; default CREATE/video, switch to BUILD/websites or AI/automation. Show positioning and services immediately. Approved copy: “We make ideas impossible to ignore.” V12 supporting: “Premium video editing, websites and AI solutions for creators and ambitious businesses.” CTAs: Explore Services, Start a Project.
-- Use genuine purposeful 3D for service storytelling, not random cubes, infinity loops, particles or floating clutter. Accessible HTML controls must work without WebGL. Lazy-load 3D, respect reduced motion, optimize mobile, and clean up GPU/animation resources.
-- Before a major component, document purpose, immediate message, distinctive composition, interaction/response, brand fit, mobile/fallback behavior, trust value and performance cost.
-- Preserve successful logic while replacing weak visuals. Avoid text walls, repeated generic cards, excessive glow and animation.
+## Preserve
 
-## Delivery workflow
+- MAKENDLESS spelling, Syne, the wordmark, CREATE / BUILD / GROW, all 13 approved services in src/data.ts, GROW Beta / Coming Soon, routes and project/inquiry logic.
+- Never invent pricing, client work, testimonials, results, policies or message delivery. Label concepts and simulations. The inquiry has no delivery backend.
+- Keep experiments in experiments/frontend-lab; do not import or overwrite production components/styles/builds. Reuse installed dependencies rather than adding overlapping libraries.
+- Glass Prism is the favored family in the latest brief; Prism Atelier is under evaluation. Preserve current production configuration. Palette and section-order experiments are proposals, not approval.
 
-- Follow UNDERSTAND → DESIGN → BUILD → RUN → INSPECT → CRITIQUE → REFINE → TEST → SAVE.
-- Work iteratively: guidance/audit → architecture/navigation → signature 3D hero → seven-section homepage → studio worlds/Lab/supporting pages → refinement/QA. Preserve working logic, replace rejected presentation. Keep visual acceptance gates explicitly pending if browser tools are blocked.
-- Inspect actual browser at 360, 390, 768, 1024 and 1440px when tools permit; capture evidence. If unavailable, record the exact blocker and reproduction steps. DOM tests are not visual verification.
-- Score seven brief categories 1–5 only with evidence; below 4 requires refinement. Mark unobserved visual categories unverified, never invent scores or claim quality based on compilation.
-- Run applicable typecheck, lint, build, route/component/Lab/form/keyboard/reduced-motion/WebGL-fallback tests. Record only real results. LCP ≤2.5s, INP ≤200ms, CLS ≤0.1 are unmeasured targets until tested.
-- Retain the existing React/TypeScript/Vite stack unless a migration is necessary. Keep brand, service, navigation and availability configuration centralized. No secrets in source, no paid APIs/tools or public deployment without authorization.
-- Apply the purposeful motion families in docs/MOTION_SYSTEM.md. V12 scope is homepage-first: nine distinct sections with dark immersive and light editorial surfaces, business solutions, honest package guidance, distinct concept work, an attractive unselected Lab example, and calm process/FAQ. Do not redesign internal pages until the homepage direction is verified.
-- Use small Git checkpoints. Report concrete changes, interactions, checks, limits and next work; do not use unsupported “world-class” claims.
+## Workflow and evidence
+
+Follow RESEARCH → CONCEPT → PROTOTYPE → RUN → INSPECT → CRITIQUE → REFINE → TEST → INTEGRATE. Use primary technical references and record access failures. Define the component's purpose, composition, meaningful interaction, motion, mobile/fallback behavior and cost before implementing complex work.
+
+Keep native controls usable without WebGL or animation. Use finite/on-demand rendering, lazy loading, explicit media playback, reduced-motion alternatives and lifecycle cleanup. Test keyboard, touch behavior, empty/loading/error states and state invalidation. Do not use decorative effects to hide weak composition.
+
+Inspect 360/390/768/1024/1440px in an actual browser when tools permit. A viewport simulator is not a real device. Mocked GPU/DOM tests, bundle sizes and compilation do not prove visual quality, accessibility or Core Web Vitals. Mark unobserved ratings unverified; below 4 requires a specific refinement. Record exact tool blockers instead of inventing screenshots or scores.
+
+Keep Git checkpoints and production isolation. No paid tools, public deployment or external messages without authorization. This research phase does not authorize production integration. Carry only tested and visually reviewed candidates into a later authorized task. These documents preserve project knowledge; they do not retrain the model.

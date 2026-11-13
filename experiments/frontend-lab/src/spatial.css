@@ -1,0 +1,265 @@
+.spatial-lab {
+  --spatial-line: color-mix(in srgb, var(--lab-ink, #25251e) 18%, transparent);
+  color: var(--lab-ink, #25251e);
+}
+.spatial-heading {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 1.5rem 4rem;
+  align-items: end;
+  margin-bottom: 2rem;
+}
+.spatial-heading > .lab-eyebrow {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.spatial-heading h2 {
+  font-size: clamp(2.5rem, 5.3vw, 5.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+  margin: 0;
+  font-weight: 600;
+}
+.spatial-heading h2 span {
+  color: var(--lab-muted, #696a60);
+}
+.spatial-heading > p:last-child {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  max-width: 34rem;
+  margin: 0 0 0.2rem;
+}
+.spatial-figure {
+  margin: 0;
+}
+.spatial-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--lab-paper, #f3f0e7);
+  border: 1px solid var(--spatial-line);
+  min-height: 24rem;
+  height: min(62vw, 40rem);
+}
+.spatial-stage-label,
+.spatial-stage-footer {
+  position: absolute;
+  z-index: 3;
+  left: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  pointer-events: none;
+  font-size: 0.64rem;
+  letter-spacing: 0.09em;
+  font-weight: 600;
+}
+.spatial-stage-label {
+  top: 1.4rem;
+}
+.spatial-stage-footer {
+  bottom: 1.4rem;
+}
+.spatial-artwork,
+.spatial-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.spatial-artwork[aria-hidden="true"] {
+  visibility: hidden;
+}
+.spatial-fallback {
+  width: 100%;
+  height: 100%;
+  display: block;
+  font-family: "Syne Variable", Syne, sans-serif;
+}
+.spatial-canvas {
+  opacity: 0;
+  touch-action: pan-y;
+}
+.spatial-canvas.is-ready {
+  opacity: 1;
+}
+.spatial-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1rem 0;
+  color: var(--lab-muted, #62645a);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+.spatial-link {
+  font: inherit;
+  font-weight: 600;
+  color: var(--lab-ink, #25251e);
+  background: none;
+  border: 0;
+  padding: 0.3rem 0;
+  min-height: 2.75rem;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+}
+.spatial-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--spatial-line);
+  border-bottom: 1px solid var(--spatial-line);
+}
+.spatial-controls fieldset {
+  border: 0;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  flex: 1 1 10rem;
+}
+.spatial-controls legend,
+.spatial-range label {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+}
+.spatial-segment {
+  display: flex;
+  gap: 0.3rem;
+}
+.spatial-segment button {
+  font-family: inherit;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--spatial-line);
+  background: transparent;
+  color: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.spatial-segment button[aria-pressed="true"] {
+  background: var(--lab-ink, #25251e);
+  border-color: var(--lab-ink, #25251e);
+  color: var(--lab-paper, #f3f0e7);
+}
+.spatial-segment button:hover {
+  border-color: currentColor;
+}
+.spatial-lab button:focus-visible,
+.spatial-lab input:focus-visible {
+  outline: 3px solid var(--lab-accent, #c34d2c);
+  outline-offset: 4px;
+}
+.spatial-range {
+  flex: 1 1 9rem;
+  min-width: 0;
+  align-self: end;
+}
+.spatial-range label {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.spatial-range input {
+  display: block;
+  width: 100%;
+  min-height: 2.75rem;
+  accent-color: var(--lab-ink, #25251e);
+  cursor: pointer;
+  margin: 0;
+}
+.spatial-range input:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+.spatial-method {
+  font-size: 0.78rem;
+  line-height: 1.7;
+  max-width: 70rem;
+  color: var(--lab-muted, #62645a);
+  margin: 1.25rem 0 0;
+}
+.spatial-lab--embedded .spatial-stage {
+  height: clamp(24rem, 44vw, 39rem);
+}
+.spatial-lab--embedded .spatial-controls {
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 0;
+}
+.spatial-lab--embedded .spatial-controls fieldset {
+  flex: 0 1 auto;
+}
+.spatial-lab--embedded .spatial-caption {
+  padding: 0.5rem 0;
+}
+@media (max-width: 760px) {
+  .spatial-heading {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .spatial-heading h2 {
+    font-size: clamp(2.4rem, 9vw, 4rem);
+  }
+  .spatial-heading > p:last-child {
+    font-size: 0.9rem;
+  }
+  .spatial-stage,
+  .spatial-lab--embedded .spatial-stage {
+    height: 23rem;
+    min-height: 0;
+  }
+  .spatial-stage-label,
+  .spatial-stage-footer {
+    left: 1rem;
+    right: 1rem;
+    font-size: 0.54rem;
+  }
+  .spatial-caption {
+    align-items: flex-start;
+    font-size: 0.68rem;
+  }
+  .spatial-caption > span {
+    max-width: 70%;
+  }
+  .spatial-controls {
+    gap: 1.25rem 1rem;
+  }
+  .spatial-controls fieldset,
+  .spatial-range {
+    flex-basis: calc(50% - 1rem);
+  }
+  .spatial-segment button {
+    font-size: 0.7rem;
+    padding: 0.6rem 0.7rem;
+  }
+  .spatial-method {
+    font-size: 0.72rem;
+  }
+}
+@media (max-width: 420px) {
+  .spatial-stage,
+  .spatial-lab--embedded .spatial-stage {
+    height: 19rem;
+  }
+  .spatial-stage-label span:first-child {
+    max-width: 10rem;
+  }
+  .spatial-stage-footer {
+    font-size: 0.45rem;
+  }
+  .spatial-lab--embedded .spatial-controls {
+    gap: 1rem;
+  }
+  .spatial-controls fieldset {
+    flex-basis: 100%;
+  }
+}
