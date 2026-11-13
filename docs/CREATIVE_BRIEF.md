@@ -1,1747 +1,1001 @@
-# MAKENDLESS — THE LIVING DIGITAL UNIVERSE
-## ULTIMATE CREATIVE ENGINEERING MASTER PROMPT V11.0
-### Cinematic 3D × Motion Graphics × Live Interactive Components × Luxury Digital Art Direction
+# MAKENDLESS — HOMEPAGE EXPERIENCE REBUILD V12.0
+## Premium Editorial Design + Client Psychology + Cinematic 3D + Motion Graphics
+### Astra Work / Codex — Existing Project, Homepage-First Execution
+
+# YOUR MISSION
+
+Act as an elite Creative Director, Conversion UX Strategist, Interactive Art Director, Motion Graphics Designer, 3D Engineer, and Senior Frontend Developer.
+
+The owner has reviewed seven screenshots of the current MAKENDLESS homepage.
+
+The website is cleaner than earlier versions, and its typography is approved, but the homepage suffers from visual repetition, insufficient contrast between sections, weak commercial storytelling, and a lack of diverse, convincing service demonstrations.
+
+**Rebuild the HOMEPAGE into a premium, visually varied, emotionally engaging and commercially effective creative-technology experience.**
+
+This is not permission to add random components.
+
+It is an instruction to rethink the complete homepage journey.
+
+## PRIORITY ORDER
+
+1. Clear commercial storytelling
+2. Original visual composition
+3. Strong service demonstrations
+4. Strategic content hierarchy
+5. Distinctive motion graphics and 3D
+6. Client confidence and conversion
+7. Accessible, fast mobile and desktop execution
+
+Do not stop after presenting a plan. Implement, inspect and test the new homepage.
 
 ---
 
-# 00 — THE ULTIMATE MISSION
+# 1 — PRESERVE WHAT WORKS
 
-You are the dedicated world-class creative engineering team for MAKENDLESS.
+Brand name: MAKENDLESS
 
-Operate simultaneously as:
+Positioning: Creative & Technology Studio
 
-- Executive Creative Director
-- Award-Level Digital Art Director
-- Experiential UI/UX Architect
-- Cinematic Motion Graphics Director
-- 3D Technical Artist
-- Three.js / WebGL Engineer
-- Interactive Frontend Engineer
-- Digital Brand Experience Designer
-- Advanced Animation Engineer
-- Senior Full-Stack Developer
-- Accessibility and Performance Engineer
-- Visual Quality Assurance Director
+Philosophy: CREATE • BUILD • GROW
 
-Your objective is to transform the existing MAKENDLESS website into an extraordinary, cohesive, living digital experience.
+Keep the existing approved Syne typography and wordmark.
 
-The owner wants a website with the visual ambition of a multimillion-dollar flagship brand experience.
+Preserve working routes, the 13 approved services, Project Lab logic, forms, and other useful functionality.
 
-Interpret this as a demand for exceptional craftsmanship, originality, sophisticated interactive design and professional execution.
+Do not migrate the project framework unnecessarily.
 
-Do not interpret it as permission to add excessive effects, expensive dependencies or meaningless visual decoration.
+Create a safe Git checkpoint before redesigning.
 
-**THE WEBSITE MUST FEEL ALIVE FROM ITS FIRST SCREEN TO ITS FINAL FOOTER.**
+The current desktop screenshot is the BEFORE reference, not a design target.
 
-It must combine:
+**You may completely replace the current homepage layout and visual components.**
 
-1. Professionally designed 3D components
-2. Original cinematic motion graphics
-3. Interactive digital experiences
-4. Premium interface design
-5. Distinctive visual storytelling
-6. Elegant, responsive transitions
-7. Meaningful client demonstrations
-8. Clear and intuitive navigation
-9. Excellent typography
-10. Professional performance and engineering
-
-The result must feel like a custom creative-technology flagship website, not a generic agency template.
-
-**Do not just plan. Execute the website transformation.**
+Do not delete working business capabilities.
 
 ---
 
-# 01 — UNDERSTAND THE OWNER'S ACTUAL VISION
+# 2 — REPLACE THE UNIFORM DARK COLOR TREATMENT
 
-The owner has reviewed earlier MAKENDLESS versions.
+Use the new proposed visual direction:
 
-Some current functionality is good, but the overall design remains too ordinary.
+**PRISM ATELIER — EDITORIAL CINEMATIC**
 
-Previously identified weaknesses include:
+Main dark:
+#0C1024
 
-- Flat, dull dark backgrounds
-- A dashboard-like hero presentation
-- Insufficient cinematic atmosphere
-- Limited visual depth
-- Generic rectangular sections
-- Repetitive cards
-- Too much static content
-- Weak or disconnected visual transitions
-- Insufficiently engaging service demonstrations
-- Inconsistent visual excitement across pages
-- Motion that feels decorative rather than purposeful
-- An overall experience that feels more like a software demo than a luxury creative studio
+Secondary dark surface:
+#202342
 
-These problems must be solved throughout the entire website.
+Light gallery background:
+#F6F7FC
 
-**THIS IS NOT A HERO-ONLY REDESIGN.**
+Primary brand violet:
+#6F45F6
 
-The hero, navbar, service worlds, individual service pages, interactive showcases, portfolio, Project Lab, discovery journey, About page, inquiry experience and footer must all feel designed as one exceptional creative system.
+Prismatic aqua:
+#08BBD4
 
-Do not create an impressive homepage followed by ordinary internal pages.
+White text on dark:
+#F6F8FF
 
-Do not consider the task complete until the entire site has received the same art-direction standard.
+Muted text on dark:
+#B7C0DB
 
----
+Dark text on light:
+#13172B
 
-# 02 — OUR COMPANY
+Muted text on light:
+#52607B
 
-Brand name:
+Preserve the MAKENDLESS wordmark and existing font treatment.
 
-**MAKENDLESS**
+Create centralized color tokens, including accessible derived states.
 
-The spelling is mandatory.
+Use dark cinematic surfaces for immersive experiences.
 
-Positioning:
+Use bright, porcelain-light editorial surfaces for service discovery, pricing and informational sections.
 
-**Creative & Technology Studio**
+Use violet for primary actions and restrained brand emphasis.
 
-Brand philosophy:
+Use aqua for secondary highlights, motion details and interactive state indicators.
 
-**CREATE • BUILD • GROW**
+## COLOR DESIGN RULES
 
-## CREATE
+Do not apply the same dark background to all sections.
 
-Video Editing & Creative Production
+Do not fill every heading with purple.
 
-## BUILD
+Do not use identical gradients in every component.
 
-Websites, IT Services & AI Solutions
+Do not add unrelated accent colors.
 
-## GROW
+Do not make every card glow.
 
-Digital Marketing — Beta / Coming Soon
+Create contrast between immersive dark scenes and clear light editorial compositions.
 
-Our agency helps creators, brands, startups and businesses turn ideas into engaging content and digital experiences.
+Use transitions between background themes to produce visual rhythm.
 
-The brand must communicate creativity, technical capability and long-term ambition.
+Keep all text legible.
 
-Do not fabricate clients, awards, performance claims, company registration or testimonials.
+Do not claim any color automatically improves conversion.
 
-Marketing services remain clearly labeled Beta / Coming Soon.
+The colors must support hierarchy, readability, credibility and the brand personality.
 
 ---
 
-# 03 — THE NON-NEGOTIABLE CREATIVE PRINCIPLE
+# 3 — ENTIRE HOMEPAGE STRATEGY
 
-## A LIVING WEBSITE, NOT AN ANIMATED TEMPLATE
+The homepage must answer these customer questions in order:
 
-A living website is not simply a website where everything moves.
+WHO ARE YOU?
 
-It is an experience where the visuals respond to the visitor, reveal information, demonstrate value and support meaningful exploration.
+WHAT DO YOU OFFER?
 
-There must be three complementary design layers.
+CAN I SEE WHAT YOU MAKE?
 
-### LAYER A — CINEMATIC ART DIRECTION
+IS THIS RELEVANT TO MY BUSINESS?
 
-The overall visual composition:
+WHAT DOES WORKING WITH YOU COST?
 
-- Lighting
-- Typography
-- Color
-- Spatial depth
-- Imagery
-- Editorial layout
-- Visual rhythm
-- Negative space
-- Cinematic framing
+CAN I TRUST THE QUALITY?
 
-### LAYER B — MOTION GRAPHICS
+CAN I BUILD MY OWN PROJECT?
 
-Professional motion design:
+HOW DOES THE PROCESS WORK?
 
-- Kinetic typography
-- Shape transformations
-- Mask reveals
-- Animated visual systems
-- Timeline transitions
-- Media compositions
-- Responsive graphic elements
-- Brand motion signatures
-- Scroll storytelling
-- Cinematic section changes
+HOW DO I GET STARTED?
 
-### LAYER C — REAL INTERACTIVITY
+Each major section must answer a new question.
 
-Functional experiences:
+**Never repeat the same purpose, layout, visual treatment, or generic heading structure throughout the page.**
 
-- Video-editing comparisons
-- Live website transformations
-- Interactive mock applications
-- E-commerce and booking demos
-- Automation workflows
-- Business previews
-- 3D controls
-- Project configuration
-- Service discovery
-- Inquiry generation
+A scroll should provide new information, a new visual experience or a useful interaction.
 
-These layers must work together.
+Use honest, informative persuasion.
 
-No layer should dominate or interfere with the others.
+Avoid fake urgency, fabricated social proof and manipulative tactics.
 
 ---
 
-# 04 — PRESERVE THE APPROVED BRAND IDENTITY
+# 4 — SECTION 01: CINEMATIC HERO
 
-## BRAND NAME
+## CUSTOMER QUESTION
 
-MAKENDLESS
+What does MAKENDLESS do, and why should I care?
 
-## TYPOGRAPHY
+## DESIGN
 
-**KEEP THE CURRENT APPROVED WEBSITE TYPOGRAPHY.**
+Use an immersive, dark cinematic hero with distinctive art direction.
 
-The owner likes the current fonts and expressive heading treatment.
-
-Do not replace the current font.
-
-Do not change the wordmark design.
-
-The current Syne-based design is the preferred baseline.
-
-Only refine font sizes, responsive layout, line height or letter spacing when necessary for better composition.
-
-## OFFICIAL GLASS PRISM COLORS
-
-Primary Background:
-
-#0A0B1B
-
-Secondary Background:
-
-#1D1B3A
-
-Primary Accent:
-
-#8B5CF6
-
-Secondary Accent:
-
-#22D3EE
-
-Main Text:
-
-#EAF2FF
-
-Muted Text:
-
-#A4AAC7
-
-Official gradient:
-
-linear-gradient(115deg, #22D3EE 0%, #8B5CF6 52%, #C7A6FF 100%)
-
-## GLASS PRISM — CINEMATIC EVOLUTION
-
-The existing color identity is good, but its current application feels dull.
-
-Make the visual system richer using:
-
-- Layered dark surfaces
-- Carefully positioned light sources
-- Prismatic reflections
-- Controlled atmospheric gradients
-- Subtle illuminated edges
-- Real depth
-- Soft reflections on 3D materials
-- Violet-to-aqua lighting transitions
-- Carefully composed contrast
-- Occasional luminous visual accents
-
-Do not simply increase saturation everywhere.
-
-Avoid enormous glowing blobs.
-
-Avoid coloring every heading with a gradient.
-
-Avoid repeating the same purple card on every page.
-
-The brand must remain cohesive, restrained and sophisticated.
-
----
-
-# 05 — CREATE A COMPLETE MOTION GRAPHICS DESIGN SYSTEM
-
-This is a new mandatory requirement.
-
-Do not limit motion graphics to the hero.
-
-Create an original MAKENDLESS motion language that extends across all major sections, pages and service demonstrations.
-
-The motion system must be designed before implementing hundreds of individual effects.
-
-## MOTION FAMILY 01 — KINETIC TYPOGRAPHY
-
-Create distinctive typographic motion such as:
-
-- Carefully staggered headline reveals
-- Masked text entrances
-- Controlled line-by-line animation
-- Character-level motion when justified
-- Directional typography
-- Responsive text transformations
-- Editorial transitions between messages
-
-Use different compositions for different contexts.
-
-Do not animate every heading identically.
-
-Do not use constant bouncing or letter scrambling.
-
-Keep text readable.
-
-## MOTION FAMILY 02 — TRANSFORMATION GRAPHICS
-
-Design graphics that visually communicate:
-
-Idea → Creation → Finished Result
-
-Examples:
-
-- A line develops into a designed composition
-- A frame transforms into a finished video
-- A wireframe evolves into a responsive website
-- A source timeline separates into deliverables
-- A workflow evolves from input to result
-
-These transformations should communicate actual services.
-
-## MOTION FAMILY 03 — CINEMATIC MASK REVEALS
-
-Use elegant masks and clipping effects for:
-
-- Video samples
-- Project artwork
-- Device previews
-- Portfolio case studies
-- Visual comparisons
-
-Avoid random reveals everywhere.
-
-Use mask motion where it enhances the story.
-
-## MOTION FAMILY 04 — PRISM LIGHT MOTION
-
-Create subtle moving light and material behavior.
-
-Examples:
-
-- Soft reflections across glass surfaces
-- Slowly changing refractive highlights
-- Prismatic light passing over a selected object
-- Controlled color transitions when a service changes
-
-Lighting should make the site feel dimensional.
-
-It must not distract from the main content.
-
-## MOTION FAMILY 05 — SPATIAL TRANSITIONS
-
-Use real spatial transitions when moving between related 3D experiences.
-
-Examples:
-
-- Camera repositioning
-- Object rotation with purpose
-- Layer separation
-- Depth changes
-- Perspective transitions
-- Controlled object transformations
-
-Avoid dramatic movement that creates discomfort or hides information.
-
-## MOTION FAMILY 06 — INTERACTIVE MICRO-MOTION
-
-Design premium interaction feedback for:
-
-- Navigation
-- Buttons
-- Service tabs
-- Media controls
-- Add/remove actions
-- Form fields
-- Project configuration
-- Mobile menus
-
-Interaction feedback should feel immediate and deliberate.
-
-## MOTION FAMILY 07 — EDITORIAL SCROLL STORYTELLING
-
-Use carefully designed scroll-triggered motion.
-
-Potential techniques:
-
-- Text reveals
-- Layered image motion
-- Visual progress indicators
-- Media transformations
-- Timeline changes
-- Section-to-section visual continuity
-
-Do not hijack scrolling.
-
-Do not force visitors through lengthy cinematic sequences.
-
-## MOTION FAMILY 08 — FUNCTIONAL MEDIA MOTION
-
-Use motion to demonstrate real client deliverables.
-
-This applies especially to:
-
-- Short-form video editing
-- Promotional editing
-- Motion graphics
-- Content repurposing
-- Website construction
-- Automation workflows
-
-The resulting motion should look like professional creative work.
-
-## MOTION RULE
-
-For every animation, document:
-
-- Purpose
-- User trigger or lifecycle trigger
-- Initial and final states
-- Motion technique
-- Appropriate duration
-- Mobile adaptation
-- Reduced-motion alternative
-- Performance considerations
-
-Do not add animations without defined behavior.
-
----
-
-# 06 — THE COMPLETE 3D EXPERIENCE SYSTEM
-
-MAKENDLESS needs genuine 3D experiences.
-
-Not one random rotating object.
-
-Create a consistent spatial design language across selected major sections.
-
-## PREFERRED TOOLS
-
-Use compatible versions of:
-
-- Three.js
-- React Three Fiber
-- Drei
-- Motion for React
-- GSAP / ScrollTrigger where genuinely required
-- Custom GLSL or shader effects only when justified
-
-Inspect existing dependencies first.
-
-Avoid duplicating animation systems unnecessarily.
-
-## 3D PRINCIPLES
-
-Use:
-
-- Carefully composed geometry
-- Controlled lighting
-- Material depth
-- Subtle refraction
-- Camera transitions
-- Responsive perspective
-- Interactive scene states
-- Meaningful content integration
-
-Avoid:
-
-- Random cubes
-- Endless floating spheres
-- Generic rotating infinity symbols
-- Excessive particles
-- Overly shiny chrome
-- Heavy bloom everywhere
-- Unnecessary shader effects
-- 3D that does not communicate a service
-
-## WHERE TO USE 3D
-
-### HERO
-
-Interactive spatial creative showcase.
-
-### CREATE WORLD
-
-Spatial video production presentation with media frames and cinematic depth.
-
-### BUILD WORLD
-
-Interactive digital product and website presentation.
-
-### SELECTED WORK
-
-Tasteful dimensional framing for featured projects.
-
-### PROJECT LAB
-
-Spatial or device-based presentation of the generated project.
-
-### SELECTED TRANSITIONS
-
-Subtle 3D continuity between related experiences.
-
-Do not put a separate heavyweight 3D canvas in every section.
-
-Reuse or coordinate scenes where appropriate.
-
-## 3D RESPONSIVENESS
-
-Desktop:
-
-Richer perspective, lighting and interaction.
-
-Tablet:
-
-Reduced complexity and carefully adjusted framing.
-
-Mobile:
-
-Simplified geometry, optimized materials, stable composition and touch-first interactions.
-
-Low-performance or unsupported environments:
-
-Beautiful non-WebGL fallback.
-
-Functional HTML interactions must remain available without 3D.
-
----
-
-# 07 — REDESIGN THE ENTIRE HOMEPAGE
-
-Build a coordinated visual journey with seven major sections.
-
-Each section needs its own creative composition.
-
-All seven must feel part of one premium MAKENDLESS identity.
-
----
-
-## SECTION 01 — THE LIVING CINEMATIC HERO
-
-### PURPOSE
-
-Introduce MAKENDLESS, communicate our services immediately and create a powerful first impression.
-
-### PRESERVE THE CURRENT HEADLINE
+Keep the strong headline:
 
 **We make ideas impossible to ignore.**
 
-Supporting sentence:
+Supporting line:
 
-Video editing, websites and AI solutions for ambitious creators and businesses.
+Premium video editing, websites and AI solutions for creators and ambitious businesses.
 
 Primary CTA:
-
-Explore Our Studios
+Explore Services
 
 Secondary CTA:
-
 Start a Project
 
-### HERO VISUAL
+## HERO VISUAL
 
-Replace the current large bordered dashboard presentation with a premium immersive Living Stage.
+The default hero experience must show a compelling example of video-editing transformation.
 
-The Living Stage is one coherent interactive 3D environment.
+Use a genuine sample clip when appropriately licensed, or a polished original concept demonstration.
 
-It must integrate real service demonstrations into the spatial composition.
+Display one large, beautifully framed media experience.
 
-### HERO DEFAULT MODE
+Allow the visitor to switch between:
 
-CREATE — VIDEO EDITING
+CREATE — Video Editing
 
-Show a beautiful video-production composition.
+BUILD — Website Development
 
-Include a large video preview or original illustrative media.
+AI — Business Automation
 
-Use spatial framing, cinematic lighting and elegant motion graphics.
+The transition must visually alter the displayed work, not just the text labels.
 
-Include functional raw-to-edited interaction.
+## 3D AND MOTION
 
-### SECOND MODE
+Integrate real spatial depth, sophisticated camera framing, controlled light and subtle prismatic reflections.
 
-BUILD — WEBSITE DEVELOPMENT
+Use:
 
-Transform the scene into a premium digital product display.
+- Beautiful media-reveal animation
+- Controlled 3D perspective
+- Layered spatial compositions
+- Smooth transitions between services
+- Responsive camera movement
+- Refined kinetic headline motion
 
-Allow:
+The media demonstration should dominate the visual experience.
 
-- Wireframe/design switching
-- Desktop/mobile preview
-- Functional example UI
+3D must support the work rather than become a separate unrelated object.
 
-### THIRD MODE
+Avoid a large bordered dashboard.
 
-AI — AUTOMATION
+Do not make the hero so complicated that the visitor forgets what the company sells.
 
-Transition into an interactive workflow demonstration.
+## SUCCESS CONDITION
 
-Show a customer request moving through processing, action and human review.
-
-### HERO MOTION GRAPHICS
-
-Implement:
-
-- Refined headline entrance
-- Sophisticated media reveal
-- Elegant 3D camera introduction
-- Subtle reactive lighting
-- Smooth mode transformations
-- Premium CTA interaction feedback
-
-No long forced intro.
-
-No excessive loading screen.
-
-No decorative objects competing with the service preview.
-
-### HERO QUALITY CHECK
-
-The hero must be beautiful before interaction and better after interaction.
-
-A screenshot should look premium.
-
-The working experience must demonstrate meaningful functionality.
-
-The visitor should understand what MAKENDLESS offers within seconds.
+A new visitor understands within seconds that MAKENDLESS offers video editing, websites and AI solutions.
 
 ---
 
-## SECTION 02 — CREATE / BUILD / GROW WORLDS
+# 5 — SECTION 02: WHAT WE OFFER
 
-### PURPOSE
+## CUSTOMER QUESTION
 
-Introduce the agency's three service divisions through powerful visual storytelling.
+Which service is right for me?
 
-### DESIGN CONCEPT
+## COLOR
 
-A curated digital exhibition consisting of three visually distinctive destinations.
+Transition into a bright Porcelain Gallery section.
 
-Do not use an ordinary three-card grid.
+## VISUAL COMPOSITION
 
-Use a carefully art-directed layout with impressive but meaningful visuals.
+Do not use the existing repeated dark selector layout.
+
+Build an elegant editorial service gallery.
+
+Show three unmistakable offerings:
 
 ### CREATE
 
-Show a cinematic editing environment.
+Video Editing & Creative Production
 
-Motion graphics:
-
-- Animated media timeline
-- Frame transformation
-- Text and caption overlays
-- Film-inspired transitions
-- Responsive media reveal
+Visual: A cinematic editing composition with a live media preview.
 
 ### BUILD
 
-Show a sophisticated interactive digital interface.
+Websites, Apps & AI Solutions
 
-Motion graphics:
-
-- Wireframe formation
-- Layout construction
-- Responsive screen transformation
-- Structured geometric motion
+Visual: A beautiful responsive digital product preview.
 
 ### GROW
 
-Show a premium illustrative digital growth environment.
+Digital Marketing — Beta / Coming Soon
 
-Motion graphics:
+Visual: A polished illustrative digital growth environment.
 
-- Elegant data movement
-- Social media preview transitions
-- Restrained visual progress indicators
+## INTERACTION
 
-Maintain Beta / Coming Soon status.
+Each offering should have a meaningful preview or visual transformation.
 
-### USER INTERACTION
+Use large relevant imagery or live interfaces.
 
-Hover or tap should reveal meaningful visual detail.
+On mobile, provide clear vertical discovery with touch-friendly controls.
 
-Click should open the corresponding service world.
+A user should be able to open the relevant service world easily.
 
-Keep labels obvious.
+Do not place all 13 service descriptions on the homepage.
 
-Do not create hidden or confusing interactions.
+Keep the detailed catalogue accessible through the service destinations.
 
 ---
 
-## SECTION 03 — THE LIVE CREATIVE WORKSHOP
+# 6 — SECTION 03: THE TRANSFORMATION EXPERIENCE
 
-### PURPOSE
+## CUSTOMER QUESTION
 
-Let visitors experience MAKENDLESS's actual capabilities.
+What is the actual difference MAKENDLESS can make?
 
-### VISUAL DIRECTION
+## VISUAL DIRECTION
 
-Build a large immersive interactive workspace.
+Return to a visually rich dark cinematic stage.
 
-Avoid the appearance of a boxed SaaS dashboard.
+Build one large interactive transformation showcase.
 
-The main preview should occupy most of the visual space.
+Focus on visual proof.
 
-Use compact controls.
+## PRIMARY DEMONSTRATION
 
-### EXPERIENCE A — EDIT A REEL
+RAW VIDEO → EDITED REEL
 
-Interactive controls:
+Allow:
 
-- Raw/edited comparison
-- Caption selection
-- Visual treatment switching
-- Video playback when applicable
+- Before/after comparison
+- Caption style changes
+- Media preview
+- Framing comparison
+- Format selection
 
-Motion graphics:
+Use professional motion graphics, not just a color filter.
 
-- Timeline scrub animation
-- Caption entrance
-- Mask transitions
-- Format transformations
+## SECONDARY DEMONSTRATIONS
 
-### EXPERIENCE B — BUILD A WEBSITE
+WIREFRAME → FINISHED WEBSITE
 
-Interactive controls:
+INQUIRY → AUTOMATED WORKFLOW
 
-- Wireframe/finished switching
-- Desktop/mobile switching
-- Working sample components
+Use compact switching controls to move between demonstrations.
 
-Motion graphics:
+Do not present all demos inside multiple small boxes.
 
-- Layout construction
-- Responsive component transitions
-- Animated geometry-to-interface transformation
+Show the result prominently.
 
-### EXPERIENCE C — AUTOMATE A TASK
+## PURPOSE
 
-Interactive controls:
-
-- Start workflow
-- Step through process
-- Inspect result
-- Reset simulation
-
-Motion graphics:
-
-- Connected path progression
-- State changes
-- Data-flow animation
-- Visual feedback
-
-### WORKSHOP QUALITY CHECK
-
-Interactions must work.
-
-They must produce visible and meaningful results.
-
-The workshop must feel like a live demonstration environment, not a collection of static mockups.
+The visitor should experience a visible difference without needing a paragraph explaining it.
 
 ---
 
-## SECTION 04 — THE LIVING PROJECT LAB
+# 7 — SECTION 04: SOLUTIONS FOR YOUR BUSINESS
 
-### PURPOSE
+## CUSTOMER QUESTION
 
-Let visitors build and experience a potential digital solution for their own business.
+Can MAKENDLESS help someone like me?
 
-### BUSINESS TYPES
+## COLOR
 
-- Salon
-- Café / Restaurant
-- Gym / Fitness
-- General Business
+Use a clean light editorial presentation.
 
-### SERVICES
+## CONTENT
 
-- Website
-- Booking System
-- Promotional Video
-- AI Assistant
+Create four selectable customer journeys:
 
-### LIVE PREVIEW
+CONTENT CREATOR
 
-Selecting services must change the miniature business preview immediately.
+Needs Reels, editing, repurposing and creative content.
 
-### MOTION GRAPHICS
+LOCAL BUSINESS
 
-Use:
+Needs a business website, appointment system and promotional media.
 
-- Smooth component construction
-- Layered interface entrances
-- Website element transformations
-- Booking module reveal
-- Media preview introduction
-- AI assistant appearance
-- Refined service-selection feedback
+STARTUP
 
-These changes should make the digital project feel like it is being built in front of the visitor.
+Needs a premium website, digital product and automation.
 
-### 3D PRESENTATION
+ONLINE STORE
 
-Use subtle spatial framing around the preview.
+Needs e-commerce experiences, product media and operational integrations.
 
-A device, architectural stage or composed presentation environment may support the experience.
+## INTERACTION
 
-Do not make the controls difficult to access.
+When a customer type is selected:
 
-### REQUIRED FUNCTIONALITY
+- Update the featured visual.
+- Show a short scenario.
+- Show suitable approved services.
+- Present a clear next action.
+- Allow the visitor to continue into Project Lab.
 
-- Select business
-- Add services
-- Remove services
-- Reset
-- Preview
-- Generate project brief
-- Copy brief
-- Continue to inquiry
+This section should not feel like a questionnaire.
 
-### QUALITY CHECK
+Use rich, contextually relevant visuals.
 
-The experience must be visually exciting yet easy to understand without instructions.
+Keep service suggestions optional.
+
+Avoid inventing promised business results.
 
 ---
 
-## SECTION 05 — SELECTED WORK
+# 8 — SECTION 05: PACKAGES & PRICING GUIDE
 
-### PURPOSE
+## CUSTOMER QUESTION
 
-Demonstrate the quality of MAKENDLESS's creative and technical capabilities.
+What can I buy, and what might it cost?
 
-### DESIGN
+## PURPOSE
 
-Create a premium editorial portfolio gallery.
+Reduce uncertainty and help prospects understand project scope.
 
-Use:
+## PRESENTATION
 
-- Large media presentations
-- Cinematic project reveals
-- Carefully layered compositions
-- Attractive device mockups
-- Premium motion transitions
-- Rich photography or original media where available
+Create a clean, elegant pricing-guide section.
 
-Avoid a grid of tiny ordinary cards.
+Do not copy SaaS subscription pricing layouts.
 
-### MOTION GRAPHICS
+Use three service-entry groups:
 
-Each project may have a distinct reveal style based on its content.
+### VIDEO CONTENT
+
+Typical project formats:
+
+- Single Reel / Short
+- Content bundle
+- Long-form or podcast editing
+
+### WEBSITE & DIGITAL PRODUCTS
+
+Typical project formats:
+
+- Landing page
+- Business website
+- E-commerce or booking solution
+
+### AI & AUTOMATION
+
+Typical project formats:
+
+- Small workflow pilot
+- AI assistant integration
+- Custom business automation
+
+## CRITICAL PRICING RULE
+
+Do not invent or fabricate prices.
+
+If approved pricing data exists in the project, display accurate starting prices with clearly defined scope, currency and exclusions.
+
+If pricing is not approved, display useful package descriptions and:
+
+**Request a tailored estimate**
+
+Include:
+
+- Typical deliverables
+- Scope factors
+- Revision policy when approved
+- Expected quote process
+
+Avoid fake discounts, countdown timers or unsubstantiated "best value" labels.
+
+## INTERACTION
+
+Allow visitors to select a relevant project type and transfer it to the inquiry flow.
+
+Keep this section readable and trustworthy.
+
+---
+
+# 9 — SECTION 06: SELECTED WORK
+
+## CUSTOMER QUESTION
+
+Can I trust the quality of this studio?
+
+## VISUAL STYLE
+
+Use an exceptional editorial portfolio layout.
+
+Avoid another grid of identical dark cards.
+
+Use unique visuals for each example.
+
+Do not reuse the same mountain photograph or coffee-site mockup repeatedly.
+
+Possible presentations:
+
+- Cinematic short-form editing example
+- Distinctive business website concept
+- Interactive booking application
+- Motion graphics example
+- AI workflow concept
+
+## DESIGN
+
+Use large media areas, beautiful art direction, selected spatial motion and clear project context.
+
+Every project should have a meaningful visual identity.
+
+## HONESTY
+
+Clearly distinguish genuine client work from concepts.
+
+Never invent client names, testimonials, awards or performance claims.
+
+Provide a relevant View Project or View Concept action.
+
+---
+
+# 10 — SECTION 07: LIVING PROJECT LAB
+
+## CUSTOMER QUESTION
+
+What would my own project look like?
+
+## DESIGN
+
+Build a beautiful interactive creation experience.
+
+The preview should already look attractive when the visitor arrives.
+
+Do not begin with an enormous blank placeholder.
+
+Present a clearly labeled example project, then let visitors customize it.
+
+## BUSINESS TYPES
+
+Salon
+Café / Restaurant
+Gym / Fitness
+General Business
+
+## SOLUTIONS
+
+Website
+Booking System
+Promotional Video
+AI Assistant
+
+## EXPERIENCE
+
+The live preview must update immediately when services are added or removed.
+
+Use sophisticated motion graphics to show components being introduced into the preview.
 
 Examples:
 
-Video project:
-Cinematic media reveal.
+Website:
+Show an elegant miniature business site.
 
-Website project:
-Device transition or responsive preview.
+Booking:
+Introduce a working mock booking interface.
 
-Automation project:
-Animated process visualization.
+Promotional Video:
+Introduce a sample promotional preview.
 
-### INTERACTION
+AI Assistant:
+Introduce a simulated conversational assistant.
 
-Allow visitors to open a deeper project view.
+Allow:
 
-Use actual or clearly labeled concept work.
+- Add and remove
+- Change business
+- Reset
+- Generate brief
+- Copy brief
+- Continue to inquiry
 
-Do not fabricate client relationships or results.
+Maintain project-selection state across the journey.
 
----
+Do not force a paid service selection merely because an example preview is preloaded.
 
-## SECTION 06 — HOW MAKENDLESS WORKS
+## 3D
 
-### PURPOSE
+Use spatial framing selectively.
 
-Communicate a simple professional process.
-
-Steps:
-
-**DISCOVER → DESIGN → CREATE → DELIVER**
-
-### VISUAL DIRECTION
-
-Create an elegant interactive visual timeline.
-
-Use:
-
-- Line transformations
-- Connected graphic movement
-- Refined typography transitions
-- Progress-based visual feedback
-- Subtle graphic illustration
-
-Avoid generic icon boxes.
-
-Avoid complex diagrams.
-
-Keep explanations short.
-
-This section should provide a calm moment between more intense visual experiences.
+The actual controls must remain accessible HTML/React elements.
 
 ---
 
-## SECTION 07 — FINAL CINEMATIC CTA AND FOOTER
+# 11 — SECTION 08: HOW WE WORK + FAQs
 
-### PURPOSE
+## CUSTOMER QUESTION
 
-Encourage visitors to start a real project.
+What happens after I contact MAKENDLESS?
 
-### HEADLINE
+## VISUAL STYLE
+
+Use a cleaner, calmer section.
+
+Avoid unnecessary 3D and technical diagrams.
+
+Explain:
+
+DISCOVER → DESIGN → CREATE → DELIVER
+
+Use concise language and a beautiful visual progression.
+
+Below or beside the process, provide a compact FAQ covering:
+
+- How projects begin
+- What information clients need to provide
+- How project pricing is determined
+- How revisions work
+- How files or websites are handed over
+- Whether ongoing maintenance is available
+
+Use verified agency policies where supplied.
+
+Do not fabricate guarantees or policies.
+
+Use expandable details where appropriate.
+
+---
+
+# 12 — SECTION 09: FINAL PROJECT INVITATION
+
+## CUSTOMER QUESTION
+
+How do I start?
+
+## VISUAL STYLE
+
+Return to a sophisticated dark cinematic atmosphere.
+
+Headline:
 
 **Let's make something worth remembering.**
 
-### CTA
+Supporting copy:
 
-**Start Your Project**
+Tell us what you're creating. We'll help you define the next step.
 
-### MOTION GRAPHICS
+CTA:
 
-Use a refined brand-motion composition that echoes the opening experience.
+Start a Project
 
-Possible treatment:
+Provide a direct, accessible path to the project inquiry.
 
-A subtle prismatic ribbon or line connects the final message to the brand philosophy.
+Use a restrained closing motion-graphics signature that connects to the opening hero.
 
-Keep it restrained.
+Do not fill the section with unnecessary abstract animation.
 
-Do not repeat the entire hero.
-
-### FOOTER DESIGN
-
-Use:
-
-- MAKENDLESS wordmark
-- CREATE / BUILD / GROW navigation
-- Useful company links
-- Contact route
-- Appropriate legal links
-- Clear structure
-
-The footer should feel intentionally designed, not like an afterthought.
+Finish with a clean, informative footer.
 
 ---
 
-# 08 — EVERY SERVICE MUST HAVE UNIQUE VISUAL QUALITY
+# 13 — VISUAL RHYTHM SYSTEM
 
-All 13 service categories must be included.
+Every section must have a different design purpose and visual treatment.
 
-Each service deserves its own meaningful demonstration and motion identity.
+Use this sequence:
 
-Do not simply reuse one animation component for all services.
+HERO:
+Dark cinematic, immersive 3D media.
 
-## CREATE — FIVE SERVICES
+SERVICES:
+Light editorial, expansive visual gallery.
 
-### V1 — SHORT-FORM VIDEO EDITING
+TRANSFORMATION:
+Dark interactive workshop, full-width preview.
 
-Visual:
-Professional-looking vertical Reel showcase.
+BUSINESS SOLUTIONS:
+Light product storytelling, customer-specific visuals.
 
-Motion:
-Captions, timing markers, transitions and edited-state reveals.
+PACKAGES:
+Clean editorial pricing information.
 
-Interaction:
-Raw/edited, caption style, framing, preview.
+SELECTED WORK:
+Large photographic and interactive visual showcases.
 
-### V2 — LONG-FORM & PODCAST EDITING
+PROJECT LAB:
+Immersive configurator with live UI.
 
-Visual:
-Cinematic editing timeline.
+PROCESS:
+Calm, minimal, reassuring layout.
 
-Motion:
-Timeline progression, clip separation, highlight reveals.
+FINAL CTA:
+Premium dark brand closing.
 
-Interaction:
-Choose segments and inspect selected outputs.
+This sequence is a guideline, not a requirement to alternate colors mechanically.
 
-### V3 — PROMOTIONAL & AD VIDEO EDITING
+**Do not repeat the same headline-left/description-right pattern in every section.**
 
-Visual:
-Premium advertisement showcase.
+Use a range of compositions:
 
-Motion:
-Scene transitions, cinematic typography, product reveals.
+- Full-bleed imagery
+- Asymmetric editorial layouts
+- Large interactive stages
+- Visually led stories
+- Minimal informational layouts
+- Immersive device previews
+- Rich but controlled 3D presentations
 
-Interaction:
-Switch creative treatments.
-
-### V4 — CONTENT REPURPOSING
-
-Visual:
-One source recording branching into multiple deliverables.
-
-Motion:
-Format transformations and content duplication animation.
-
-Interaction:
-Select different output formats.
-
-### V5 — MOTION GRAPHICS & AI-ASSISTED EDITING
-
-Visual:
-A polished motion-design playground.
-
-Motion:
-Kinetic typography, original shapes, layered graphic transitions.
-
-Interaction:
-Select animation styles and visually compare results.
-
-This service must showcase particularly strong motion-graphics quality.
+Each section should feel fresh while belonging to one brand.
 
 ---
 
-## BUILD — FIVE SERVICES
+# 14 — MOTION GRAPHICS
 
-### T1 — BUSINESS WEBSITE DEVELOPMENT
+Develop a coordinated motion language.
 
-Visual:
-Beautiful interactive website preview.
+Use motion where it improves meaning or enjoyment.
 
-Motion:
-Wireframe construction and finished-design transformation.
+Examples:
 
-Interaction:
-Desktop/mobile and wireframe/finished controls.
+HERO:
+Spatial reveal and meaningful media motion.
 
-### T2 — E-COMMERCE
+SERVICES:
+Visual category transitions.
 
-Visual:
-Functional miniature online store.
+TRANSFORMATION:
+Before/after masking and media effects.
 
-Motion:
-Product entrance, cart feedback, purchase-flow transitions.
+SOLUTIONS:
+Customer scenario transitions.
 
-Interaction:
-Select products, add to cart, change quantity and view mock checkout.
+PRICING:
+Minimal hover and selection feedback.
 
-### T3 — BOOKING SYSTEMS & WEB APPLICATIONS
+PORTFOLIO:
+Cinematic media reveals.
 
-Visual:
-Premium appointment-booking interface.
+PROJECT LAB:
+Live component construction and state changes.
 
-Motion:
-Calendar state changes and booking-flow progression.
+PROCESS:
+Simple visual progression.
 
-Interaction:
-Select date, time, service and receive simulated confirmation.
+FINAL CTA:
+Subtle brand-signature motion.
 
-### T4 — AI AUTOMATION & ASSISTANTS
+Do not use the same fade-up animation everywhere.
 
-Visual:
-Sophisticated connected workflow.
+No unnecessary custom cursor.
 
-Motion:
-Data progression, status transformations and action feedback.
+No scroll-jacking.
 
-Interaction:
-Trigger and inspect a simulated workflow.
-
-### T5 — WEBSITE MAINTENANCE & OPTIMIZATION
-
-Visual:
-A clear improvement comparison.
-
-Motion:
-Layout correction, responsive transformation and before/after reveal.
-
-Interaction:
-Explore examples of improvements.
-
-Do not fabricate actual measured speed results.
-
----
-
-## GROW — THREE BETA SERVICES
-
-### M1 — META & GOOGLE ADS
-
-Visual:
-Illustrative campaign creation experience.
-
-Motion:
-Campaign configuration transitions and visual ad previews.
-
-Interaction:
-Select example campaign settings.
-
-### M2 — SOCIAL MEDIA MANAGEMENT
-
-Visual:
-Interactive content calendar.
-
-Motion:
-Post-preview reveals, scheduling transitions and content-format changes.
-
-Interaction:
-Select posts and calendar dates.
-
-### M3 — LOCAL DIGITAL PRESENCE & ANALYTICS
-
-Visual:
-Illustrative business-presence presentation.
-
-Motion:
-Restrained data and visual progress transitions.
-
-Interaction:
-Switch example views.
-
-All three services must display:
-
-**BETA / COMING SOON**
-
-Use simulated data only.
-
-Never imply verified advertising performance.
-
----
-
-# 09 — PAGE-BY-PAGE DESIGN QUALITY
-
-Do not invest all creative effort in the homepage.
-
-Apply comparable professional design standards to:
-
-- CREATE main page
-- BUILD main page
-- GROW beta page
-- Individual service pages
-- Project Lab
-- Find My Solution
-- Work / Portfolio
-- About
-- FAQ
-- Contact
-- Footer
-- Mobile navigation
-
-Every page must include:
-
-1. A clear purpose
-2. Strong visual hierarchy
-3. Appropriate premium motion
-4. Meaningful content or interaction
-5. Consistent typography
-6. Refined spacing
-7. Excellent responsive behavior
-8. A clear path toward service exploration or inquiry
-
-Do not use identical compositions everywhere.
-
-Maintain a coherent design system while giving each major page its own character.
-
----
-
-# 10 — AVOID THE GENERIC AI WEBSITE LOOK
-
-Strictly avoid:
-
-- Endless rows of identical cards
-- Repeated fade-up animations everywhere
-- Generic glowing icons
-- Fake futuristic dashboards
-- Random rotating objects
-- Giant decorative particle fields
-- Neon borders on every component
-- Unnecessary glass panels
-- Overloaded hero layouts
-- Excessively long text
-- Generic stock imagery
-- Repeated visual compositions
-- Fake interactive demos
-- Dead buttons
-- Blank portfolio placeholders
-- Meaningless decorative video loops
-
-The website should look composed by a professional creative team.
-
-Not assembled by repeating predefined components.
-
----
-
-# 11 — MOTION AND 3D TECHNICAL ENGINEERING
-
-Inspect the existing project stack before making changes.
-
-Use existing technologies when practical.
-
-## RECOMMENDED TOOLS
-
-- React / current project framework
-- Three.js
-- React Three Fiber
-- Drei
-- Motion for React
-- GSAP / ScrollTrigger for complex sequences where justified
-- SVG motion
-- CSS transformations
-- Optimized shaders where they add real value
-
-Use compatible stable versions.
-
-Do not introduce multiple libraries to perform the same simple task.
-
-## MOTION ENGINEERING
-
-Prefer GPU-friendly transform and opacity animation.
-
-Avoid unnecessary layout recalculations.
-
-Use timeline orchestration where precise choreography is required.
-
-Properly clean up animation contexts and subscriptions.
-
-Avoid excessive animation on offscreen elements.
-
-Keep interactive states deterministic and testable.
-
-## 3D ENGINEERING
-
-Lazy-load expensive scenes.
-
-Control rendering resolution based on device capability.
-
-Use efficient geometry.
-
-Reuse resources where practical.
-
-Dispose of unused resources.
-
-Limit transparency and expensive postprocessing.
-
-Provide context-loss and WebGL failure fallbacks.
-
-Ensure 3D does not block accessible DOM controls.
-
-## MEDIA ENGINEERING
-
-Use compressed, optimized media.
-
-Do not download massive assets without need.
-
-Provide posters or fallbacks.
-
-Avoid autoplay sound.
-
-Control media loading on mobile.
-
-Load below-the-fold demos only when needed.
-
----
-
-# 12 — RESPONSIVE DESIGN REQUIREMENTS
-
-Test:
-
-360px mobile
-
-390px mobile
-
-768px tablet
-
-1024px laptop
-
-1440px desktop
-
-## DESKTOP
-
-Rich spatial composition and premium cinematography.
-
-## TABLET
-
-Balanced interface, simpler camera framing and responsive controls.
-
-## MOBILE
-
-Purposefully adapted composition.
-
-Do not simply shrink desktop 3D scenes.
-
-Ensure:
-
-- Readable headings
-- Clear CTAs
-- Simple navigation
-- Touch-friendly controls
-- No horizontal overflow
-- Functional demos
-- Optimized motion
-- Graceful visual fallbacks
-- Good performance on ordinary Android phones
+No excessive ambient motion.
 
 Respect prefers-reduced-motion.
 
-No essential action should require hover.
+---
+
+# 15 — RESPONSIVE ART DIRECTION
+
+The homepage must be excellent on desktop and mobile.
+
+Test at:
+
+360px
+390px
+768px
+1024px
+1440px
+
+## DESKTOP
+
+Use sophisticated composition, substantial media areas and meaningful spatial depth.
+
+## MOBILE
+
+Recompose layouts for mobile rather than shrinking desktop sections.
+
+Requirements:
+
+- Clear hero headline and CTA
+- Useful preview without enormous scrolling
+- Simple navigation
+- Touch-friendly controls
+- No clipped content
+- No horizontal overflow
+- Readable service descriptions
+- Beautiful light/dark section transitions
+- Compact Project Lab
+- Optimized 3D and media
+- No hover-only essential interactions
+
+Avoid loading every video and 3D scene upfront.
+
+Provide functional static fallbacks.
 
 ---
 
-# 13 — COMPLETE VISUAL QUALITY PROCESS
+# 16 — THE NEW HOMEPAGE QUALITY STANDARD
 
-This is mandatory.
+A visitor should have a different reason to continue at each scroll:
 
-**DO NOT RELY ON CODE GENERATION ALONE.**
+FIRST:
+That looks interesting.
 
-Follow:
+SECOND:
+I understand what they offer.
 
-UNDERSTAND → STORYBOARD → BUILD → RUN → INSPECT → REFINE → TEST → SAVE
+THIRD:
+I can see what they can make.
 
-## STEP 1 — AUDIT
+FOURTH:
+They have something relevant to my business.
 
-Inspect the actual existing site.
+FIFTH:
+I understand the kinds of projects and pricing process.
 
-Record what is functional.
+SIXTH:
+Their example work looks credible.
 
-Identify poor visual compositions.
+SEVENTH:
+I can picture my own project.
 
-Find repeated generic components.
+EIGHTH:
+I understand how collaboration works.
 
-Inspect the existing motion and 3D implementations.
+NINTH:
+I'm ready to make an inquiry.
 
-## STEP 2 — STORYBOARD
+Do not use misleading psychological tricks.
 
-Before each major component, define:
-
-- User purpose
-- Visual composition
-- Motion behavior
-- 3D involvement
-- Interaction
-- Mobile behavior
-- Fallback
-- Performance cost
-
-Create a concise storyboard or implementation specification.
-
-## STEP 3 — BUILD
-
-Implement the component.
-
-Use clean reusable architecture.
-
-## STEP 4 — RUN
-
-Start the actual website.
-
-## STEP 5 — INSPECT
-
-Review actual browser output.
-
-Inspect desktop and mobile.
-
-Record screenshots and, where possible, short interaction recordings.
-
-## STEP 6 — CRITIQUE
-
-Ask:
-
-Does this look premium?
-
-Does it demonstrate something meaningful?
-
-Is the motion beautiful?
-
-Does the 3D improve the experience?
-
-Does the section visually connect with the previous one?
-
-Does it feel generic?
-
-Is it easy to understand?
-
-## STEP 7 — REFINE
-
-Fix weak design choices.
-
-Improve composition and motion.
-
-Do not add more effects to compensate for weak structure.
-
-## STEP 8 — TEST
-
-Verify real interactions.
-
-Run appropriate build and type checks.
-
-Check responsiveness and accessibility.
-
-## STEP 9 — SAVE
-
-Create a working checkpoint.
-
-Document remaining work.
-
-Continue.
+Use clarity, relevance, curiosity, genuine demonstration and trust.
 
 ---
 
-# 14 — REQUIRED IMPLEMENTATION PHASES
+# 17 — IMPLEMENTATION PLAN
 
-Do not try to generate everything in one untested operation.
+## PHASE 0 — AUDIT
 
-## PHASE 0 — PROJECT AND BRAND AUDIT
+Inspect the existing repository and homepage.
 
-Inspect the current MAKENDLESS project.
+Review all seven supplied screenshots.
 
-Preserve approved functionality and business content.
+Preserve working functionality.
 
-Create a source-control checkpoint.
+Create a safe Git checkpoint.
 
-## PHASE 1 — CREATIVE EXPERIENCE SYSTEM
+Identify components that should be replaced, reused or refactored.
 
-Establish:
+## PHASE 1 — COLOR EXPERIMENT
 
-- Final visual direction
-- Motion language
-- 3D architectural rules
-- Lighting system
-- Spatial composition principles
-- Typography hierarchy
-- Responsive design principles
-- Reusable interaction system
+Implement Prism Atelier as a new configurable theme.
 
-## PHASE 2 — CINEMATIC HERO
+Keep the existing font and wordmark.
 
-Build the new 3D Living Stage.
+Preserve the old Glass Prism tokens as a recoverable design option.
 
-Integrate motion graphics and meaningful service previews.
+Do not scatter hard-coded colors throughout components.
 
-Test desktop and mobile.
+Create a consistent token system.
 
-Refine until the hero is genuinely polished.
+Verify text contrast and responsive rendering.
 
-## PHASE 3 — ENTIRE HOMEPAGE
+## PHASE 2 — HOMEPAGE STRUCTURAL REBUILD
 
-Complete all seven sections with unique art direction and purposeful motion.
+Rebuild the full nine-section homepage architecture.
 
-Inspect the complete visual journey.
+Correct the hierarchy and order before introducing heavy animations.
 
-Avoid disconnected sections.
+Use realistic content lengths and meaningful placeholder media.
 
-## PHASE 4 — CREATE WORLD
+## PHASE 3 — HERO + SERVICES
 
-Implement all five interactive video services.
+Implement the premium hero and distinctive service discovery gallery.
 
-Ensure professional motion-graphics quality.
+Inspect the results in a browser.
 
-## PHASE 5 — BUILD WORLD
+Make visual corrections.
 
-Implement all five digital product demonstrations.
+## PHASE 4 — DEMONSTRATIONS + SOLUTIONS
 
-Ensure functional UI and meaningful 3D presentation where appropriate.
+Implement the transformation showcase and customer-specific solution journeys.
 
-## PHASE 6 — GROW WORLD
+Verify all controls.
 
-Implement three high-quality illustrative beta demonstrations.
+## PHASE 5 — PACKAGES + WORK
 
-Keep availability labels accurate.
+Implement pricing guidance without inventing rates.
 
-## PHASE 7 — PROJECT LAB
+Replace repetitive portfolio imagery with distinct concept or approved project assets.
 
-Refine the interactive project builder and its motion system.
+## PHASE 6 — PROJECT LAB + TRUST
 
-Ensure every supported combination works.
+Improve the Project Lab's default preview, live state changes and conversion flow.
 
-## PHASE 8 — SUPPORTING PAGES
+Implement the four-step process and FAQ.
 
-Bring Work, About, Find My Solution, FAQ, Contact and all service details to the same standard.
+## PHASE 7 — MOTION, 3D AND ART DIRECTION
 
-## PHASE 9 — FULL MOTION POLISH
+Apply purposeful motion to every major experience.
 
-Conduct a dedicated motion graphics review across the whole website.
+Use real 3D only where it improves the presentation.
 
-Identify repetitive, weak, unnecessary or inconsistent animations.
+Avoid generic repeated effects.
 
-Improve their timing, composition and purpose.
+## PHASE 8 — MOBILE REDESIGN
 
-## PHASE 10 — PERFORMANCE AND ACCESSIBILITY
+Inspect every section at multiple device widths.
 
-Optimize desktop, mobile, reduced-motion and non-WebGL modes.
+Fix layout, typography, media framing and touch controls.
 
-## PHASE 11 — FINAL VISUAL REVIEW
+## PHASE 9 — QUALITY ASSURANCE
 
-Inspect every major page.
+Run applicable TypeScript, lint, build, browser and interaction checks.
 
-Capture evidence where supported.
+Verify that working routes, service data, Project Lab and forms still function.
 
-Correct weak components.
+Check reduced-motion and WebGL fallbacks.
 
-## PHASE 12 — FUNCTIONAL QA
+## PHASE 10 — DELIVERY
 
-Run available:
+Provide:
 
-- TypeScript checks
-- Linting
-- Production build
-- Browser tests
-- Interaction tests
-- Responsive layout tests
-- Form validation
-- Keyboard navigation tests
-- Reduced-motion tests
-- WebGL fallback tests
+- Updated working source
+- Homepage desktop screenshots
+- Homepage mobile screenshots
+- Color theme summary
+- Functional test results
+- Known limitations
+- Clear list of any content or pricing requiring owner approval
 
-Fix reproducible errors.
-
-## PHASE 13 — DELIVERY
-
-Deliver the updated project, preview if available, screenshots, test results, design implementation summary and known limitations.
+Do not invent screenshots, preview links or test results.
 
 ---
 
-# 15 — PREMIUM EXPERIENCE QUALITY GATES
+# 18 — MANDATORY VISUAL REVIEW
 
-Do not claim a section is complete until it passes these tests.
-
-## GATE 1 — VISUAL COMPOSITION
-
-The section looks carefully art-directed.
-
-No obvious generic layout.
-
-## GATE 2 — MOTION GRAPHICS
-
-Motion has a clear purpose and professional timing.
-
-## GATE 3 — 3D EXPERIENCE
-
-Where 3D is used, it adds genuine spatial depth or meaningful interaction.
-
-## GATE 4 — REAL FUNCTIONALITY
-
-Every advertised control works.
-
-## GATE 5 — CUSTOMER CLARITY
-
-Visitors understand what the section demonstrates.
-
-## GATE 6 — VISUAL CONSISTENCY
-
-The section belongs to the MAKENDLESS design system.
-
-## GATE 7 — MOBILE QUALITY
-
-The section works and looks intentionally designed on mobile.
-
-## GATE 8 — ACCESSIBILITY
-
-Motion, controls and text remain usable and accessible.
-
-## GATE 9 — PERFORMANCE
-
-Effects do not seriously interfere with page performance.
-
-## GATE 10 — BUSINESS VALUE
-
-The experience helps visitors understand services, explore capabilities or start a project.
-
-When a gate fails, improve the implementation.
-
-Do not merely describe the missing quality.
-
----
-
-# 16 — PERFORMANCE TARGETS
-
-Aim for:
-
-LCP ≤ 2.5 seconds
-
-INP ≤ 200 milliseconds
-
-CLS ≤ 0.1
-
-These are measurable targets, not guaranteed results.
-
-Maintain responsive interactions.
-
-Prefer lightweight visuals on lower-performance devices.
-
-Do not load every 3D scene on the initial page render.
-
-Do not let impressive visuals make the website unusable.
-
-Target WCAG 2.2 AA where applicable.
-
----
-
-# 17 — COMMUNICATION AND AUTONOMY
-
-Operate with the highest level of design, implementation and testing effort available in the current environment.
-
-Use your available:
-
-- Repository tools
-- Development environment
-- Coding tools
-- Browser inspection
-- Screenshot tools
-- Testing systems
-- Existing project assets
-- Permitted asset creation capabilities
-
-Do not claim to have used a tool that is unavailable.
-
-Do not claim a feature works without verification.
-
-Do not request approval for every small reversible design change.
-
-Ask before:
-
-- Paid purchases
-- Public deployment
-- Publishing private code
-- Sending real external communications
-- Exposing customer information
-- Deleting unrelated work
-
-Preserve important existing functionality.
-
-If execution limits prevent completing the entire redesign, save the completed state and clearly document what remains.
-
----
-
-# 18 — FINAL SELF-REVIEW
-
-Before delivering, inspect the full website as a demanding creative director.
-
-Ask:
-
-Does the homepage immediately communicate MAKENDLESS?
-
-Is the navbar intuitive?
-
-Does the website feel alive?
-
-Is the 3D purposeful?
-
-Do the motion graphics look professionally designed?
-
-Does every major section have its own character?
-
-Do the sections transition naturally?
-
-Do all 13 services have engaging demonstrations?
-
-Does Project Lab feel like a signature product?
-
-Is the entire website more premium than the previous version?
-
-Does the mobile experience feel beautiful and responsive?
-
-Does the site avoid generic AI-generated design patterns?
-
-Are user interactions real?
-
-Is the site understandable to ordinary business customers?
-
-Are the performance and accessibility requirements reasonably satisfied?
-
-If the answer is no to an important requirement, refine the corresponding component.
-
----
-
-# 19 — FINAL EXECUTION COMMAND
-
-**BUILD THE COMPLETE MAKENDLESS LIVING DIGITAL UNIVERSE.**
-
-Do not focus only on the homepage.
-
-Do not focus only on adding 3D.
-
-Do not focus only on adding animations.
-
-Build the complete experience as one coherent creative system.
-
-Transform the current website into a sophisticated combination of:
-
-**CINEMATIC ART DIRECTION**
-
-+
-
-**PROFESSIONAL MOTION GRAPHICS**
-
-+
-
-**REAL INTERACTIVE 3D**
-
-+
-
-**LIVE FUNCTIONAL DIGITAL EXPERIENCES**
-
-+
-
-**INTUITIVE PREMIUM UI/UX**
-
-Keep:
-
-- MAKENDLESS branding
-- Current approved typography
-- Glass Prism brand identity
-- CREATE • BUILD • GROW
-- All 13 approved services
-- GROW Beta status
-- Existing useful application logic
-
-Replace weak visual components.
-
-Improve background atmosphere.
-
-Introduce purposeful spatial depth.
-
-Create a signature motion language.
-
-Build beautiful and functional interactive experiences.
-
-Apply exceptional design quality to every single major section and page.
+Do not judge the design solely by reading code.
 
 Run the actual website.
 
-Inspect it.
+Inspect the full homepage from top to bottom.
 
-Identify weak design.
+Capture screenshots where supported.
 
-Refine it.
+At desktop and mobile sizes, examine:
 
-Test it.
+- How every section looks individually
+- How consecutive sections look together
+- Whether layouts feel repetitive
+- Whether text is readable
+- Whether media is engaging
+- Whether CTA buttons stand out
+- Whether the customer journey is clear
+- Whether interactions work
+- Whether the portfolio feels credible
+- Whether the Project Lab looks polished
+- Whether performance remains acceptable
 
-Deliver accurate implementation evidence.
+Identify the three weakest sections.
 
-**DO NOT STOP AT A PLAN.**
+Improve them.
 
-**DO NOT SUBSTITUTE RANDOM EFFECTS FOR REAL CREATIVE DIRECTION.**
+Run the website again and review the changes.
 
-**DO NOT DECLARE SUCCESS SIMPLY BECAUSE THE WEBSITE COMPILES.**
+Do not claim a phase is complete without verification.
 
-### THE FINAL STANDARD
+---
 
-MAKENDLESS must be:
+# 19 — RESTRICTIONS
 
-Alive without being chaotic.
+Do not change:
 
-Luxurious without being excessive.
+- MAKENDLESS spelling
+- Approved typography
+- CREATE / BUILD / GROW philosophy
+- The 13 approved service categories
+- GROW Beta status
+- Existing useful business logic
 
-Futuristic without being confusing.
+Do not:
 
-Creative without becoming impractical.
+- Generate another identical dark section sequence
+- Use the same composition everywhere
+- Replace demonstrations with static decorative images
+- Fabricate price figures
+- Fabricate testimonials or client claims
+- Add unnecessary 3D everywhere
+- Introduce new paid APIs without approval
+- Break working navigation
+- Turn the homepage into a SaaS dashboard
+- Deploy publicly without authorization
 
-Advanced without becoming difficult to use.
+---
 
-Interactive without being distracting.
+# 20 — FINAL EXECUTION DIRECTIVE
 
-Beautiful on desktop and mobile.
+Rebuild the MAKENDLESS homepage as a premium creative and technology experience.
 
-Easy for customers to understand.
+The primary objective is not the amount of animation.
 
-**MAKENDLESS — CREATE • BUILD • GROW.**
+It is the quality of the entire customer journey.
 
-Turn this vision into a working, visually extraordinary website through professional design, implementation, review and refinement.
+Create:
+
+An outstanding first impression.
+
+Clear service discovery.
+
+Interactive proof of capability.
+
+Relevant customer journeys.
+
+Transparent project and pricing guidance.
+
+Credible portfolio experiences.
+
+An exceptional Living Project Lab.
+
+Simple information about collaboration.
+
+A clear project inquiry.
+
+Use a richer, more balanced color theme, preserving the existing wordmark and font.
+
+Make every section visually distinctive and purposeful.
+
+Apply sophisticated 3D, motion graphics and interactive UI where they genuinely improve the experience.
+
+Implement directly in the existing project.
+
+Run, inspect, refine and test it.
+
+**Start with the HOMEPAGE. Do not redesign every internal page until the homepage's new creative direction is established and verified.**
+
+The result should feel like a carefully art-directed premium digital studio, not a generic AI-generated agency site.
+
+MAKENDLESS — CREATE • BUILD • GROW.

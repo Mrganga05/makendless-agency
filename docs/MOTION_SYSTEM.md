@@ -39,3 +39,13 @@ No post-processing pipeline, particles or continuous idle rotation. Camera and p
 ## Review limits
 
 Durations above are implementation values, not visually approved timings. Automated lifecycle/state tests are not motion recordings. Real mobile smoothness, GPU memory, visual continuity, focus visibility through transitions and the ten V11 acceptance gates require the outstanding browser review documented in QA_LOG.md.
+
+## V12 homepage application
+
+V12 changes the homepage sequence and palette while preserving the reusable lifecycle. The homepage now uses nine distinct experiences: service media → porcelain gallery → dark transformation stage → customer journey → scope/estimate guide → original concept work → example-first Lab → calm process/FAQ → dark closing. Internal-page art direction remains V11 pending homepage visual approval.
+
+Hero scene colors derive from PRISM_ATELIER in src/theme.ts when `theme="atelier"`; shared internal studies retain Glass Prism. Hero depth supports the media and its raw/edited, website and automation states. The same engine remains lazy and demand-rendered. The BUILD photograph is deferred until that mode is selected.
+
+The gallery's original type film is finite and user-started; reduced motion advances discrete frames. V1 output format changes actual aspect ratio. Solutions change a complete customer-specific composition. Package selection changes one scope sheet with restrained feedback. Portfolio motion is replayable typography; appointment changes have meaningful state. Lab builds only selected capabilities while its clearly labeled initial example remains outside the project selection. Process uses a calm progression instead of the earlier technical diagram.
+
+All new homepage colors use centralized tokens and derived states. Actual motion timing, visual rhythm, mobile framing and GPU quality remain subject to the outstanding browser review; source and jsdom checks do not establish those qualities.

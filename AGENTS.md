@@ -1,20 +1,21 @@
 # MAKENDLESS creative engineering
 
-Read `docs/CREATIVE_BRIEF.md` before major work; track phases in `docs/IMPLEMENTATION_PLAN.md` and evidence in `docs/QA_LOG.md`. The active creative brief is the owner's V11 Living Digital Universe; docs/CREATIVE_BRIEF_V9.md archives V9; docs/CREATIVE_OPERATING_SYSTEM_V1.md preserves the earlier operating system and its persistent guidance. Historical redesign notes describe earlier choices, not overriding instructions.
+Read `docs/CREATIVE_BRIEF.md` before major work; track phases in `docs/IMPLEMENTATION_PLAN.md` and evidence in `docs/QA_LOG.md`. The active creative brief is the owner's V12 Homepage Experience Rebuild; docs/CREATIVE_BRIEF_V11.md and docs/CREATIVE_BRIEF_V9.md archive previous directions; docs/CREATIVE_OPERATING_SYSTEM_V1.md preserves the earlier operating system and its persistent guidance. Historical redesign notes describe earlier choices, not overriding instructions.
 
 ## Preserve and communicate
 
 - Inspect existing code/instructions before editing. Preserve working routes, business data, all 13 approved service categories and project/inquiry state.
 - MAKENDLESS is a Creative & Technology Studio: CREATE • BUILD • GROW. GROW is always Beta / Coming Soon. Exact categories live in `src/data.ts`; never rename/combine/remove them without authorization.
 - Preserve the existing wordmark design, Syne typography and expressive headline treatment.
-- Keep Glass Prism tokens: #0A0B1B, #1D1B3A, #8B5CF6, #22D3EE, #EAF2FF, #A4AAC7; signature gradient 115deg aqua 0%, violet 52%, #C7A6FF 100%. Syne only, weights 400–800. Never reintroduce Outfit/Geist.
+- V12 homepage uses centralized Prism Atelier tokens in src/theme.ts and src/atelier-theme.css. Preserve the prior Glass Prism as a recoverable option and retain internal-page styling until the homepage direction is visually verified.
+- Legacy Glass Prism tokens: #0A0B1B, #1D1B3A, #8B5CF6, #22D3EE, #EAF2FF, #A4AAC7; signature gradient 115deg aqua 0%, violet 52%, #C7A6FF 100%. Syne only, weights 400–800. Never reintroduce Outfit/Geist.
 - Never invent client work, achievements, metrics, contact details or delivery. Concepts and simulations must be labeled. The inquiry is currently a local preview/download with no backend.
 
 ## Design decisions
 
 - Journey: Discover → Explore → Experience → Customize → Start a Project. Clarity and functioning controls outrank spectacle.
 - Nav: Studios (compact CREATE / BUILD / GROW menu), Work, Project Lab, About, Start a Project. No mega menu.
-- Hero: an open cinematic Living Stage without a surrounding dashboard frame; default CREATE/video, switch to BUILD/websites or AI/automation. Show positioning and services immediately. Approved copy: “We make ideas impossible to ignore.” Supporting: video editing, websites and AI solutions for ambitious creators and businesses. CTAs: Explore Our Studios, Start a Project.
+- Hero: an open cinematic Living Stage without a surrounding dashboard frame; default CREATE/video, switch to BUILD/websites or AI/automation. Show positioning and services immediately. Approved copy: “We make ideas impossible to ignore.” V12 supporting: “Premium video editing, websites and AI solutions for creators and ambitious businesses.” CTAs: Explore Services, Start a Project.
 - Use genuine purposeful 3D for service storytelling, not random cubes, infinity loops, particles or floating clutter. Accessible HTML controls must work without WebGL. Lazy-load 3D, respect reduced motion, optimize mobile, and clean up GPU/animation resources.
 - Before a major component, document purpose, immediate message, distinctive composition, interaction/response, brand fit, mobile/fallback behavior, trust value and performance cost.
 - Preserve successful logic while replacing weak visuals. Avoid text walls, repeated generic cards, excessive glow and animation.
@@ -27,5 +28,5 @@ Read `docs/CREATIVE_BRIEF.md` before major work; track phases in `docs/IMPLEMENT
 - Score seven brief categories 1–5 only with evidence; below 4 requires refinement. Mark unobserved visual categories unverified, never invent scores or claim quality based on compilation.
 - Run applicable typecheck, lint, build, route/component/Lab/form/keyboard/reduced-motion/WebGL-fallback tests. Record only real results. LCP ≤2.5s, INP ≤200ms, CLS ≤0.1 are unmeasured targets until tested.
 - Retain the existing React/TypeScript/Vite stack unless a migration is necessary. Keep brand, service, navigation and availability configuration centralized. No secrets in source, no paid APIs/tools or public deployment without authorization.
-- Apply the eight purposeful motion families in docs/MOTION_SYSTEM.md across all pages; never substitute a hero-only change for the whole-site brief.
+- Apply the purposeful motion families in docs/MOTION_SYSTEM.md. V12 scope is homepage-first: nine distinct sections with dark immersive and light editorial surfaces, business solutions, honest package guidance, distinct concept work, an attractive unselected Lab example, and calm process/FAQ. Do not redesign internal pages until the homepage direction is verified.
 - Use small Git checkpoints. Report concrete changes, interactions, checks, limits and next work; do not use unsupported “world-class” claims.
