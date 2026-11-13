@@ -1,60 +1,49 @@
-# Implementation plan — Living Experience V9
+# Living Digital Universe — V11 implementation
 
-## Audit and reconciliation
+## Audit and preserved baseline
 
-Baseline: `fb56e76` on main. React 19 + TypeScript + Vite 6, React Router 7, CSS, self-hosted Syne. No prior AGENTS.md. Existing source has 13 working service demos, 3 studio destinations, service details, shared project context, Project Lab, guided discovery, concept portfolio, FAQ/legal/about and demo inquiry. No backend or verified production domain. Existing 58-test suite uses Node and jsdom; earlier browser review was blocked by cloud tools.
+Checkpoint: `f8d01c3` on main; working branch `feat/living-universe-v11`. The pre-change suite passed all 74 tests in this turn. React 19, TypeScript, Vite, CSS, SVG and the existing raw Three.js renderer remain the stack. No new library, service, font, payment or backend is needed.
 
-The new creative brief supersedes the preceding minimal-nav/photo-hero choices: restore a compact Studios menu and Project Lab link; default the hero to video editing; add BUILD and AI modes and genuine service-led 3D. Keep working demos, routes, data and inquiry logic. The existing cafe-first hero is to be replaced; later homepage sections remain pending the first visual review gate.
+Source audit found the main presentation weaknesses: the hero was enclosed by a large dashboard frame; the same framed photo composition recurred; internal routes retained prior gray panels and repeated cards; motion lacked a common lifecycle; the social planner changed its format label without constructing a different output. Existing project state, demos, navigation, routes, brief generation and inquiry validation are useful and preserved.
 
-## Phases
+The V11 brief is active verbatim in CREATIVE_BRIEF.md. V9 and the older operating system are archived. Keep the exact approved wordmark, Syne, Glass Prism tokens, hero copy and all 13 services. GROW remains Beta / Coming Soon. Concepts, simulations and local-only inquiries stay labeled.
 
-| Phase | Scope                                           | Status                                                       |
-| ----- | ----------------------------------------------- | ------------------------------------------------------------ |
-| 1     | Audit and persistent instructions               | Installed; current findings above                            |
-| 2     | Centralized architecture and compact navigation | In progress                                                  |
-| 3     | Lazy 3D Living Showcase + HTML fallbacks        | In progress                                                  |
-| 4     | Complete seven-section homepage sequence        | Planned after initial visual review                          |
-| 5–7   | CREATE 5 / BUILD 5 / GROW 3 demos               | Existing functional baseline retained; visual review pending |
-| 8     | Living Project Lab                              | Existing functionality retained; visual review pending       |
-| 9     | Guided discovery and pairings                   | Existing functionality retained                              |
-| 10    | Supporting pages and inquiry                    | Existing functionality retained; inquiry remains demo        |
-| 11    | Visual refinement                               | Pending genuine desktop/mobile review                        |
-| 12    | Full checks and deliverables                    | Initial-milestone checks pending                             |
+## Storyboard and implementation decisions
 
-## Component decisions
+| Experience                    | Purpose and composition                                                                     | Response and depth                                                                                                                                 | Mobile/fallback/cost                                                                                                                   |
+| ----------------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Hero                          | Explain video, websites and AI beside an open service stage; no surrounding dashboard frame | Original/edited timeline, wireframe/finished/device/menu, five-step workflow; camera entrance and relevant lighting in one reusable Three.js scene | Accessible HTML controls and matching preview; narrow/reduced-motion/save-data default flat; engine lazy, capped DPR and demand frames |
+| Studios exhibition            | Three editorial studio entries paired with one large selected world                         | Selection reveals a photo-motion composition, layered café page or beta planning sequence                                                          | Stacked exhibition on narrow screens; SVG/CSS/photo only                                                                               |
+| Workshop                      | A tool selection rail and generous live work area                                           | Edit the reel, navigate a website, or step/reset an inquiry flow; results change, not only labels                                                  | Lazy service module near viewport, manual open fallback; no engine required                                                            |
+| Homepage Lab                  | Choose a business and see selected capabilities construct an experience                     | Website, mock booking, illustrative film and scripted assistant independently join the composition; shared selection continues to full Lab         | Stable DOM controls, layered CSS framing, paused/offscreen film; all combinations remain usable                                        |
+| Selected work                 | Large cinematic frame and offset small-business browser study                               | Leads to named concept case studies with actual source/sequence/device interactions                                                                | Linear mobile sequence; one optional spatial study on Work, explicitly opened                                                          |
+| Process                       | Four editorial checkpoints beside a diagram of the idea taking shape                        | Each step changes the SVG composition, explanation and expected handover                                                                           | Native buttons and polite text update; static diagram under reduced motion; no canvas                                                  |
+| Final invitation/footer       | A clear next step over a restrained perspective horizon, then useful destinations           | One light pass and purposeful link feedback                                                                                                        | No perpetual animation; preserved wordmark                                                                                             |
+| CREATE / BUILD / GROW         | Film / product / planning identities with one focused demo at a time                        | All 13 services have specific stateful outputs; optional reusable spatial study on CREATE/BUILD                                                    | Selectors remain directly reachable; stack/flatten on narrow screens; beta always visible                                              |
+| Project Lab                   | Open illuminated stage with business-specific website and independently constructed modules | Shared service selection, valid mock booking, scripted assistant, editable/copyable brief and inquiry handoff                                      | Frames simplify; interactions remain DOM; business changes clear stale demo state                                                      |
+| Discovery                     | Connected answer map and a focused question                                                 | Five-step rule-based recommendations with editable selection                                                                                       | Vertical progress and accessible current step; no remote AI                                                                            |
+| Contact                       | Live readiness rail beside a readable inquiry sheet                                         | Required-field validation and local preview/download; manual description editing preserved                                                         | Single column; no delivery backend or implied message sent                                                                             |
+| About / FAQ / service details | Studio statement, calm question index and service-specific editorial compositions           | Deep links, progressive details and real demos                                                                                                     | Text-first fallbacks, no ornamental canvas                                                                                             |
 
-V9 supersedes the active creative brief; V1 is archived in docs/CREATIVE_OPERATING_SYSTEM_V1.md. V9 retains the same primary navigation and three uncluttered hero modes, with GROW clearly available as a beta destination. Hero uses the exact V9 headline and CTAs. All seven homepage experiences will be integrated after the core showcase controls pass checks; visual acceptance stays pending if browser tools cannot start.
+## Phase status
 
-### Navigation
+| Phase | Work                                                          | Status                                                           |
+| ----- | ------------------------------------------------------------- | ---------------------------------------------------------------- |
+| 0     | Audit, checkpoint, preserve identity and behavior             | Complete in source; baseline tests passed                        |
+| 1     | Motion/spatial/lighting system                                | Implemented; timing and appearance await browser review          |
+| 2     | Open cinematic Living Stage                                   | Implemented; functional checks passed; actual GPU review pending |
+| 3     | Seven distinct homepage sections                              | Implemented; responsive visual review pending                    |
+| 4–6   | CREATE 5 / BUILD 5 / GROW 3                                   | Implemented; functional tests pending final integration          |
+| 7     | Project Lab, business construction and handoff                | Implemented; 8 bounded flow tests passed                         |
+| 8     | Work, About, discovery, FAQ, contact, service details, footer | Implemented; final route/interaction checks pending              |
+| 9     | Motion consistency and lifecycle                              | Implemented; source review and integration in progress           |
+| 10    | Performance/accessibility engineering                         | Source/DOM checks in progress; device measurements unverified    |
+| 11    | Actual desktop/mobile visual review                           | Blocked by managed preview/browser infrastructure                |
+| 12    | Functional QA                                                 | Final integrated checks pending                                  |
+| 13    | Save/source delivery                                          | Pending final integrated checks                                  |
 
-Purpose: reach the right studio or project tool in one deliberate action. Immediate message: video, websites/AI and forthcoming marketing. Composition: a single compact three-item disclosure, standard links, one project CTA. Native keyboard controls, Escape/outside-click close, mobile dialog focus management. No visual dependency on animation or WebGL. Performance cost: only DOM and existing icons.
+## Visual acceptance remains open
 
-### Living Showcase
+The supported preview was attempted in this turn and failed at relay readiness. The browser tool also failed to initialize. Do not infer visual quality from successful compilation or jsdom. No actual 360/390/768/1024/1440px render, screenshot, GPU frame or measured Core Web Vital is available. The implementation remains a reviewable V11 checkpoint, not a completed visual quality sign-off.
 
-Purpose: demonstrate editing, website transformation and human-reviewed automation. Immediate message: what changes when MAKENDLESS works on an idea. Composition: one spatial workbench with a large media/page surface, useful source/timeline/workflow context and prismatic rails. Default CREATE; HTML controls update both the 3D and flat preview. BUILD switches wireframe/finished; AI advances the inquiry→classification→routing→draft→human-review path. Use illustrative photo motion, no fabricated customer results.
-
-Mobile/reduced-motion/data-saving devices retain a polished functional HTML view; optional spatial rendering where suitable. Load Three.js only after capability/visibility checks. Cap resolution, render on demand, avoid postprocessing and perpetual loops, dispose textures/materials/geometry/renderer on unmount, recover to HTML on load/error/context loss. Static controls remain accessible independently of the canvas.
-
-## First milestone review gate
-
-Complete functional initial hero/nav/studio changes, run available checks and attempt the supported browser preview. If browser infrastructure is unavailable, save the stable code and exact blocker; keep visual quality unverified and later design phases pending. Do not interpret a green build as passing this gate.
-
-## Implemented checkpoint (V9)
-
-- Phase 1: root AGENTS.md installed; V1 archived; full V9 retained verbatim as active creative brief.
-- Phase 2: centralized nav metadata; compact Studios disclosure; Work, Project Lab, About and project CTA; mobile focus handling and scroll surface.
-- Phase 3: raw Three.js client-only renderer and typed state. CREATE has a vertical edited frame, source panel and playhead. BUILD changes finished/wireframe, device emphasis and sample menu. AI changes workflow card and connected stage emphasis. Accessible HTML previews and controls remain functional without WebGL.
-- Phase 4: seven-part homepage integrated: hero → interactive studio selector → lazy Workshop → shared-state Lab introduction → selected concepts → interactive four-step process → final inquiry CTA.
-- Phases 5–7: all existing 13 demos retained, reorganized into full-width studio stages with compact selectors, progressive service detail disclosure and relevant inquiry actions. No category or beta availability removed.
-- Phases 8–10: working project/discovery/portfolio/supporting/inquiry logic preserved, lazy-routed. Homepage Lab uses the same project state; full brief generation remains on the Project Lab route.
-- Phase 11: source review refined camera fitting, texture resolution, listener/observer teardown and reduced-motion handling. **Real visual refinement remains blocked**, so the final visual direction and supporting-page polish are not accepted as complete.
-- Phase 12/13: 74 automated checks pass; build/typecheck/lint pass. Supported application preview was attempted but failed at the relay; no running browser preview or screenshots are delivered. See QA_LOG.md for exact evidence and local review steps.
-
-## Resume here
-
-1. On a machine with a working browser, run the local app and review the actual WebGL scene at 1440px, then 1024/768/390/360px.
-2. Capture screenshots of all three hero modes, CREATE/BUILD, full homepage and Project Lab. Compare against V9 gates before approving the composition.
-3. Test device capability paths, context loss, keyboard navigation, touch and reduced motion in a real browser.
-4. Refine weak observed layouts and media presentation; complete supporting-page visual cohesion using that evidence.
-5. Measure Core Web Vitals and renderer cost on a mid-range phone. No performance target is currently verified.
-6. Connect real inquiry delivery only with approved configuration; current contact remains an explicitly labeled local demo.
+Once browser access works, follow the exact reproduction checklist in QA_LOG.md. Inspect all major routes and modes, critique composition and motion, refine observed weaknesses, then score the ten V11 gates. The source implementation is intentionally spread across the full site even though the visual gate is blocked.
